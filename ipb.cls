@@ -240,3 +240,5 @@
 
 
 \makeatother
+
+\usepackage[all]{nowidow}
