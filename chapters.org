@@ -1,0 +1,91 @@
+* introduction
+* context
+* objective
+* concepts and technologies
+** front-end
+*** typescript
+*** html
+*** css
+*** scss
+*** angular
+*** angular material
+*** Sb-Angular-Material
+**** project structure
+
+** back-end
+*** java
+*** spring
+**** dependency injection
+**** boot
+**** data
+**** web
+***** HATEOAS
+**** security
+*** rest
+*** mariadb
+*** ldap
+
+** development
+*** apache netbeans
+*** maven
+*** lombok
+*** apache directory studio
+*** visual studio code
+*** docker
+*** docker-compose
+*** chinook database
+*** angular cli
+*** firefox
+**** debugger
+**** webpack
+*** postman
+* project
+** use-cases
+** class diagram
+** template angular-material
+** multi-database support 
+
+* implementation and results
+** front-end
+*** component structure
+**** services
+**** modules
+**** dialog
+*** generic form controll builder
+*** spring HATEOAS classes
+**** entity class
+**** acessor class
+**** repository class
+**** repository service class
+*** temporal caching for repository index method
+*** error handler
+*** database reader
+
+** back-end
+*** java classes
+**** view models
+*** spring configuration
+**** ldap
+**** security
+***** admin resources
+**** cors mapping
+**** user details context mapper
+*** custom controllers & view models
+**** database reader
+**** permission tree delete method
+**** user 
+**** queries
+**** permissions
+*** spring repositories
+*** orm generated database
+*** multi-database support
+
+** development environment
+*** Apache Directory
+*** multi-database support
+**** microsoft sql server docker image
+**** oracle:xe driver access 
+**** testing file
+*** postman tests
+* conclusion
+* future work

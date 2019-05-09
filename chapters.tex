@@ -1,0 +1,229 @@
+% Created 2019-05-09 Thu 13:39
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Hydrocat}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Hydrocat},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\section{introduction}
+\label{sec:org0f9d538}
+\section{context}
+\label{sec:org9407320}
+\section{objective}
+\label{sec:org6435aa1}
+\section{concepts and technologies}
+\label{sec:org521768a}
+\subsection{front-end}
+\label{sec:orgb0a4638}
+\subsubsection{typescript}
+\label{sec:org8159684}
+\subsubsection{html}
+\label{sec:org3dd2620}
+\subsubsection{css}
+\label{sec:org3d714b7}
+\subsubsection{scss}
+\label{sec:orgeea0674}
+\subsubsection{angular}
+\label{sec:orgbd0220c}
+\subsubsection{angular material}
+\label{sec:org23d7eae}
+\subsubsection{Sb-Angular-Material}
+\label{sec:orge23a323}
+\begin{enumerate}
+\item project structure
+\label{sec:org67d8258}
+\end{enumerate}
+\subsection{back-end}
+\label{sec:orge072ac1}
+\subsubsection{java}
+\label{sec:org97f0174}
+\subsubsection{spring}
+\label{sec:org1c9bcea}
+\begin{enumerate}
+\item dependency injection
+\label{sec:org710303f}
+\item boot
+\label{sec:org34323f1}
+\item data
+\label{sec:org85b39c6}
+\item web
+\label{sec:org50a6b03}
+\begin{enumerate}
+\item HATEOAS
+\label{sec:org4fefa89}
+\end{enumerate}
+\item security
+\label{sec:org97b552d}
+\end{enumerate}
+\subsubsection{rest}
+\label{sec:org74f8f0b}
+\subsubsection{mariadb}
+\label{sec:orgcab1a87}
+\subsubsection{ldap}
+\label{sec:orgeda7d76}
+\subsection{development}
+\label{sec:org58c8a3c}
+\subsubsection{apache netbeans}
+\label{sec:org61fff4c}
+\subsubsection{maven}
+\label{sec:orgc3b9665}
+\subsubsection{lombok}
+\label{sec:org0d986e6}
+\subsubsection{apache directory studio}
+\label{sec:org3786bdc}
+\subsubsection{visual studio code}
+\label{sec:org45e79ed}
+\subsubsection{docker}
+\label{sec:orgdd3e870}
+\subsubsection{docker-compose}
+\label{sec:orgf6bc2ed}
+\subsubsection{mariadb}
+\label{sec:org9eba444}
+\subsubsection{chinook database}
+\label{sec:org7840f6d}
+\subsubsection{angular cli}
+\label{sec:org5da6208}
+\subsubsection{firefox}
+\label{sec:org6affa2d}
+\begin{enumerate}
+\item debugger
+\label{sec:orgd3920de}
+\item webpack
+\label{sec:org70f6d3d}
+\end{enumerate}
+\subsubsection{postman}
+\label{sec:orgaf42c03}
+\section{project}
+\label{sec:orgaf8e72a}
+\subsection{use-cases}
+\label{sec:orgbb5e5b4}
+\subsection{class diagram}
+\label{sec:orgc484ead}
+\subsection{template angular-material}
+\label{sec:org044ef5d}
+\subsection{{\bfseries\sffamily TODO} multi-database support}
+\label{sec:org3f1ee7f}
+\section{implementation and results}
+\label{sec:org8e6e780}
+\subsection{front-end}
+\label{sec:orga9b61d1}
+\subsubsection{component structure}
+\label{sec:orgac54bff}
+\begin{enumerate}
+\item services
+\label{sec:org90b3f74}
+\item modules
+\label{sec:org6020710}
+\item dialog
+\label{sec:orgccfd5bb}
+\end{enumerate}
+\subsubsection{generic form controll builder}
+\label{sec:org864c09d}
+\subsubsection{spring HATEOAS classes}
+\label{sec:org1820483}
+\begin{enumerate}
+\item entity class
+\label{sec:org6acae8c}
+\item acessor class
+\label{sec:org8eb0dcd}
+\item repository class
+\label{sec:orgb913c7d}
+\item repository service class
+\label{sec:org84e9caf}
+\end{enumerate}
+\subsubsection{temporal caching for repository index method}
+\label{sec:org0f353a9}
+\subsubsection{error handler}
+\label{sec:orge39d5cb}
+\subsubsection{database reader}
+\label{sec:org1f549d3}
+
+\subsection{back-end}
+\label{sec:org9907160}
+\subsubsection{java classes}
+\label{sec:orgc2abe98}
+\begin{enumerate}
+\item view models
+\label{sec:org7cb36f5}
+\end{enumerate}
+\subsubsection{spring configuration}
+\label{sec:org9af8b2c}
+\begin{enumerate}
+\item ldap
+\label{sec:org3a566c0}
+\item security
+\label{sec:org9aabd55}
+\begin{enumerate}
+\item admin resources
+\label{sec:org936057a}
+\end{enumerate}
+\item cors mapping
+\label{sec:org7803d3d}
+\item user details context mapper
+\label{sec:org18c961a}
+\end{enumerate}
+\subsubsection{custom controllers \& view models}
+\label{sec:orgd8042bc}
+\begin{enumerate}
+\item database reader
+\label{sec:orge359031}
+\item permission tree delete method
+\label{sec:orgefebf83}
+\item user
+\label{sec:orgb1f7b6a}
+\item queries
+\label{sec:org4d257cd}
+\item permissions
+\label{sec:orgd8e0e50}
+\end{enumerate}
+\subsubsection{spring repositories}
+\label{sec:org30fbc29}
+\subsubsection{orm generated database}
+\label{sec:orgdbd22c9}
+\subsubsection{multi-database support}
+\label{sec:org7222570}
+
+\subsection{development environment}
+\label{sec:org859393e}
+\subsubsection{Apache Directory}
+\label{sec:org340a7e9}
+\subsubsection{multi-database support}
+\label{sec:org5c35ec9}
+\begin{enumerate}
+\item microsoft sql server docker image
+\label{sec:orge7671cb}
+\item oracle:xe driver access
+\label{sec:org2e3c579}
+\item testing file
+\label{sec:orgcef1318}
+\end{enumerate}
+\subsubsection{postman tests}
+\label{sec:orge41b4a9}
+\section{conclusion}
+\label{sec:org4279175}
+\section{future work}
+\label{sec:orgf118b91}
+\end{document}
