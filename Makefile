@@ -12,4 +12,4 @@ relatorio.pdf: clean
 	rm -f $(RM_EXTENSIONS)
 
 clean:
-	rm relatorio.pdf
+	rm -f relatorio.pdf

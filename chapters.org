@@ -14,6 +14,7 @@
 
 ** back-end
 *** java
+**** view model
 *** spring
 **** dependency injection
 **** boot
@@ -62,13 +63,12 @@
 *** database reader
 
 ** back-end
-*** java classes
-**** view models
+*** entities
 *** spring configuration
-**** ldap
 **** security
 ***** admin resources
 **** cors mapping
+**** ldap
 **** user details context mapper
 *** custom controllers & view models
 **** database reader
@@ -79,7 +79,6 @@
 *** spring repositories
 *** orm generated database
 *** multi-database support
-
 ** development environment
 *** Apache Directory
 *** multi-database support
