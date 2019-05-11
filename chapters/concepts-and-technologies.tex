@@ -5,13 +5,32 @@
 \label{cha:concepts:sec:frontend}
 
 \subsection{Typescript}
-``A superset of Javascript that compils to plain javascript''\cite{tswebsite}, Typescript is a language firstly developed \textit{Anders Hejl}
+`` A super-set of JavaScript that compiles to plain JavaScript ''\cite{tswebsite}, Typescript is a language maintained by Microsoft and developed by \textit{Anders Hejlsberg} in 2012 with the goal of improving the quality and manageability of JavaScript code bases with features such as static typing and object-orientated qualities\cite{tsrevealed}. Ultimately, Typescript must be compiled to JavaScript before being executed, for compatibility reasons, the default JavaScript target is version ES3 but newer back-ends are also available.
+
 \subsection{HTML}
+The \gls{HTML}, the `` World Wide Web's core markup language ''\cite{html} is a declarative language through which the vast majority of online content is structured, shared and accessed. It is a specification of elements that can be used to structure the content of web pages, such as headings, images, link to other documents, buttons and many others\cite{htmlcss}.
+
 \subsection{CSS}
-\subsection{SCSS}
+\gls{CSS} is another declarative language that pairs with HTML. It's purpose is to describe how the elements present in a web page are presented.
+Some of the definitions handle colors, fonts, element arranging, visibility, interaction and many others\cite{htmlcss}.
+
+\subsection{SASS}
+\gls{SASS} is a augmentation of CSS with features that are similar to a object-oriented languages, with loops, variables, functions and rule nesting \cite{sass}. SASS files need to be compiled into plain CSS before deployment, there are many of such compilers, some re-generate CSS files upon file  changes.
+
 \subsection{Angular}
+Front-end web framework developed as a side project at Google that proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content\cite{angularjs}, therefore a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{HTML} document are captured and made available to it's components. Such binding goes both ways, so if the state of the underling code changes, the document is re-rendered to reflect the new state.
+
+The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times, slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and up is a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables\cite{angular}.
+
 \subsection{Angular Material}
+Material Design is a set of guidelines and principles made by Google for designing \gls{UI} that aims to bring natural and consistent interactions between users and computers. The guiding principle is based on paper and ink but it is not limited to what they can do in the physical world\cite{materialdesign}.
+
+Angular Material\cite{angularmaterial} is the implementation made by Google of components like buttons, text input and separators that follow the Material Design guidelines to be used by Angular applications, providing a consistent look across devices.
+
 \subsection{Sb-Admin-Material}
+To accelerate the development speed and have faster working prototypes, many web-based projects begin form a ready-made template. This saves time by keeping developers from re-writing common pieces of code commonly referred as ``boilerplate''.
+
+SB Angular Material is a re-write of the famous SB Admin template\cite{angulartemplate}, a free and open source template developed by Start Bootstrap\cite{sbadmin} in Angular using components developed in the previously discussed Angular Material project.
 \subsubsection{Project Structure}
 
 \section{Back-end}
@@ -24,7 +43,7 @@
 \subsubsection{Boot}
 \subsubsection{Data}
 \subsubsection{Web}
-\subsubsection{Hateoas}
+\subsubsection{HATEOAS}
 \subsubsection{Security}
 
 \subsection{Rest}

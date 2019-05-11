@@ -1,90 +1,92 @@
-* introduction
-* context
-* objective
-* concepts and technologies
-** front-end
-*** typescript
-*** html
-*** css
-*** scss
-*** angular
-*** angular material
-*** Sb-Angular-Material
-**** project structure
+* TODO introduction
+* TODO context
+* TODO objective
+* TODO concepts and technologies
+** TODO front-end
+*** DONE typescript
+*** DONE html
+*** DONE css
+*** DONE scss
+*** DONE angular
+**** devo explicar conceitos do angular ?
+     Observables, Componentes, Serviços, Router
+*** DONE angular material
+**** devo explicar Material Design ?
+*** TODO Sb-Angular-Material
+**** TODO project structure
+** TODO back-end
+*** TODO java
+**** TODO view model
+*** TODO spring
+**** TODO dependency injection
+**** TODO boot
+**** TODO data
+**** TODO web
+***** TODO HATEOAS
+**** TODO security
+*** TODO rest
+*** TODO mariadb
+*** TODO ldap
 
-** back-end
-*** java
-**** view model
-*** spring
-**** dependency injection
-**** boot
-**** data
-**** web
-***** HATEOAS
-**** security
-*** rest
-*** mariadb
-*** ldap
+** TODO development
+*** TODO apache netbeans
+*** TODO maven
+*** TODO lombok
+*** TODO apache directory studio
+*** TODO visual studio code
+*** TODO docker
+*** TODO docker-compose
+*** TODO chinook database
+*** TODO angular cli
+*** TODO firefox
+**** TODO debugger
+**** TODO webpack
+*** TODO postman
+* TODO project
+** TODO use-cases
+** TODO class diagram
+** TODO template angular-material
+** TODO multi-database support 
 
-** development
-*** apache netbeans
-*** maven
-*** lombok
-*** apache directory studio
-*** visual studio code
-*** docker
-*** docker-compose
-*** chinook database
-*** angular cli
-*** firefox
-**** debugger
-**** webpack
-*** postman
-* project
-** use-cases
-** class diagram
-** template angular-material
-** multi-database support 
+* TODO implementation and results
+** TODO front-end
+*** TODO component structure
+**** TODO services
+**** TODO modules
+**** TODO dialog
+*** TODO generic form controll builder
+*** TODO spring HATEOAS classes
+**** TODO entity class
+**** TODO acessor class
+**** TODO repository class
+**** TODO repository service class
+*** TODO temporal caching for repository index method
+*** TODO error handler
+*** TODO database reader
 
-* implementation and results
-** front-end
-*** component structure
-**** services
-**** modules
-**** dialog
-*** generic form controll builder
-*** spring HATEOAS classes
-**** entity class
-**** acessor class
-**** repository class
-**** repository service class
-*** temporal caching for repository index method
-*** error handler
-*** database reader
-
-** back-end
-*** entities
-*** spring configuration
-**** security
-***** admin resources
-**** cors mapping
-**** ldap
-**** user details context mapper
-*** custom controllers & view models
-**** database reader
-**** permission tree delete method
-**** user 
-**** queries
-**** permissions
-*** spring repositories
-*** orm generated database
-*** multi-database support
-** development environment
-*** Apache Directory
-*** multi-database support
-**** microsoft sql server docker image
-**** oracle:xe driver access 
-**** testing file
-*** postman tests
-* conclusion
-* future work
+** TODO back-end
+*** TODO entities
+*** TODO spring configuration
+**** TODO security
+***** TODO admin resources
+**** TODO cors mapping
+**** TODO ldap
+**** TODO user details context mapper
+*** TODO custom controllers & view models
+**** TODO database reader
+**** TODO permission tree delete method
+**** TODO user 
+**** TODO queries
+**** TODO permissions
+*** TODO spring repositories
+*** TODO orm generated database
+*** TODO multi-database support
+** TODO development environment
+*** TODO Apache Directory
+*** TODO multi-database support
+**** TODO microsoft sql server docker image
+**** TODO oracle:xe driver access 
+**** TODO testing file
+*** TODO postman tests
+* TODO conclusion
+* TODO future work
