@@ -10,12 +10,13 @@
 *** DONE angular
 **** devo explicar conceitos do angular ?
      Observables, Componentes, Serviços, Router
+**** TODO Angular cli ?
 *** DONE angular material
 **** devo explicar Material Design ?
-*** TODO Sb-Angular-Material
-**** TODO project structure
+*** DONE Sb-Angular-Material
+**** DONE project structure
 ** TODO back-end
-*** TODO java
+*** DONE java
 **** TODO view model
 *** TODO spring
 **** TODO dependency injection
