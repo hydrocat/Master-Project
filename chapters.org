@@ -17,18 +17,16 @@
 **** DONE project structure
 ** TODO back-end
 *** DONE java
-**** TODO view model
-*** TODO spring
-**** TODO dependency injection
-**** TODO boot
-**** TODO data
-**** TODO web
-***** TODO HATEOAS
-**** TODO security
-*** TODO rest
-*** TODO mariadb
+**** DONE view model
+*** DONE spring
+**** DONE dependency injection
+**** DONE data
+***** DONE HATEOAS
+**** DONE security
+**** DONE web
+**** DONE boot
+*** DONE mariadb
 *** TODO ldap
-
 ** TODO development
 *** TODO apache netbeans
 *** TODO maven

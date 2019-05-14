@@ -15,7 +15,7 @@
                     pdfstartview=FitH]{hyperref}
 
 % Pode ser usado biblatex
-\usepackage[style=ieee,backend=biber]{biblatex}
+\usepackage[style=ieee,backend=biber,dashed=false]{biblatex}
 \addbibresource{lib/refs.bib}
 
 \usepackage{lipsum}
@@ -24,8 +24,21 @@
 \usepackage{csquotes}
 \usepackage{subfig}
 
-% Muy macros
+% My macros
+\usepackage{pifont}
+\usepackage{enumitem}
+\setlistdepth{20}
+\renewlist{itemize}{itemize}{5}
 
+% initially, use dots for all levels
+\setlist[itemize]{label=$\cdot$}
+
+% customize the first 5 levels
+\setlist[itemize,1]{label=\textbullet}
+\setlist[itemize,2]{label=$\circ$}
+\setlist[itemize,3]{label=\ding{219}}
+\setlist[itemize,4]{label=--}
+\setlist[itemize,5]{label=$\cdot$}
 \newcommand{\todo}[1]{
   
   {\color{red} \texttt{\textbf{TODO:}} #1}\\
@@ -117,7 +130,6 @@
 
 %  Caso seja usado biblatex
 \printbibliography
-
 
 % Apêndices
 \appendix
