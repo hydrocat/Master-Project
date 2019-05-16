@@ -25,15 +25,15 @@
 **** DONE security
 **** DONE web
 **** DONE boot
-*** DONE mariadb
-*** TODO ldap
+*** TODO mariadb
+*** DONE ldap
 ** TODO development
-*** TODO apache netbeans
-*** TODO maven
-*** TODO lombok
-*** TODO apache directory studio
-*** TODO visual studio code
-*** TODO docker
+*** DONE apache netbeans
+*** DONE maven
+*** DONE lombok
+*** DONE apache directory studio
+*** DONE visual studio code
+*** DONE docker
 *** TODO docker-compose
 *** TODO chinook database
 *** TODO angular cli

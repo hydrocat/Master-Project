@@ -179,22 +179,68 @@ Authentication, in by definition means ``To prove real or genuine''~\cite{merria
 Authorization, ``the act of endorsing, or permitting by some recognized authority''~\cite{merriamwebster}. Similarly to Authentication can also be specified via a custom extension of \texttt{WebSecurityConfigurerAdapter}, and they can co-exist in the same extension. Authorization mechanisms are usually related to some attribute of the current authenticated user, in Spring, the \texttt{GrantedAuthority} interface is the central piece that unifies \textit{what} the user has access to. Authorization points can be defined at the global level by the \texttt{WebSecurityConfigurerAdapter}, at the controller level or at the method level though proper annotations.
 
 \subsubsection{Boot}
-Although Spring Framework is a marvelous piece of software for it's malleability and wide range of available features, for a while it was considered a \textit{Configuration Hell} because of it's \gls{XML} configuration that would require a lot of expertise into writing\cite{xmlhell1}\cite{xmlhell2}\cite{xmlhell3}\cite{xmlhell4}\cite{xmlhell5}. In face of this, the Spring Team came up with Spring Boot, a dependency that can be inserted into a project and provides sane, already-configured Spring packages to accelerate development and keep code organized.
+Although Spring Framework is a marvelous piece of software for it's malleability and wide range of available features, for a while it was considered a \textit{Configuration Hell} because of it's \gls{XML} configuration that would require a lot of expertise into writing~\cite{xmlhell1}~\cite{xmlhell2}~\cite{xmlhell3}~\cite{xmlhell4}~\cite{xmlhell5}. In face of this, the Spring Team came up with Spring Boot, a dependency that can be inserted into a project and provides sane, already-configured Spring packages to accelerate development and keep code organized.
 
 \subsection{MariaDB}
-A open-source drop-in replacement of MySQL \gls{RDBMS}\cite{mariadb} that started soon after Oracle purchased Sun Microsystems\cite{mariadbfuture}. Developed by the original developers of MySQL it is under active development and a large community\cite{mariadbgit}.
+\todo{+ plz}
+A open-source drop-in replacement of MySQL \gls{RDBMS}~\cite{mariadb} that started soon after Oracle purchased Sun Microsystems~\cite{mariadbfuture}. Developed by the original developers of MySQL it is under active development and has large community~\cite{mariadbgit}.
 
 \subsection{LDAP}
-\gls{LDAP} in it's core is a protocol defined \gls{IETF}'s \gls{RFC} number 4511\cite{ldaprfc} that defines access to X.500 directory service. Much like  a 
+\gls{LDAP} in it's core is a protocol defined by \gls{IETF}'s \gls{RFC} number 4511~\cite{ldaprfc} that defines access to X.500 compliant directory services. A Directory is an agglomerations of cooperative systems that serve structured information about the real world~\cite{x500}. Different from a traditional \gls{RDBMS}, directory services are expected to be automatically accessed by other interconnected systems, therefore they are better optimized for frequent queries and fewer updates.
+
+% section connector
+\todo{Connecxao com Development}
 
 \section{Development}
-\subsection{Apache Netbeans}
+\todo{introducao ao capitulo}
+
+
+\subsection{Apache NetBeans}
+\label{netbeans}
+This is a open-source \gls{IDE} that was focused in Java application development but grew support for other languages but mainly feature syntactic and semantic syntax highlighting, auto-completion, code versioning and refactoring.
+\todo{ok ?}
+
 \subsection{Maven}
+Maven is a Build System for mainly used for Java applications, that is: Through a the \texttt{pom.xml} file, developers declare their project's attributes and dependencies file and if needed, tweak the building process; from there on, Maven is capable of downloading dependencies from a remote repository, compiling them if necessary and generate an executable \gls{JAR} file or loadable library. The project's main goals are to ease the build system, provide project information and development guidelines~\cite{maven}.
+
 \subsection{Lombok}
+This plugin offers an annotation-based code-scaffolding tool for class definitions. Give the right annotations, common methods like getters, setters and no attribute constructor are automatically generated in build or compile-time~\cite{lombok}. This tool consists of a two-part system that includes the integration with the compiler/build-system and another one that interacts with the developer's \gls{IDE} so that the completion system is able to recognize the implicitly generated methods.
+
+Some of the notable annotations include:
+\begin{itemize}
+\item \texttt{@Data}, useful for \gls{POJO} classes, this annotation generates getters, setters, a string converter and equality methods.
+\item \texttt{@NoArgsConstructor} and \texttt{@AllArgsConstructor}, as the name implies, one generates a constructor that takes no arguments and the other, a constructor that generates all arguments.
+\end{itemize}
+
+At first glance this might not be a necessary tool given that most \gls{IDE}s often have support for a similar form of code refactoring but the key difference is that lombok does not clutter the classes with generated implementation therefore it reduces the amount of \gls{LoC} of the project.
+
 \subsection{Apache Directory Studio}
+Under the bigger scope of the Apache Directory Project, Directory Studio is a general purpose \gls{LDAP} server browser, \gls{LDIF} editor and it even includes a Apache Directory Server manager that can be used to launch \gls{LDAP} instances with ease~\cite{apacheds}.
+
+\todo{Isso e ok ?}
+Such facilities enable the quick mock up of remote directory databases for testing purposes, which in turn accelerates development and testing speed.
+
 \subsection{Visual Studio Code}
+Microsoft's take on open-source, this code editor gained traction among developers as one of the most used code editors~\cite{vscodesurvey}. Like any other modern code editor, it offers syntax highlight; auto-completion, though Microsoft's \textit{IntelliSense} integration and a plugin system that enables users to add custom behavior and further develop the editor's support for programming languages\cite{vscode}.
+
+One of the acclaimed features that arose with Visual Studio Code was the open source specification of \gls{LSP}\cite{lsplaunch}. This specification aims to define a communication protocol that is used between a code editor, referred as a \gls{LSP} client and a editor-independent program referred as a \gls{LSP} server, that takes care of features such as code completion, highlight, error detection, contextual variable renaming and jumping to definition\cite{lspspec}. This decoupling reduces the amount of code needed to develop a highly capable editor because language-dependent support is now transferred to said \gls{LSP} server.
+
 \subsection{Docker}
+Akin to a \gls{VM}, containers provides a way to have a different computing environment than the active running in the hardware. The key difference is that instead of emulating the whole computing stack, from processor to applicaion, a container system shares the core host resources with it's guests and thus is generally less resource-hungry. One downside of a container is that the guest operating system must share the same kernel with the host.
+
+In the other hand, Docker is more than just the sandboxing of processes, handling image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, a online registry of extendable containers, a command line interface that downloads, builds and manages containers\cite{dockerfag}.
+
+Core Docker definitions are brought up\cite{dockeroverview}:
+\begin{description}
+\item[Dockerfile] A file that declares the steps taken to build an Image\cite{dockerfile}.
+\item[Image] A blueprint of a container generated once a \texttt{Dockerfile} is built.
+\item[Container] If an image is an compiled binary, a container is the running process. 
+\item[Volume] Is a shared folder between the host \gls{OS} and a running container.
+\end{description}
+
 \subsection{Docker-compose}
+
+
 \subsection{Chinook Database}
 \subsection{Angular CLI}
 \subsection{Firefox}
