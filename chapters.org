@@ -34,12 +34,11 @@
 *** DONE apache directory studio
 *** DONE visual studio code
 *** DONE docker
-*** TODO docker-compose
-*** TODO chinook database
-*** TODO angular cli
-*** TODO firefox
-**** TODO debugger
-**** TODO webpack
+*** DONE docker-compose
+*** DONE chinook database
+*** DONE angular cli
+*** DONE firefox
+**** DONE webpack
 *** TODO postman
 * TODO project
 ** TODO use-cases

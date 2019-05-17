@@ -1,8 +1,9 @@
-\chapter{Concepts and Technologies}
-\label{cha:concepts}
+\chapter{Concepts and Technologies}\label{cha:concepts}
+Throughout the development of this project quite a few tools and technologies were employed. To address them all, this chapter was broken in three sections; Front-end~\ref{cha:concepts:sec:frontend}, that is focused mainly in web technologies; Back-end~\ref{cha:concepts:sec:backend}, which is concerned with the developed Web \gls{API} and lastly; Development~\ref{development}, with the tools used to write, build and test the project developed using the technologies previously discussed.
 
-\section{Front-end}
-\label{cha:concepts:sec:frontend}
+\section{Front-end}\label{cha:concepts:sec:frontend}
+This section is concerned with the description of technologies used to assemble the human-interactive part of this project.
+\todo{suficiente ?}
 
 \subsection{Typescript}
 `` A super-set of JavaScript that compiles to plain JavaScript ''~\cite{tswebsite}, Typescript is a language maintained by Microsoft and developed by \textit{Anders Hejlsberg} in 2012 with the goal of improving the quality and manageability of JavaScript code bases with features such as static typing and object-orientated qualities~\cite{tsrevealed}. Ultimately, Typescript must be compiled to JavaScript before being executed, for compatibility reasons, the default JavaScript target is version ES3 but newer back-ends are also available.
@@ -12,20 +13,27 @@ The \gls{HTML}, the `` World Wide Web's core markup language ''~\cite{html} is a
 
 \subsection{CSS}
 \gls{CSS} is another declarative language that pairs with HTML. It's purpose is to describe how the elements present in a web page are presented.
-Some of the definitions handle colors, fonts, element arranging, visibility, interaction and many others~\cite{htmlcss}.
+Some of definitions handle colors, fonts, element arranging, visibility, interaction and many others aspects~\cite{htmlcss}.
 
 \subsection{SASS}
 \gls{SASS} is a augmentation of CSS with features that are similar to a object-oriented languages, with loops, variables, functions and rule nesting ~\cite{sass}. SASS files need to be compiled into plain CSS before deployment, there are many of such compilers, some re-generate CSS files upon file  changes.
 
-\subsection{Angular}
+\subsection{Angular}\label{concept:angular}
 Front-end web framework developed as a side project at Google that proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content~\cite{angularjs}, therefore a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{HTML} document are captured and made available to it's components. Such binding goes both ways, so if the state of the underling code changes, the document is re-rendered to reflect the new state.
 
 The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times, slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and up is a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables~\cite{angular}.
 
-\todo{Router}
-\todo{Components}
-\todo{Template}
-\todo{angular cli}
+An overview of key Angular concepts follows:
+\begin{description}
+\item[Module] Internally referenced as a \texttt{NgModule}, these are the basic elements through which an Angular application is structured\cite{angularmodule}. They declare the elements that will be provided to it's child Modules, Services and Components.
+\item[Component] Binds a Template to behavior and data. Components are the elements that directly interact with the information perceived by an user. They typically rely on Services to acquire information and on Modules to fulfill their dependencies. 
+\item[Router] A special kind of service that is responsible for managing the navigation through an application, mapping \gls{URL}s to Components.
+\item[Service] Akin to a library, a Service have methods that can be used by multiple Components and other Services to provide some functionality. They are commonly implemented to act as the means of interaction to a remote \gls{API}.
+\item[Template] An augmented \gls{HTML} file that is bound to a Component. Effectively, they are medium through which information is displayed and interacted with. Among other things, Templates can have elements that are dependent of some expression, values that are provided by a Component and events that notify the underlying Component.
+\end{description}
+
+Through these features the project aims to be highly modular and have high code re-use.
+\todo{conclusaonha ?}
 
 \subsection{Angular Material}
 Material Design is a set of guidelines and principles made by Google for designing \gls{UI} that aims to bring natural and consistent interactions between users and computers. The guiding principle is based on paper and ink but it is not limited to what they can do in the physical world~\cite{materialdesign}.
@@ -46,20 +54,17 @@ In the following subsection this template's folder structure will be explained s
 \begin{figure}
   \centering
   \includegraphics[width=.5\textwidth]{images/sbadmin/login}
-  \caption{Login Screen}
-  \label{fig:login}
+  \caption{Login Screen}\label{fig:login}
 \end{figure}
 \begin{figure}
   \centering
   \includegraphics[width=.5\textwidth]{images/sbadmin/collapsed}
-  \caption{Dashboard with collapsed side menu}
-  \label{fig:dash}
+  \caption{Dashboard with collapsed side menu}\label{fig:dash}
 \end{figure}
 \begin{figure}
   \centering
   \includegraphics[width=.5\textwidth]{images/sbadmin/visible}
-  \caption{Dashboard with visible side menu}
-  \label{fig:visible}
+  \caption{Dashboard with visible side menu}\label{fig:visible}
 \end{figure}
 
 \subsubsection{Project Structure}
@@ -108,8 +113,8 @@ After this overview, it is interesting to note the following:
 \item There are many examples that proved as a handy reference during development, namely the forms and material-components.
 \end{itemize}
 
-\section{Back-end}
-\label{cha:concepts:sec:backend}
+\section{Back-end}\label{cha:concepts:sec:backend}
+The tools and concepts described in this section refer to the server-side of this project. It manages the authenticated and authorized data access as well as business-specific functionalities.
 
 \subsection{Java}
 % introduction
@@ -182,8 +187,8 @@ Authorization, ``the act of endorsing, or permitting by some recognized authorit
 Although Spring Framework is a marvelous piece of software for it's malleability and wide range of available features, for a while it was considered a \textit{Configuration Hell} because of it's \gls{XML} configuration that would require a lot of expertise into writing~\cite{xmlhell1}~\cite{xmlhell2}~\cite{xmlhell3}~\cite{xmlhell4}~\cite{xmlhell5}. In face of this, the Spring Team came up with Spring Boot, a dependency that can be inserted into a project and provides sane, already-configured Spring packages to accelerate development and keep code organized.
 
 \subsection{MariaDB}
-\todo{+ plz}
-A open-source drop-in replacement of MySQL \gls{RDBMS}~\cite{mariadb} that started soon after Oracle purchased Sun Microsystems~\cite{mariadbfuture}. Developed by the original developers of MySQL it is under active development and has large community~\cite{mariadbgit}.
+A open-source drop-in replacement of MySQL \gls{RDBMS}~\cite{mariadb} that started soon after Oracle purchased Sun Microsystems~\cite{mariadbfuture}. Developed by the original developers of MySQL, MariaDB was developed with the intention of being open source, publicly available and community driven.
+\todo{mesmo ???}
 
 \subsection{LDAP}
 \gls{LDAP} in it's core is a protocol defined by \gls{IETF}'s \gls{RFC} number 4511~\cite{ldaprfc} that defines access to X.500 compliant directory services. A Directory is an agglomerations of cooperative systems that serve structured information about the real world~\cite{x500}. Different from a traditional \gls{RDBMS}, directory services are expected to be automatically accessed by other interconnected systems, therefore they are better optimized for frequent queries and fewer updates.
@@ -191,12 +196,12 @@ A open-source drop-in replacement of MySQL \gls{RDBMS}~\cite{mariadb} that start
 % section connector
 \todo{Connecxao com Development}
 
-\section{Development}
-\todo{introducao ao capitulo}
+\section{Development}\label{development}
+In this section it is discussed the tools used during the development phase of this project. The tools in question do not only satisfy the coding needs but also the environment through which the application will interact with. In some case the tools, like the Apache Directory Studio\ref{ads}, were used to mimic the real production environment so that no interaction with sensitive information was done by a application still under development.
+\todo{okay bruno ?}
 
 
-\subsection{Apache NetBeans}
-\label{netbeans}
+\subsection{Apache NetBeans}\label{netbeans}
 This is a open-source \gls{IDE} that was focused in Java application development but grew support for other languages but mainly feature syntactic and semantic syntax highlighting, auto-completion, code versioning and refactoring.
 \todo{ok ?}
 
@@ -214,36 +219,82 @@ Some of the notable annotations include:
 
 At first glance this might not be a necessary tool given that most \gls{IDE}s often have support for a similar form of code refactoring but the key difference is that lombok does not clutter the classes with generated implementation therefore it reduces the amount of \gls{LoC} of the project.
 
-\subsection{Apache Directory Studio}
+\subsection{Apache Directory Studio}\label{ads}
 Under the bigger scope of the Apache Directory Project, Directory Studio is a general purpose \gls{LDAP} server browser, \gls{LDIF} editor and it even includes a Apache Directory Server manager that can be used to launch \gls{LDAP} instances with ease~\cite{apacheds}.
 
 \todo{Isso e ok ?}
 Such facilities enable the quick mock up of remote directory databases for testing purposes, which in turn accelerates development and testing speed.
 
 \subsection{Visual Studio Code}
-Microsoft's take on open-source, this code editor gained traction among developers as one of the most used code editors~\cite{vscodesurvey}. Like any other modern code editor, it offers syntax highlight; auto-completion, though Microsoft's \textit{IntelliSense} integration and a plugin system that enables users to add custom behavior and further develop the editor's support for programming languages\cite{vscode}.
+Microsoft's take on open-source, this code editor gained traction among developers as one of the most used code editors~\cite{vscodesurvey}. Like any other modern code editor, it offers syntax highlight; auto-completion, though Microsoft's \textit{IntelliSense} integration and a plugin system that enables users to add custom behavior and further develop the editor's support for programming languages~\cite{vscode}.
 
-One of the acclaimed features that arose with Visual Studio Code was the open source specification of \gls{LSP}\cite{lsplaunch}. This specification aims to define a communication protocol that is used between a code editor, referred as a \gls{LSP} client and a editor-independent program referred as a \gls{LSP} server, that takes care of features such as code completion, highlight, error detection, contextual variable renaming and jumping to definition\cite{lspspec}. This decoupling reduces the amount of code needed to develop a highly capable editor because language-dependent support is now transferred to said \gls{LSP} server.
+One of the acclaimed features that arose with Visual Studio Code was the open source specification of \gls{LSP}~\cite{lsplaunch}. This specification aims to define a communication protocol that is used between a code editor, referred as a \gls{LSP} client and a editor-independent program referred as a \gls{LSP} server, that takes care of features such as code completion, highlight, error detection, contextual variable renaming and jumping to definition~\cite{lspspec}. This decoupling reduces the amount of code needed to develop a highly capable editor because language-dependent support is now transferred to said \gls{LSP} server.
 
 \subsection{Docker}
 Akin to a \gls{VM}, containers provides a way to have a different computing environment than the active running in the hardware. The key difference is that instead of emulating the whole computing stack, from processor to applicaion, a container system shares the core host resources with it's guests and thus is generally less resource-hungry. One downside of a container is that the guest operating system must share the same kernel with the host.
 
-In the other hand, Docker is more than just the sandboxing of processes, handling image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, a online registry of extendable containers, a command line interface that downloads, builds and manages containers\cite{dockerfag}.
+In the other hand, Docker is more than just the sandboxing of processes, handling image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, a online registry of extendable containers, a command line interface that downloads, builds and manages containers~\cite{dockerfag}.
 
-Core Docker definitions are brought up\cite{dockeroverview}:
+Core Docker definitions are brought up~\cite{dockeroverview}:
 \begin{description}
-\item[Dockerfile] A file that declares the steps taken to build an Image\cite{dockerfile}.
+\item[Dockerfile] A file that declares the steps taken to build an Image~\cite{dockerfile}.
 \item[Image] A blueprint of a container generated once a \texttt{Dockerfile} is built.
 \item[Container] If an image is an compiled binary, a container is the running process. 
 \item[Volume] Is a shared folder between the host \gls{OS} and a running container.
 \end{description}
 
 \subsection{Docker-compose}
+The flexibility offered by the Docker ecosystem is of great use for moderate applications. Define a \texttt{Dockerfile}, build it into an image and create a running container. However, not all solutions require a single image, in fact, most of them are composed of independently working pieces that are tailored together and bundling all pieces in a single image is not considered good practice~\cite{dockerfag}.
 
+Distributed with Docker, this tool provides a way to define a multi-container applications, their virtual connections and manage all containers as one single entity. Such separation of concerns enable the tool to take smarter choices when starting a solution that includes a modified image, preserving volume data between solution runs and on the development side, it makes a local instance of a solution to be quickly deployed to testing purposes~\cite{compose}. 
 
 \subsection{Chinook Database}
-\subsection{Angular CLI}
+This is a single-script data-set. Structured in many \gls{SQL} dialects, it represents a  digital media store and in total it contains 11 tables, 11 constraints, 66 columns and 15607 rows~\cite{schemaspy}. The data used for this project was generated from a real iTunes library, sales information was randomly generated and customer and employee were manually inserted~\cite{chinook}.
+
+List of Available dialects:
+\begin{itemize}
+\item MySQL
+\item SQL Server
+\item SQL Server Compact
+\item SQLite
+\item PostgreSQL
+\item Oracle
+\item DB2
+\end{itemize}
+
+Such diversity in dialects, structural complexity and amount of information makes the Chinook Database a good sample for database-generic applications.
+
+\subsection{Angular \gls{CLI}}
+\label{angularcli}
+Angular applications have a basic directory for it's components. Often times a directory contains most of the code for a specific piece of an application, such as a Component definition, a Service, a Template, a Style definition, a Class definition and lastly, these related pieces are then declared in a Module definition.
+
+Managing this volume of files and relations can sometimes lead to confusion. Angular \gls{CLI} was developed to make this task more manageable. With it a developer can quickly initialize a new application skeleton, generate Components and Modules, build a deployment-ready applicaion and run a testing server that re-compile with code changes~\cite{angularcli}.
+
 \subsection{Firefox}
-\subsubsection{Webpack}
-\subsubsection{Debugger}
-\subsection{postman}
+From the downfall of Netscape browser and the release of it's source code, the Mozilla project started with the mission to ensure the Internet to be a global public place, open and accessible to all~\cite{firemission}. It's main product is the open source web browser, Firefox.
+
+Firefox comes bundled with plenty of tools that facilitate web development, considered as the most valuable are the following:
+\begin{description}
+\item [Source Mapping] Is the ability to map some generated code back to it's source. Some web frameworks like Angular\ref{concept:angular} generate applications that are not developed in JavaScript itself but compiled to JavaScript in order to be executed~\cite{srcmapping}. In the beginning this led to great confusion because the browser's built-in debugger would display not the original source but the generated code.
+\item [Debugger] Support for breakpoints, conditional breakpoints, expression stepping and variable lookup. Even better with the previous element~\cite{dbgmodernweb}.
+\item [Network Monitor] Often times it is needed to inspect the outgoing requests and their responses. The integrated monitor is able to expose all elements of the communication exchange and measure the different attributes of a network operations~\cite{networkmon}.
+\item [Storage Inspector] Provides access to the information storage that is managed by the browser for each page~\cite{storageinspector}, namely:
+  \begin{itemize}
+  \item Cache Storage
+  \item Cookies
+  \item Indexed \gls{DB}
+  \item Local Storage
+  \item Session Storage
+  \end{itemize}
+\item [Console] Enables the input of expressions in the page context and output information associated to the current page, including explicit calls for the \texttt{console.log} function.
+\item [Page Inspector] Examine the page's \gls{HTML} structure and \gls{CSS} rules~\cite{inspector}. Developers can quickly experiment new possibilities by temporarily altering \gls{CSS} rules and the page's structure.
+\end{description}
+
+\subsection{Webpack}
+With the growing complexity of web applications, websites got slower and development, trickier. Webpack was developed to generate a optimized, ready to run, package that can be deployed in production~\cite{webpack}. Such packages are not meant for code only, they may contain images, \gls{CSS} rules and anything else. It offers an \gls{API} that can transform the contents of a package before it is bundled, for example, Typescript sources and it's compiled counterpart or extracting inline \gls{CSS} from a \gls{HTML} document into a separate file.
+
+In the context of Firefox's debugger and an angular 2+ applications, when serving the application using Angular \gls{CLI}~\ref{angularcli}, it automatically bundles Typescript source code so that it can be instrumented and debugged inside the browser by accessing the Webpack element under the debugging tab.
+\todo{ref errado}
+\subsection{Postman}
+As programs grew larger and were split into smaller pieces, it is now a common practice to have a \gls{API} that concentrate on the business logic and a \gls{GUI}s that consume them. Postman is a Web \gls{API} suite, offering a nice user interface through which developers can not only send, receive and analyze \gls{HTTP} requests but also document, test, mock and monitor endpoints~\cite{postman}.
+\todo{ nao pode ficar so um paragrafo nao ?}
