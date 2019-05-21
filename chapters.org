@@ -1,21 +1,17 @@
 * TODO introduction
-* TODO context
+* DONE context
 * TODO objective
-* TODO concepts and technologies
-** TODO front-end
+* DONE concepts and technologies
+** DONE front-end
 *** DONE typescript
 *** DONE html
 *** DONE css
 *** DONE scss
 *** DONE angular
-**** devo explicar conceitos do angular ?
-     Observables, Componentes, Serviços, Router
-**** TODO Angular cli ?
 *** DONE angular material
-**** devo explicar Material Design ?
 *** DONE Sb-Angular-Material
 **** DONE project structure
-** TODO back-end
+** DONE back-end
 *** DONE java
 **** DONE view model
 *** DONE spring
@@ -25,9 +21,9 @@
 **** DONE security
 **** DONE web
 **** DONE boot
-*** TODO mariadb
+*** DONE mariadb
 *** DONE ldap
-** TODO development
+** DONE development
 *** DONE apache netbeans
 *** DONE maven
 *** DONE lombok
@@ -39,7 +35,7 @@
 *** DONE angular cli
 *** DONE firefox
 **** DONE webpack
-*** TODO postman
+*** DONE postman
 * TODO project
 ** TODO use-cases
 ** TODO class diagram

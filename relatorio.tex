@@ -6,6 +6,7 @@
 \usepackage[english]{babel}
 \graphicspath{{./images/}}
 \usepackage{listings} % incluir listagens
+\lstset{langauges=Java}
 \usepackage{url} % typeset URL's
 \usepackage[colorlinks=true,
                     urlcolor=black, %blue
@@ -39,10 +40,7 @@
 \setlist[itemize,3]{label=\ding{219}}
 \setlist[itemize,4]{label=--}
 \setlist[itemize,5]{label=$\cdot$}
-\newcommand{\todo}[1]{
-  
-  {\color{red} \texttt{\textbf{TODO:}} #1}\\
-}
+\newcommand{\todo}[1]{{\color{red} \texttt{\textbf{TODO:}} #1 }}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -141,7 +139,7 @@
 	\renewcommand*{\thepage}{\thechapter\arabic{page}}%
 }{}{}
 
-% \input{chapters/apendice01}
+\input{chapters/apendice01}
 % \input{chapters/apendice02}
 
 
