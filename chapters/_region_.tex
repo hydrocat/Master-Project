@@ -1,3 +1,5 @@
+\message{ !name(implementation-and-results.tex)}
+\message{ !name(implementation-and-results.tex) !offset(-2) }
 \chapter{Implementation and Results}\label{cha:implementation}
 
 \section{Front-end}\label{cha:implementation:sec:front-end}
@@ -60,10 +62,9 @@ label=code:sqlquery
 The remaining entities follow a similar pattern in it's implementation.
 
 \subsection{Spring Configuration}
-In order for Spring Framework to stay out of the way as much as it can and allow developers to focus on the implementation of business functionalities, it makes many assumptions about how its components interact, however, at some point the application being developed grow some needs that conflict with Spring defaults. When this eventually happens, which was the case with \gls{Yabi}, developers can override some of Spring's default behavior by implementing specific interfaces. More on Spring can be found in Section~\ref{concept:spring}.
+This section presents Spring configurations that took place so that \gls{Yabi} is able to work as expected. In order for Spring Framework to stay out of the way as much as it can and allow developers to focus on the implementation of business functionalities, it makes many assumptions about how its components interact, however, at some point the application being developed grow some needs that conflict with Spring defaults. When this eventually happens, which was the case with \gls{Yabi}, developers can override some of Spring's default behavior by implementing specific interfaces.
 
-\todo{Bruno, isso esta ok ?}
-This section presents Spring configurations that took place so that \gls{Yabi} is able to work as expected.
+
 
 \subsubsection{Security}
 \gls{Yabi}'s security model uses a directory server to authenticate and a relational database to load user roles and execute authorization checks. Because this is a stateless application, every request follows the steps shown in Figure~\ref{fig:authseq} before being executed by the controllers.
@@ -136,51 +137,27 @@ serializable classes whose role were to convey information to the front-end were
 
 To accommodate the special handling of \texttt{PermissionTree} model and provide some custom functionalities some custom \texttt{RestController} were implemented, \texttt{SqlQueryController}, \texttt{PermissionTreeController} \texttt{YabiUserController} and \texttt{DatabaseReaderController}.
 
-\todo{isso esta errado, sql query é filtrado pelo metodo do controller findByPermissionNodePathStartingWith}
-\todo{Filtering in relation to \texttt{Permission} was required when providing \texttt{SqlQuery} and \texttt{PermissionTree} objects to non-administrative users, it was implemented by iterating over the current user's permissions and appending all the elements under that permission to a list. Listing~\ref{code:queries} presents the implementation of such filtering applied to \texttt{SqlQuery} model.
-}
+Filtering in relation to \texttt{Permission} was required when providing \texttt{SqlQuery} and \texttt{PermissionTree} objects to non-administrative users, it was implemented by iterating over the current user's permissions and appending all the elements under that permission to a list. Listing~\ref{code:queries} presents the implementation of such filtering applied to \texttt{SqlQuery} model.
+
 \lstinputlisting[firstline=27,lastline=39, float,
 caption=\textbf{/queries} Endpoint,
 label=code:queries
 ]{listings/SqlQuery/SqlQueryController.java}
 
 \subsubsection{DatabaseReaderController}
-\todo{esta ruim}
-\todo{qual eh o path que ele escuta, qual eh o argumento que ele recebe ?, como ele faz a checagem de permissao ? }
 The retrieval of information contained in a remote database is exposed through the \texttt{DatabaseReaderController}. It's a wrapper to \texttt{DatabaseReader.runQuery} method that does a permission check before executing.
 
 \subsubsection{PermissionTreeController}
-Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it reference its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would eventually delete the root node. Therefore the \texttt{PermissionTreeController} implements \todo{a delete that cascades through its children} the desired behavior on deletion. It is bound to a \gls{HTTP} \textsc{delete} verb on the path \textbf{/pemrission/\{id\}}
-\todo{tem de dizer como ele faz isso. chama o \textit{findAllByNodePathStartingWith} e deleta cada um dos elementos. tem algo que pode dar errado ?. Nao esquecer de falar sobre a verificacao que evita sobre deletar o no raiz}
+Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it reference its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would eventually delete the root node. Therefore the \texttt{PermissionTreeController} implements the desired behavior on deletion. It is bound to a \gls{HTTP} \textsc{delete} verb on the path \textbf{/pemrission/\{id\}} 
 
 \subsubsection{YabiUserController}
-To provide the front-end with information about the current user, \texttt{YabiUserController} replies to \textsc{get} requests on the path \textbf{/user} with information contained inside the \texttt{Authentication} that was generated during the user's authentication procedure and thus avoid reaching out to the database a second time.
-
-\subsubsection{SqlQueryController}
-\todo{responde a \textbf{/queries} com uma lista de \texttt{SqlQueryViewModel}}
+To provide the front-end with information about the current user, \texttt{YabiUserController} replies to \textsc{get} requests on the path \textbf{/user} with information contained inside the \texttt{Authentication} and thus avoid reaching out to the database a second time.
 
 \subsection{Spring Repositories}\label{impl:repos}
-\texttt{PagingAndSortingRepository} were created for all entities evaluated during the project evaluation phase.
-The \texttt{Directory} entity whose did not require any changes in regards to what Spring already provides and won't be discussed.
-The remaining entities had their repositories augmented with functionalities presented below.
+\texttt{PagingAndSortingRepository} were created for all entities evaluated during the project phase, discussed thoroughly in Section~\ref{tities}. In this section an overview of the customizations done for each repository will be shown.
 
 \subsubsection{YabiUserRepository}
-After binding in the directory service, \texttt{UserDetailsContextMapper.mapUserFromContext} is used to fill an instance of \texttt{Authentication} class with business data. In \gls{Yabi}'s custom implementation, this data comes from a relational database that reflect \texttt{YabiUser} objects.
-
-Because the method \textit{mapUserFromContext} uses the username as a key to retrieve information, \texttt{YabiUserRepository} had to be augmented with a new method to do just that. Therefore the following declaration was added:\\
-\texttt{YabiUser findByName(String username);}
-
-\subsubsection{PermissionTreeRepository}
-When the system needs to validate an action or filter information depending on a permission, it retrieves all of its child permissions. Because this action is frequently used, this repository had also to be augmented.
-
-In this case, the method signature used was as follows:\\
-\texttt{List<PermissionTree> findAllByNodePathStartingWith(String~nodePath);}
-
-\subsubsection{SqlQueryRepository}
-When an user request a list of queries that they can execute, the system must retrieve from the relational database all queries in which the permission is a child of the user's permission. Again, this repository had to be augmented.
-
-This was accomplished by using the following method interface:\\
-\texttt{List<SqlQuery> findByPermissionNodePathStartingWith( String~nodePath );}
+After binding in the directory service, the application uses \texttt{YabiUser}
 
 \subsection{ORM Generated Database}
 \dots
@@ -188,10 +165,10 @@ This was accomplished by using the following method interface:\\
 \dots
 
 \section{Development Environment}\label{cha:implementation:sec:development}
+\dots
 
 \subsection{Apache Directory}
-
-
+\dots
 \subsection{Multi-Database Support}
 \dots
 \subsubsection{Microsoft SQL Server Docker Image}
@@ -203,3 +180,5 @@ This was accomplished by using the following method interface:\\
 \subsection{Postman Tests}
 \dots
 
+
+\message{ !name(implementation-and-results.tex) !offset(-184) }

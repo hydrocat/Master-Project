@@ -1,6 +1,8 @@
 \chapter{Concepts and Technologies}\label{cha:concepts}
 Throughout the development of this project quite a few tools and technologies were employed. To address them all, this chapter was broken in three sections; Front-end in Section~\ref{cha:concepts:sec:frontend}, that is focused mainly in user-facing web technologies; Back-end in Section~\ref{cha:concepts:sec:backend}, which is concerned with the developed Web \gls{API} and lastly; Development in Section~\ref{development}, with the tools used to write, build and test this project.
 
+\todo{Onde eu defino a aplicacao stateless?}
+
 \section{Front-end}\label{cha:concepts:sec:frontend}
 This section is concerned with the description of technologies used to assemble the human-interactive part of this project.
 
@@ -116,6 +118,10 @@ After this overview, it is interesting to note the following:
 \section{Back-end}\label{cha:concepts:sec:backend}
 The tools and concepts described in this section refer to the server-side of this project. It manages the authenticated and authorized data access as well as business-specific functionalities.
 
+
+
+\subsection{HTTP}
+\todo{Escrever sobre mim ! e nao esquecer de mencionar os \emph{verbos}, principalmente o delete pq eh usado na implementacao}
 \subsection{Java}
 % introduction
 Given how ubiquitous it is, there is not much to be said. Java is a Object-Oriented programming language firstly developed by James Gosling at Sun Microsystems, it is statically and explicitly typed and gets compiled to a machine-independent byte code that is then interpreted by the \gls{JVM}~\cite{java}.
@@ -130,7 +136,7 @@ The ViewModel is a piece of a bigger pattern called \gls{MVVM} created by John G
 
 During the implementation of this project, the ViewModel pattern was used out of the \gls{MVVM} pattern, however the goal of decoupling code the same. More precisely, some models can not have all of its attributes serialized back to a View or they expose different attributes depending on the user who is requesting it; ViewModel classes were implemented in such cases.
 
-\subsection{Spring}
+\subsection{Spring}\label{concept:spring}
 % introduction
 Developed by Pivotal Software in 2002, the Spring Framework provides most of the ``plumbing'' necessary for fast development and deployment of enterprise Java applications~\cite{springdocs}, some of the main features include: Dependency Injection, a \gls{IoC} mechanism; Spring Data, a set of tools for information access such as \gls{ORM} configurations; Spring Security, a application-wide security mechanisms and configurations.
 
@@ -150,7 +156,33 @@ The key idea is that for the most part an application does not need to know whic
 When using Spring, one can express dependencies by declaring them in the class's constructor or by annotating an attribute using the Autowired annotation\cite{springdi}.
 
 \subsubsection{Data}
-When developing a enterprise-level application, often times there is the need of a database management system, an authentication provider and other information-centered services. To address this heterogeneous information storages the Spring Data module was developed that bases itself in a single interface named Repository, through which data is accessed\cite{springdata}.
+\todo{essa seccao precisa discorrer sobre o que é um repositorio do spring, o que ele faz, porque é mais rapido usar ele e talvez um exemplo já que a implementacao eh simples}
+When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in pactice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples the entities that are being persisted from the underlying storage system~\cite{springdata}.
+
+Although it acts as the root interface through which other, more feature packed, models are developed, \texttt{Repository} is hardly used directly as it's a marker for repositories~\ref{springdatadoc}, instead \texttt{CrudRepository} and \texttt{PagingAngSortingRepository} are interfaces that provide more tangible features.
+
+\texttt{CrudRepository} offers, as the name suggests, \gls{CRUD} capabilities for a specified entity and \texttt{PagingAngSortingRepository} extends it by including, as the name suggests, paging and sorting support.
+
+The \texttt{CrudRepository} on its own provide the following default methods:
+\todo{o que faz, quais sao os paremetros}
+\begin{itemize}
+\item \textit{save(Entity)}
+\item \textit{findOne(ID)}
+\item \textit{findAll()}
+\item \textit{count()}
+\item \textit{delete(Entity)}
+\item \textit{exists(ID)}
+\end{itemize}
+
+But customized methods may be added by inserting a properly named method definition to the extended interface.
+
+With this, implementing simple \gls{CRUD} operations is a quick process:
+\begin{enumerate}
+\item Create a new interface that extends the desired repository, e.g.e \texttt{CrudRepository}.
+\item Add method definitions that fits the business-specific requirements.
+\item Anywhere else in the application, declare a dependency on the new interface.
+\item Use the provided methods to retrieve the persisted objects.
+\end{enumerate}
 
 For the general case the following modules cover the requirements of many applications:
 \begin{itemize}
@@ -163,7 +195,6 @@ Note that these libraries are included with the bigger, Spring Data Project.
 
 \subsubsection{\gls{HATEOAS}}
 \gls{REST}, according to its creator:
-
 \begin{displayquote}
   ``REST is a coordinated set of architectural constraints that attempts to minimize latency and network communication, while at the same time maximizing the independence and scalability of component implementations. This is achieved  by  placing  constraints  on  connector  semantics,  where  other  styles have focused on component semantics. REST enables the caching and reuse of interactions, dynamic substitutability of components, and processing of actions by intermediaries, in order to meet the needs of an Internet-scale distributed hypermedia system.''~\cite{fielding}
 \end{displayquote}
@@ -217,7 +248,7 @@ Maven is a Build System for mainly used for Java applications, that is: Through 
 
 The project goal is to unify the project structure so that there is less time spent by the developer to understand how the a given application code is arranged and to centralize common project actions such as previouly mentioned dependency resolution, run unit and integration tests and generate packages that are able to be distributed~\cite{mavenintro}.
 
-\subsection{Lombok}
+\subsection{Lombok}\label{tech:lombok}
 This plugin offers an annotation-based code-scaffolding tool for class definitions. Give the right annotations, common methods like getters, setters and no attribute constructor are automatically generated in build or compile-time~\cite{lombok}. This tool consists of a two-part system that includes the integration with the compiler/build-system and another one that interacts with the developer's \gls{IDE} so that the completion system is able to recognize the implicitly generated methods.
 
 Some of the notable annotations include:

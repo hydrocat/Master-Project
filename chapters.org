@@ -37,11 +37,12 @@
 **** DONE webpack
 *** DONE postman
 * TODO project
+** TODO requirements
+** TODO project details
 ** TODO use-cases
 ** TODO class diagram
 ** TODO template angular-material
 ** TODO multi-database support 
-
 * TODO implementation and results
 ** TODO front-end
 *** TODO component structure
@@ -57,21 +58,19 @@
 *** TODO temporal caching for repository index method
 *** TODO error handler
 *** TODO database reader
-
 ** TODO back-end
-*** TODO entities
+*** DONE entities
 *** TODO spring configuration
-**** TODO security
-***** TODO admin resources
-**** TODO cors mapping
-**** TODO ldap
-**** TODO user details context mapper
-*** TODO custom controllers & view models
-**** TODO database reader
-**** TODO permission tree delete method
-**** TODO user 
-**** TODO queries
-**** TODO permissions
+**** DONE security
+***** DONE admin resources
+**** DONE cors mapping
+**** DONE ldap
+**** DONE user details context mapper
+*** DONE custom controllers & view models
+**** DONE database reader
+**** DONE permission tree delete method
+**** DONE user 
+**** DONE permissions
 *** TODO spring repositories
 *** TODO orm generated database
 *** TODO multi-database support
@@ -84,3 +83,5 @@
 *** TODO postman tests
 * TODO conclusion
 * TODO future work
+** DONE administrative resources
+** TODO bulk infromation manager

@@ -1,1 +1,14 @@
 \chapter{Future Work}
+
+
+\section{Code Re-structure}
+\subsection{Administrative Resources}
+Currently, resource filtering is implemented by having a small set of controllers that are eligible to handle non-administrative users however this led to some confusion because its response structure does not follow the \gls{HATEOAS} convention.
+
+Some re-structuring could be done at the repository level by configuring the authorization mechanism to filter \gls{HTTP} methods based on the current user's requesting role.
+
+Ultimately, all resources should follow the \gls{HATEOAS} pattern so that the complexity of the front-end application is lower.
+
+\subsection{Bullk information manager}
+
+\todo{}

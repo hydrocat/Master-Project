@@ -3,10 +3,7 @@ RM_EXTENSIONS=*~ *.log *.aux *.toc *.dvi *.bbl *.blg *.*~* *.lof *.lot *.cb *.ba
 PDF_FLAGS=--shell-escape -file-line-error -interaction nonstopmode -recorder --src-specials
 YABISRC=/home/hydrocat/git/yabi-backend/src/main/java/ipb/yabi
 
-listings:
-	ln -s $(YABISRC) listings
-
-relatorio.pdf: clean_relatorio listings
+relatorio.pdf: clean-relatorio listings
 	rm -f $(RM_EXTENSIONS)
 	pdflatex $(PDF_FLAGS) relatorio
 	biber relatorio
@@ -15,11 +12,13 @@ relatorio.pdf: clean_relatorio listings
 	pdflatex $(PDF_FLAGS) relatorio
 	rm -f $(RM_EXTENSIONS)
 
-clean_relatorio:
+listings:
+	ln -s $(YABISRC) listings
+
+clean-relatorio:
 	rm -f relatorio.pdf
 
-clean_listings:
-	rm listings
+clean-listings:
+	rm -f listings
 
-clean: clean_listings clean_relatorio
-
+clean: clean-listings clean-relatorio
