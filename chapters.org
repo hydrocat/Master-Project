@@ -71,11 +71,11 @@
 **** DONE permission tree delete method
 **** DONE user 
 **** DONE permissions
-*** TODO spring repositories
-*** TODO orm generated database
-*** TODO multi-database support
+*** DONE spring repositories
+*** 
+*** DONE multi-database support
 ** TODO development environment
-*** TODO Apache Directory
+*** DONE directory service
 *** TODO multi-database support
 **** TODO microsoft sql server docker image
 **** TODO oracle:xe driver access 

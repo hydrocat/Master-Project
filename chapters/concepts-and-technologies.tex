@@ -118,7 +118,8 @@ After this overview, it is interesting to note the following:
 \section{Back-end}\label{cha:concepts:sec:backend}
 The tools and concepts described in this section refer to the server-side of this project. It manages the authenticated and authorized data access as well as business-specific functionalities.
 
-
+\subsection{Stateless Web Application}
+\todo{Escrever sobre mim!}
 
 \subsection{HTTP}
 \todo{Escrever sobre mim ! e nao esquecer de mencionar os \emph{verbos}, principalmente o delete pq eh usado na implementacao}
@@ -157,41 +158,36 @@ When using Spring, one can express dependencies by declaring them in the class's
 
 \subsubsection{Data}
 \todo{essa seccao precisa discorrer sobre o que é um repositorio do spring, o que ele faz, porque é mais rapido usar ele e talvez um exemplo já que a implementacao eh simples}
-When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in pactice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples the entities that are being persisted from the underlying storage system~\cite{springdata}.
+When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in pactice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
 
-Although it acts as the root interface through which other, more feature packed, models are developed, \texttt{Repository} is hardly used directly as it's a marker for repositories~\ref{springdatadoc}, instead \texttt{CrudRepository} and \texttt{PagingAngSortingRepository} are interfaces that provide more tangible features.
+Although it acts as the root interface through which other, more feature packed, models are developed, \texttt{Repository} is hardly used directly~\cite{springdatadoc}, instead \texttt{CrudRepository} and \texttt{PagingAngSortingRepository} are interfaces that provides useful features.
 
-\texttt{CrudRepository} offers, as the name suggests, \gls{CRUD} capabilities for a specified entity and \texttt{PagingAngSortingRepository} extends it by including, as the name suggests, paging and sorting support.
+As the name suggests \texttt{CrudRepository} offers \gls{CRUD} capabilities for a specified entity and \texttt{PagingAngSortingRepository} extends it by including paging and sorting support.
 
 The \texttt{CrudRepository} on its own provide the following default methods:
-\todo{o que faz, quais sao os paremetros}
-\begin{itemize}
-\item \textit{save(Entity)}
-\item \textit{findOne(ID)}
-\item \textit{findAll()}
-\item \textit{count()}
-\item \textit{delete(Entity)}
-\item \textit{exists(ID)}
-\end{itemize}
+\begin{description}
+\item[\textit{save(Entity)}] Persists a entity in the data store and returns the saved instance with updated generated values.
+\item[\textit{findOne(ID)}] Retrieve one entity from the data store. If not found, returns null.
+\item[\textit{findAll()}] Retrieve all entities currently stored as a list.
+\item[\textit{count()}] Returns a number that represents the amount of entities currently stored.
+\item[\textit{delete(Entity)}] Deletes the given entity. Returns nothing.
+\item[\textit{exists(ID)}] Checks the data store for the existence of the given primary key value.
+\end{description}
 
-But customized methods may be added by inserting a properly named method definition to the extended interface.
+As shown in Listing~\ref{code:yabiuserrepo}, a entity-specific repository can be made by declaring a new interface that extends a base \texttt{Repository}, specify the generic types for the entity and the primary key and lastly declare custom methods following a naming convention. In this case a \texttt{PagingAndSortingRepository} for \texttt{YabiUser} with a \texttt{Long} as the primary key was defined as a \texttt{YabiUserRepository} and it exposes a new method that retrieve an instance of \texttt{YabiUser} given it's username.
 
-With this, implementing simple \gls{CRUD} operations is a quick process:
-\begin{enumerate}
-\item Create a new interface that extends the desired repository, e.g.e \texttt{CrudRepository}.
-\item Add method definitions that fits the business-specific requirements.
-\item Anywhere else in the application, declare a dependency on the new interface.
-\item Use the provided methods to retrieve the persisted objects.
-\end{enumerate}
+\lstinputlisting[firstline=7, lastline=9, float,
+caption=Repository for YabiUser,
+label=code:yabiuserrepo
+]{listings/YabiUser/YabiUserRepository.java}
 
-For the general case the following modules cover the requirements of many applications:
+These functionalities are made available through the following modules that come with Spring Data:
 \begin{itemize}
 \item Spring Data \gls{JDBC}.
 \item Spring Data \gls{JPA}.
 \item Spring Data \gls{LDAP}.
 \item Spring Data \gls{REST}
 \end{itemize}
-Note that these libraries are included with the bigger, Spring Data Project.
 
 \subsubsection{\gls{HATEOAS}}
 \gls{REST}, according to its creator:

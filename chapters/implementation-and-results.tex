@@ -150,14 +150,20 @@ label=code:queries
 The retrieval of information contained in a remote database is exposed through the \texttt{DatabaseReaderController}. It's a wrapper to \texttt{DatabaseReader.runQuery} method that does a permission check before executing.
 
 \subsubsection{PermissionTreeController}
-Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it reference its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would eventually delete the root node. Therefore the \texttt{PermissionTreeController} implements \todo{a delete that cascades through its children} the desired behavior on deletion. It is bound to a \gls{HTTP} \textsc{delete} verb on the path \textbf{/pemrission/\{id\}}
-\todo{tem de dizer como ele faz isso. chama o \textit{findAllByNodePathStartingWith} e deleta cada um dos elementos. tem algo que pode dar errado ?. Nao esquecer de falar sobre a verificacao que evita sobre deletar o no raiz}
+Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it reference its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would delete every parent permission untill the root node.
+Therefore \texttt{PermissionTreeController} implements a custom a delete that cascades through its children. It is bound to a \textsc{delete} \textbf{/pemrission/\{id\}}, \texttt{id} being the identifier of the permission to be deleted.
+
+It is implemented by first retrieving the permission whose id was specifies in the \gls{HTTP} request, retrieve all of its children with the custom repository method \textit{findAllByNodePathStartingWith} and sequentially deleting all permissions found and lastly delete the permission itself.
+
+One restriction is that the root node can never be deleted. Therefore, before executing the before-mentioned steps, the permission to be deleted is matched with the root node, if it does, the operation is aborted with an error.
 
 \subsubsection{YabiUserController}
 To provide the front-end with information about the current user, \texttt{YabiUserController} replies to \textsc{get} requests on the path \textbf{/user} with information contained inside the \texttt{Authentication} that was generated during the user's authentication procedure and thus avoid reaching out to the database a second time.
 
 \subsubsection{SqlQueryController}
-\todo{responde a \textbf{/queries} com uma lista de \texttt{SqlQueryViewModel}}
+\texttt{SqlQuery} is one of those entities that are related to the current logged-in user. In other words, administrators may see all registered \texttt{SqlQuery} and users see only those which they can run, Therefore \texttt{SqlQueryController} was created.
+
+It has only one method that replies to \textsc{GET} requests to \textbf{/queries} endpoint with a list of \texttt{SqlQueryViewModel}. Implementation-wise it returns a list containing every \texttt{SqlQuery} found in the database by calling \texttt{SqlQueryRepository.findAllByNodePathStartingWith} for every permission associated to the current \texttt{YabiUser}.
 
 \subsection{Spring Repositories}\label{impl:repos}
 \texttt{PagingAndSortingRepository} were created for all entities evaluated during the project evaluation phase.
@@ -182,15 +188,42 @@ When an user request a list of queries that they can execute, the system must re
 This was accomplished by using the following method interface:\\
 \texttt{List<SqlQuery> findByPermissionNodePathStartingWith( String~nodePath );}
 
-\subsection{ORM Generated Database}
-\dots
 \subsection{Multi-Database Support}
-\dots
+Paraphrasing Requirement~\ref{req:multidb}, the application must be able to retrieve information from the institution's database. However, because it has many in-house applications, they might use different \gls{RDBMS} and \gls{Yabi} should then be able to connect to then.
+
+The core part of this feature is \gls{JDBC} 4.0's \texttt{DriverManager} class and it's \textit{getConnection} method that upon being called, attempts to make a connection using drivers that were loaded on initialization-time, therefore, as long as the driver is loaded and the connection string is properly formed, \textit{getConnection} will select the correct database driver.
+
+Because of this, implementing this feature was as simple as declaring dependencies for database drivers in the \texttt{pom.xml} configuration file. Notably, Oracle\footnote{https://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html} requires the creatin of an Oracle account and configuring a custom maven repository in order to download their drivers.
 
 \section{Development Environment}\label{cha:implementation:sec:development}
+This section will focus on the tools that were configured to accommodate the development and testing of this application.
 
-\subsection{Apache Directory}
+\subsection{Directory Service}
+When developing an application, it is good practice to avoid reaching out and interacting to remote services and instead provide a local instance that is able to mimic the real-world one.
 
+In this case because a directory service is used as a part of it's authentication mechanism, a local \gls{LDAP} server was created in Apache Directory Studio that mimics \gls{IPB}'s directory service enough so that the configuration provided by their \gls{IT} team is able to be used locally with minimal changes, in fact, the only difference is the service's address.
+
+Listing~\ref{code:ldapconfig} exposes the configurations \gls{Yabi} uses to access the server, note that the directory address is declared in line 1 and line 3 declare the entry whose elements are anonymously bound.
+
+\lstinputlisting[firstline=13,lastline=15, float,
+caption=Local server \gls{LDAP} configuration,
+label=code:ldapconfig
+]{backendlink/src/main/resources/application.properties}
+
+Figure~\ref{fig:adsconfig} show how the directory is structured in the server-side. Users are of class \texttt{inetOrgPerson}, they are held under the \texttt{users} organizational unit which in turn is under the \texttt{ipb}, \texttt{pt} domain component. At the moment this figure was taken, passwords were stored in plain text for local testing purposes.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/ldap-directory}
+  \caption{Directory structure and the properties of user \texttt{professor}}\label{fig:adsconfig}
+\end{figure}
+
+\subsection{Database Initializer}
+When starting \gls{Yabi} for the first time, it needs to generate its database, create the root permission and an administrator account.
+To do so, the class \texttt{DbInitializer} was written. It implements the \texttt{CommandLineRunner} interface so that Spring instantiate and runs it upon initialization.
+
+But because this class is supposed to run only during deployment, it must be easily turned off. Therefore it is annotated with \texttt{@ConditionalOnPorperty}, which tells Spring to skip creating its instance based on a application property.
+This class is run only if the property \texttt{yabi.db.init} is set to \texttt{create}, otherwise, it doesn't.
 
 \subsection{Multi-Database Support}
 \dots
