@@ -1,19 +1,147 @@
 \chapter{Implementation and Results}\label{cha:implementation}
 
 \section{Front-end}\label{cha:implementation:sec:front-end}
-\dots
 
 \subsection{Component Structure}
-\dots
+When developing the Angular front-end over the \texttt{Sb-Admin-Material} template, it was noted that the example pages that could be accessed by links listed in the left sidebar, seen on Figure~\ref{fig:visible}, were found inside the \texttt{/app/layout} folder. Therefore it made sense to follow this approach and implement \gls{Yabi}'s custom pages in the same place.
+
+In general, each entity have got a folder that contains:
+\begin{itemize}
+\item A ``model'' file with:
+  \begin{itemize}
+  \item A class that represents the entity, to be used when retrieving entities depending on the current user.
+  \item A class that extends \texttt{PagingAndSortingRepository}, to map Spring Repository responses.
+  \item A class that extends \texttt{Entity}, representing the elements contained within the repository response.
+  \item A repository ``accessor'' that indicates key used to access the list of \texttt{Entity} contained within the repository response.
+  \end{itemize}
+\item A Service file that extends \texttt{PagingAndSortingRepository}, specifying it for the given entity.
+\item The Module file declaring its dialog Components to also be loaded.
+\item The Template file that renders a listing with the available entities.
+\item The Component file that interacts with the Template.
+\item The Style file with rules to correctly render the ``add'' button.
+\item A folder with a dialog Component for creating more entries.
+\item A folder with a dialog Component for editing an entry.
+\end{itemize}
+
+There are some variations to this rule. \texttt{User} Component only has only one dialog that is used to show more information about the current user. \texttt{Query} Component was one of the first components to be developed and it has three dialogs, one for showing more information and the results of running it, one for creating new queries that is not used and a ``form'' dialog that maps a \texttt{Query} to input elements that is used for editing and creating.
+
+\subsubsection{Components \& Dialogs}
+
+\todo{\texttt{LoginComponent}}
+
+directory
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-listing}
+  \caption{Listing of all registered \texttt{Directory}}\label{fig:dirlist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-new}
+  \caption{Dialog for creating a new \texttt{Directory}}\label{fig:dirnew}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-edit}
+  \caption{Dialog for editing an existing \texttt{Directory}}\label{fig:diredit}
+\end{figure}
+
+query
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-listing}
+  \caption{Listing of all registered \texttt{Query}}\label{fig:querylist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-new}
+  \caption{Dialog for creating a new \texttt{Query}}\label{fig:querynew}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-edit}
+  \caption{Dialog for editing an existing \texttt{Query}}\label{fig:queryedit}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-pre-run}
+  \caption{Dialog for running a \texttt{Query}}\label{fig:queryprerun}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-post-run}
+  \caption{Dialog for running a \texttt{Query} after it was executed}\label{fig:querypostrun}
+\end{figure}
+
+permission
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/permission/permission-listing}
+  \caption{Listing of all registered \texttt{Permission}}\label{fig:permissionlist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/permission/permission-new}
+  \caption{Dialog for creating a new \texttt{Permission}}\label{fig:permissionnew}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/permission/permission-edit}
+  \caption{Dialog for editing an existing \texttt{Permission}}\label{fig:permissionedit}
+\end{figure}
+
+
+user
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-permission-listing}
+  \caption{Listing of all registered \texttt{Permission} for a given \texttt{User}}\label{fig:userpermisisonlist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-query-listing}
+  \caption{Listing of all registered \texttt{Query} for a given \texttt{User}}\label{fig:userquerylist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-listing}
+  \caption{Listing of all registered \texttt{User}}\label{fig:userlist}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/admin-role}
+  \caption{Small pop-up showing the current user's role}\label{fig:userrole}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/admin-permission-new}
+  \caption{Dialog for assigning a new \texttt{Permission} to a \texttt{User}}\label{fig:adminpermisisonnew}
+\end{figure}
 
 \subsubsection{Services}
-\dots
+Angular services are an abstraction over the remote \gls{API}. In this implementation, almost all resources are provided by Spring Boot's Repository interface, yielding a standard \gls{HATEOAS} reply no matter the entity. Given such repetition, it made sense to implement a common interface through which all Angular Services could inherit and extend the interaction with Spring's \texttt{PagingAndSortingRepository}.
+
+At this point the peculiarities of each repository will be shown, implementation of the general purpose service is found in Section~\ref{hateoas:service}.
+
+\texttt{LoginService} is concerned with providing login functionality and system-wide predicates about the current user or session. The two main predicates are \textit{isAdmin} and \textit{isAuthenticated}, the first is used on templates to hide elements that should not be seen by non-administrative users and the second is run before every request sent to \gls{API} so that the application can redirect to the login page if by some reason the user access a page without first logging-in. It also provides \textit{login} and \textit{logout}, the former saves the username and password combination in the local storage to be used by \texttt{authenticationInterceptor} and requests the \gls{API} route \textbf{/user} for information about the current user; the latter deletes the current user's instance, clears the local storage information and redirects to the login page at \textbf{/login}.
+
 \subsubsection{Modules}
 \dots
-\subsubsection{Dialogs}
-\dots
 \subsection{Generic Form Control Builder}
-\dots
+
 \subsection{Spring HATEOAS Classes}
 \dots
 \subsubsection{Entity Class}
@@ -22,7 +150,7 @@
 \dots
 \subsubsection{Repository Class}
 \dots
-\subsubsection{Repository Service Class}
+\subsubsection{Repository Service Class}\label{hateoas:service}
 \dots
 \subsection{Temporal Caching Repository}
 \dots
@@ -30,6 +158,28 @@
 \dots
 \subsection{Database Reader}
 \dots
+\subsection{authenticationInterceptor}
+Because the back-end handle requests in a stateless fashion, authentication information must be sent alongside every \gls{API} request.
+
+This was achieved by creating a class \texttt{authenticationInterceptor} that implements the \texttt{HttpInterceptor} interface, overriding the method \textit{intercept} so that requests going to the \gls{API} have a \gls{HTTP} \texttt{Authorization} header attached to it.
+
+There are some occasions that require different or no treatment. If the request is not destined to \gls{Yabi}'s \gls{API}, the request is processed as usual and if the user is not authenticated the application redirects to \textbf{/login}, prompting the user to login again.
+
+\subsection{apiEndpoint}
+Though as a Service, this class is made available through the app's global module and can be injected into classes that declare dependency on it.
+
+It's job is to abstract all the endpoints available in the interface either through constant strings that point to repositories or functions that assemble an address for an entity given it's id.
+
+As an example endpoint, the \texttt{PERMISSIONS} attribute refers to the \gls{API}'s \textbf{/permissions} endpoint that return all the permissions associated to the current user; \texttt{ADMIN_PERMISSIONS} refers to \textbf{/permissionTrees}, which is the interface managed by a Spring Repository; Lastly there is the \textbf{USER_PERMISSION} function that takes in an user id and a permission id and returns the address that represents the association between them so it can be deleted.
+
+\subsection{Shared Module}
+
+
+\subsection{Security Concerns}
+
+When a user logs-in the application, their username and password is stored as a base64 string in the local storage. Should the application be compromised with attacks such as \gls{XSS}, the injected code is able to access the user's credentials.
+
+Another concern is in regards to the stateless nature of the back-end, requiring the credentials to be sent with every request. If the connection is not encrypted, credentials will be sent as plain base64 encoded string, which is easy to spot and decode. In the front-end this can be mitigated with \gls{HTTPS} encryption and in the general view a token could be exchanged to avoid having the credentials being frequently sent to the \gls{API}.
 
 \section{Back-end}\label{cha:implementation:sec:back-end}
 \dots
@@ -62,7 +212,6 @@ The remaining entities follow a similar pattern in it's implementation.
 \subsection{Spring Configuration}
 In order for Spring Framework to stay out of the way as much as it can and allow developers to focus on the implementation of business functionalities, it makes many assumptions about how its components interact, however, at some point the application being developed grow some needs that conflict with Spring defaults. When this eventually happens, which was the case with \gls{Yabi}, developers can override some of Spring's default behavior by implementing specific interfaces. More on Spring can be found in Section~\ref{concept:spring}.
 
-\todo{Bruno, isso esta ok ?}
 This section presents Spring configurations that took place so that \gls{Yabi} is able to work as expected.
 
 \subsubsection{Security}
@@ -222,17 +371,24 @@ Figure~\ref{fig:adsconfig} show how the directory is structured in the server-si
 When starting \gls{Yabi} for the first time, it needs to generate its database, create the root permission and an administrator account.
 To do so, the class \texttt{DbInitializer} was written. It implements the \texttt{CommandLineRunner} interface so that Spring instantiate and runs it upon initialization.
 
-But because this class is supposed to run only during deployment, it must be easily turned off. Therefore it is annotated with \texttt{@ConditionalOnPorperty}, which tells Spring to skip creating its instance based on a application property.
-This class is run only if the property \texttt{yabi.db.init} is set to \texttt{create}, otherwise, it doesn't.
+There are two properties that interact with \texttt{DbInitializer}, \texttt{yabi.db.init} and \texttt{yabi.db.init.admin.username}. The former regulates when yabi should create a new database, the root permission and the administrator account, the latter declares the administrator's username that should be used. If the initialization is desired, \texttt{yabi.db.init} should be set to \texttt{create}, otherwise, it should be set to anything else. It is necessary that the administrator username is able to be bound in the directory service otherwise the authentication will fail.
 
-\subsection{Multi-Database Support}
-\dots
-\subsubsection{Microsoft SQL Server Docker Image}
-\dots
-\subsubsection{Oracle:XE Driver Access}
-\dots
-\subsection{Testing File}
-\dots
 \subsection{Postman Tests}
-\dots
+When developing the \gls{API}, some test cases were created in Postman to assess the prevention of data duplication. All four entities were tested.
+In essence, every test consists of two requests, one that creates a new entity and expects a \gls{HTTP} status 201 response and the other that tries to re-create the same entity and expects a \gls{HTTP} status 409.
+
+It is important to note that these tests are validating the following restrictions imposed in each entity:
+\begin{itemize}
+\item There must be only one \texttt{PermissionTree} per \texttt{nodePath}.
+\item One \texttt{Directory} per \texttt{connectionString} so that each database is referenced once.
+\item One \texttt{Directory} per \texttt{name} so that each name maps to only one database.
+\item One \texttt{SqlQuery} under a \texttt{PermissionTree} with a given \texttt{name}, avoiding ambiguous \texttt{SqlQuery} entries.
+\item No more than one \texttt{YabiUser} with a given \texttt{name}.
+\end{itemize}
+
+\subsection{Conclusion}
+This section discussed the implementation details all the parts that compose the \gls{Yabi} application and its development.
+\todo{Bruno! o que colocar na coclusao ?}
+
+
 

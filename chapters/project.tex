@@ -36,14 +36,14 @@ The proposal expresses the following requirements:
 \item[Database] Where a Query is run.\\
   It is responsible to hold the information that enables the access to a given database, effectively meeting requirement~\ref{req:multidb}.
   In the most basic form, a connection requires the network address and authentication credentials.
-\item[User] Represents the person currently logged-in.\\
-  It has two purposes, first is to differentiate users according to their roles, either ``Administrators'' or ``User'' so that certain actions are disabled, for example the Administrative task stated in requirement~\ref{req:addquery}
-  The second is to be used when filtering Queries so that requirement~\ref{req:permission}
 \item[Query] A script that is run in a Database and gather information into a single table.\\
   A \gls{SQL} script must be issued during a session with a Database.
   To fulfill requirement~\ref{req:noknowledge}, some meta information such as a title and a description so that the target audience is able to find the Query that fulfill their needs.
 \item[Permission] The binding between Users and Queries.\\
   In order to fulfill requirement~\ref{req:permission}, this entity is responsible to handle the relation between a User and all the Queries that they may access.
+\item[User] Represents the person currently logged-in.\\
+  It has two purposes, first is to differentiate users according to their roles, either ``Administrators'' or ``User'' so that certain actions are disabled, for example the Administrative task stated in requirement~\ref{req:addquery}
+  The second is to be used when filtering Queries so that requirement~\ref{req:permission}
 \end{description}
 
 \todo{Comentar a imaem}
@@ -74,11 +74,9 @@ There are two roles that any given user may be assigned to, either Administrator
   \caption{Class diagram}\label{fig:classdiagram}
 \end{figure}
 
-\subsection{Query}
+\subsection{Query}\label{model:query}
 \dots
 \subsection{Database}
-\dots
-\subsection{Query}\label{model:query}
 \dots
 \subsection{Permission}
 \todo{O no raiz deve sempre existir, as permissoes sao pendiradas na arvore e a raiz precise ser boostrapped no deploy. se a raiz for deletada, nao tem como adicionar mais permissoes.}
