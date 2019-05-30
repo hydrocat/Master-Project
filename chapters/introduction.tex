@@ -1,4 +1,43 @@
+\todo{Replace use-case with ``use case''}
 \chapter{Introduction}
+As companies and institutions develop, they tend to implement and depend on digital systems~\cite{ibm}. Generally speaking, these solutions involve the deployment of a persistence mechanism such as a relational database or a directory service, \gls{RDBMS} being the most common~\cite{apachedp}. Once  made available, they are frequently updated with new information that, if not properly processed and made understandable, does not generate any meaningful insights.
+
+It is not a hard task to give access to the raw information contained within a \gls{RDBMS} but because of how it is usually split in logical relations to avoid unnecessary data repetition~\cite[Part~$\mathrm{V}$]{vaquinha}, technical knowledge is required to harness its potential into a tangible understanding that can help in the decision-making process. 
+
+A good system would enable anyone, expert in computational systems or not, to co-relate and extract the information held in their institution, however this is too broad of a scope and an approximation of such system that is able to give meaningful insights and handle the most frequent cases is useful even if it requires some manual work by an administrator.
+
+\section{Context}\label{context}
+With more than 8,500 students and professors, \gls{IPB} is composed of 5 schools that span diverse fields of study including but not limited to Education, Administration, Chemistry, Health, Tourism, Biology and Engineering.
+
+Towards the beginning and the end of the semester and during student registration time, professors often need some insights on their educational affairs. To do so, they get reach out to the Academic System department and request in broad terms what they need, the technician then stop his current task, write a \gls{SQL} script, run it and email back the results as an spreadsheet file.
+
+With time, the technician built a list of about 40 common requests and their respective scripts so that this process takes less of his time, which in turn enables him to further develop \gls{IPB}'s in-house software. However, interruptions still happen often enough that an automated system is still needed.
+
+\section{Objective}\label{objective}
+
+To develop a web platform that exposes \gls{SQL} scripts to \gls{IPB}'s employees in a convenient way that does not require expert knowledge of the underlying system architecture and eases the technician workload during the institution's critical moments.
+
+Such platform will be maintained by an administrator that is responsible for registering the desired \gls{SQL} scripts.
+
+Based on their role in the institution, professors and other employees are presented to a list of queries coupled with meaningful title and description in which they can run, see the resulting table and download an spreadsheet file.
+
+As a non-functional objective, the system should be easily maintained by the current Academic Systems department team and therefore should comply to their current technologies.
+
+Following is a translation of the original proposal found in Appendix~\ref{apendice1}:
+\begin{displayquote}
+  Proposal nº 2
+
+  To architect and construct from scratch a ``business intelligence'' system with emphasis on education management.
+  Now a days we know how valuable and important information is for those who manage institutions and the impact that data analysis tools have in the decision-making process.
+  At the time writing, \gls{IPB} is already provided of a centralized database through which a large number of \gls{SQL} of many diverse purposes queries are run.
+  The intention is that, based on certain criteria, provide access to information without having to manually write queries that are often more than 30 lines long.
+
+  The proposed system would be fed with ``clusters'' of queries and provide a way to easily insert and validate individual or group of queries depending on the currently logged-in user's profile.
+
+  Keywords are reuse and automatic parameterization of queries that are supported by an automatic web search interface based on the current query.
+
+  All in all, its about deploying a intelligent search system that is able to adapt to the necessities and profile of each user. The end result will always be tables of data that can be exported to many different formats
+\end{displayquote}
 
 \section{Textual Convetions}
 
@@ -6,14 +45,11 @@
 
 \textit{Italic} \todo{mau escrito} references message passing or class methods without a corresponding parent object, e.g. \textit{authenticate}, \textit{runQuery}.
 
-\textsl{[Slanted] - Italic}
-
-\emph{Emphasize}
-
 \textbf{Bold} idicates resource paths, e.g. \textbf{/user}, \textbf{/PermissionTrees}, \textbf{/runQuery/\{id\}}.
 
 \textsc{small caps} are used to denote HTTP verbs, e.g. \textsc{delete}, \textsc{get}.
 
-\textsf{Sans Serif}
+\section{Document Structure}
 
-\textrm{Roman}
+
+
