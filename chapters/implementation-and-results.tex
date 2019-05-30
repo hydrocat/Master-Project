@@ -2,6 +2,64 @@
 
 \section{Front-end}\label{cha:implementation:sec:front-end}
 
+\subsection{Interfacing with Spring Repository}
+Because the back-end is mostly implemented using Spring Repositories, which is an abstraction over the persistence of information, many \gls{API} requests are followed by replies that have a general but not consistent \gls{JSON} structure, making it time-consuming to use Typescript's typing capabilities for each and every entity and their Spring Repository structure.
+
+Therefore the motivation behind the development of this architecture is to enable developers to make use of Typescript's typing system when dealing with a Spring Repository default responses and in doing so their \gls{IDE} can show auto-completion suggestions, type-check the code and show possible errors before running the application.
+
+Listing~\cite{code:json} show such a response from \texttt{SqlQueryRepository} that list all elements registered in its database.
+
+Under the key \texttt{\textunderscore embedded}, line 2, there is a single element whose key is the plural version of the entity's name and the value is a list of entities. The \texttt{\textunderscore links} key exposes the actions that can be taken from this resource and \texttt{page} provides information about the current state of the pager.
+
+For most applications, the most interesting part are the elements that make up the \texttt{\textunderscore embedded.sqlQueries} array as it composed of serialized definitions of the back-end models. These definitions also follow the \gls{HATEOAS} pattern of having their relations listed as \gls{URL}s. For example, a \texttt{SqlQuery} is related to one \texttt{Directory},  therefore it can be accessed through the \textbf{/sqlQueries/99/directory} \gls{URL}, made explicit on line 15 and 16.
+
+The common elements between all the implemented repositories are the pager section seen on line 37, the relative links to the listing itself seen on line 25 and the previously stated \texttt{\textunderscore embedded} key that references the element array. Every one of the listed elements contain the self \gls{URL} seen between lines 8 and 11.
+
+Although it is a very declarative to human beings, this \gls{JSON} format is not very machine-friendly due to the ever changing key that references the array of elements. As seen on line 3, \texttt{SqlQueryRepository} uses \texttt{sqlQueries} and other repositories follow suit with \texttt{DirectoryRepository} using \texttt{directories} and \texttt{PermissionTreeRepository} using \texttt{permissionTrees}. This approach is not easily modeled in Typescript. \todo{Bruno}
+
+With the previous observations it was possible to abstract every repository response into three classes, a \texttt{Repository}, an \texttt{Accessor} and an \texttt{Entity}, enabling the implementation of a generalized repository that is able to interact with Spring's \texttt{PagingAndSortingRepository} in a convenient and typed manner.
+Logically a \texttt{Repository} provides access to an array of \texttt{Entity} through the key whose name is define through an \texttt{Accessor}. Figure~\ref{fig:springresponse} provides an overview of how these entities relate.
+
+Throughout this document the term ``hateoas class'' refers to a Typescript class that extends an \texttt{Entity} and a ``normal class'' or ``non-hateoas class'' to be the class that reflects the entities evaluated in the Project section but do not extend \texttt{Entity}. This happens because when the system is accessed by an user, the requests are served by an hand-written endpoint that does not comply with the Repository structure and when it is accessed by an administrator Spring Repositories were used.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{images/diagramas/hateoas_diagram}
+  \caption{Class diagram that represents the structure of a Spring Repository response}\label{fig:springresponse}
+\end{figure}
+
+\lstinputlisting[float,
+caption=DirectoryRepository \gls{HATEOAS} response,
+label=code:json
+]{images/hateoas.json}
+
+\subsubsection{Entity Class}
+This class is typed to accommodate the structure found in the array of elements contained within a repository response, leaving each specification to extend it and add their own fields. It also provide default implementations for \texttt{id} getter and setter and \texttt{uri} getter, that are useful when converting from hateoas classes to non-hateoas classes.
+
+\subsubsection{Accessor Class}
+To deal with the fact that the array of persisted elements is found under a key whose name depends on the entity in which the repository provides, the \texttt{Accessor} interface was written.
+
+In its definition, there is only one field, \texttt{accessorName}, that contains a string which can be used to reference the array of persisted elements. Even though this approach functionally works, it compiles and runs, it does not provide the \gls{IDE} with enough information to aid the programmer into navigating the response structure because the value of accessing an object with a key that is unknown in run time is also unknown.
+
+To circumvent this limitation all classes that implement the \texttt{Accessor} interface should also contain a option key whose name is the same one defined in the value of \texttt{accessorName} and its type is an array of entities provided by the repository. With this, the \gls{IDE} is able to auto-complete and type-check the whole response, from repository to individual entity fields.
+
+\subsubsection{Repository Class}
+This repository attempts to map Spring Repository response as a whole. In other words, they are the top-most level of the response, mapping the first level of key-values to Typescript types. There are two classes that make up this abstraction, the \texttt{Repository} class that map the \texttt{\textunderscore embedded} and \texttt{\textunderscore links} keys and the \texttt{PagingAndSortingRepository} extension that adds a \texttt{page} key to the mapping.
+
+\subsubsection{Repository Service Class}\label{hateoas:service}
+When the previous classes were written to map the \gls{API} responses, their similarities became more evident and the motivation to implement a generic service arose. With this came the \texttt{PagingAndSortingRepositoryService} service that implements \gls{CRUD} interactions with a Spring Repository in a generically-typed manner. These \gls{CRUD} interactions are translated to four functions, \textit{index} that retrieve all entries, \textit{create}, \textit{delete} and \textit{patch} alters a given entry.
+
+Implementation-wise this class is an composed of the three generic elements previously evaluated, \texttt{Entity}, \texttt{Accessor} and \texttt{PagingAndSortingRepository} and its constructor needs a function that return new instances of \texttt{Entity}, an instance of \texttt{Accessor}, the \texttt{HttpClient} service and a string with the address of the remote Spring Repository.
+
+While developing this service, a unexpected behavior was met. When specifying the type of a \texttt{HTTP} request, it did not create a new instance of the received data, which made the behaviors associated to the \texttt{Entity} class and its extensions to not function. This was mitigated by adding the required parameter in the constructor called \texttt{entityConstructor} whose value must be a function that takes no arguments and returns an instance of the repository's entity, then every response follows the pattern of creating a new of such instance and copying all properties from the textual response to it using the \texttt{Object.assign} function.
+
+With all this in place, implementing a service that has no behaviors other than \gls{CRUD} operations is no more than specifying the \texttt{PagingAndSortingRepositoryService} class. Listing~\ref{code:directoryservice} show the implementation of \texttt{DirectoryService}. Note that all it does is extending \texttt{PagingAndSortingRepositoryService}, providing its \texttt{Directory}-specific classes instead of the generic triad and overloading the constructor on lines 21 to 23 so that it can further specify the parent's behavior.
+
+\lstinputlisting[firstline=16, lastline=25, float,
+caption=Implementation of the Query model,
+label=code:directoryservice
+]{frontendlink/layout/directory/directory.service.ts}
+
 \subsection{Component Structure}
 When developing the Angular front-end over the \texttt{Sb-Admin-Material} template, it was noted that the example pages that could be accessed by links listed in the left sidebar, seen on Figure~\ref{fig:visible}, were found inside the \texttt{/app/layout} folder. Therefore it made sense to follow this approach and implement \gls{Yabi}'s custom pages in the same place.
 
@@ -15,9 +73,9 @@ In general, each entity have got a folder that contains:
   \item A repository ``accessor'' that indicates key used to access the list of \texttt{Entity} contained within the repository response.
   \end{itemize}
 \item A Service file that extends \texttt{PagingAndSortingRepository}, specifying it for the given entity.
-\item The Module file declaring its dialog Components to also be loaded.
+\item The Module file declaring its dialog Components to also be loaded with \texttt{entryComponents}.
 \item The Template file that renders a listing with the available entities.
-\item The Component file that interacts with the Template.
+\item A Component file that interacts with the Template and create dialogs.
 \item The Style file with rules to correctly render the ``add'' button.
 \item A folder with a dialog Component for creating more entries.
 \item A folder with a dialog Component for editing an entry.
@@ -25,47 +83,64 @@ In general, each entity have got a folder that contains:
 
 There are some variations to this rule. \texttt{User} Component only has only one dialog that is used to show more information about the current user. \texttt{Query} Component was one of the first components to be developed and it has three dialogs, one for showing more information and the results of running it, one for creating new queries that is not used and a ``form'' dialog that maps a \texttt{Query} to input elements that is used for editing and creating.
 
-\subsubsection{Components \& Dialogs}
+\subsection{Components}
+Every entity defined in the project section have got a corresponding Angular Component that follows the structure previously defined with a certain degree of freedom. To avoid repeating the common structure previously defined, the particularities of each component in regards to each element will be shown.
 
-\todo{\texttt{LoginComponent}}
+Angular services are an abstraction over the remote \gls{API}. In this implementation, almost all resources are provided by Spring Boot's Repository interface, yielding a standard \gls{HATEOAS} reply no matter the entity. Given such repetition, it made sense to implement a common interface through which all Angular Services could inherit and extend the interaction with Spring's \texttt{PagingAndSortingRepository}, therefore  \texttt{UserService}, \texttt{QueryService}, \texttt{PermissionService} and \texttt{DirectoryService} all extend \texttt{PagingAndSortingRepositoryService} and may have added functionalities of their own.
 
-directory
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-listing}
-  \caption{Listing of all registered \texttt{Directory}}\label{fig:dirlist}
-\end{figure}
+\subsubsection{Login}
+% service
+\texttt{LoginService} is different than the other services because it does not extend \texttt{PagingAndSortingRepositoryService} and is concerned with providing login functionality and system-wide predicates about the current user or session. The two main predicates are \textit{isAdmin} and \textit{isAuthenticated}, the first is used on templates to hide elements that should not be seen by non-administrative users and the second is run before every request sent to \gls{API} so that the application can redirect to the login page if by some reason the user access a page without first logging-in. It also provides \textit{login} and \textit{logout}, the former saves the username and password combination in the local storage to be used by \texttt{authenticationInterceptor} and requests the \gls{API} route \textbf{/user} for information about the current user; the latter deletes the current user's instance, clears the local storage information and redirects to the login page at \textbf{/login}.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-new}
-  \caption{Dialog for creating a new \texttt{Directory}}\label{fig:dirnew}
-\end{figure}
+% template
+This component came as part of the \texttt{Sb-Admin-Material} and can be seen on Figure~\ref{fig:loginerror}. Mainly, it provides a standard text input for user identification, protected text input for passwords and a \texttt{Login} button that is associated with the component's \textit{onLogin} method. The other \gls{HTML} elements are not bound to any function.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-edit}
-  \caption{Dialog for editing an existing \texttt{Directory}}\label{fig:diredit}
-\end{figure}
+% component
+Its Component is very short. It provides a \textit{onLogin} method that in turn call the \texttt{LoginService.login} with the content written in the text inputs. If the login was successful it redirects to \textbf{/query}, otherwise it throws an error saying ``Authentication Unsuccessful''.
 
-query
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-listing}
-  \caption{Listing of all registered \texttt{Query}}\label{fig:querylist}
-\end{figure}
+\subsubsection{User}
+% service
+\texttt{UserService} extends \texttt{PagingAndSortingRepositoryService}, specifying it for the \texttt{User} model and provide functions for managing the association between user and permission, listing an user's permissions with \textit{permissions}, creating the relation with \textit{assignPermission} and removing it with \textit{unAssignPermission}. It is worth noting that the process of creating this association involves a \textsc{post} request to the user's permissions address in which the body is composed of line-break separated \gls{URL} links and the header indicates a content type of \texttt{text/uri-list}.
+
+% template
+When non-administrative users logs in the application, they are redirected to the \textbf{/queries} page so they can quickly execute one of their use-cases. Figure~\ref{fig:userquerylist} show the page with queries available to the current user. In the top right corner the username is shown to be \texttt{professor} and when clicking the first circle to its right a small pop-up appears with their role. One last thing to note is that non-administrative users such as the one from the figure, do not have access to all screens and buttons. In comparison to Figure~\ref{fig:adminpermisisonnew}, administrators have buttons on the side menu that redirect to \texttt{Directory} and \texttt{User} components, and also a pink round button with an plus sign on the bottom right that enable the insertion of new entries.
+
+These administrative elements are triggered visible though the \textit{isAdmin} method from \texttt{LoginService} and they serve a purely cosmetic function as the back-end denies the execution of administrator functions for standard users.
 
 \begin{figure}
   \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-new}
-  \caption{Dialog for creating a new \texttt{Query}}\label{fig:querynew}
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-query-listing-and-role}
+  \caption{Listing of all registered \texttt{Query} for a given \texttt{User} and \texttt{Role} information}\label{fig:userquerylist}
 \end{figure}
+
+The use-case of assigning permissions to users is done by administrators at the \textbf{/user} page. The listing itself is very similar to the one seen on Figure~\ref{fig:userquerylist} albeit with two columns, one for the username and the other for role.
+
+As seen on Figure~\ref{fig:adminpermisisonnew}, when a line of the user listing table is clicked, a \texttt{UserShowComponent} dialog appears with a table that lists their associated permissions and possible actions. From there, the administrator is able to remove a user's permission by clicking on the trash can symbol or grant new permissions by choosing one in the drop-down list that says ``Assign new Permission'' and clicking on the adjacent plus symbol.
 
 \begin{figure}
   \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/query/query-edit}
-  \caption{Dialog for editing an existing \texttt{Query}}\label{fig:queryedit}
+  \includegraphics[width=.8\textwidth]{images/screenshots/user/admin-permission-new}
+  \caption{Dialog for assigning a new \texttt{Permission} to a \texttt{User}}\label{fig:adminpermisisonnew}
 \end{figure}
+
+% model
+The \texttt{HateoasUser} class extends the generic \texttt{Entity} with attributes that compose the back-end implementation of the user. Interestingly enough, because back-end class is written to fit within the Spring Framework authentication mechanism, it has some unused back-end specific attributes added to what was initially defined in the project, these include the attributes \texttt{enabled}, \texttt{authorities}, \texttt{password} (left empty), \texttt{accountNonExpired}, \texttt{accountNonLocked} and \texttt{credentialsNonExpired}.
+
+\subsubsection{Query}
+% service OK
+\texttt{QueryService} is quite different when compared with other services because it implements the standard features found in \texttt{PagingAndSortingRepositoryService}. This is because it was one of the first services to be developed and the need for a common interface was not yet evaluated. To keep compatibility, with the current modules, the function names and signatures were kept intact but their implementation makes use of \texttt{HateoasQueryService}, which does extend the common service. Regarding the other services, this one provides a different behavior for \textit{index} that requests the queries in which the current user have access to. Lastly there is the \textit{run} method which is specific to this service, requesting the \gls{API} into running a query and yielding its results.
+
+% template
+Shown on Figure~\ref{fig:userquerylist}, the \textbf{/query} page presents a table that list queries in regards to their\texttt{Name}, \texttt{Description} and \texttt{Actions}. The last one being dependent on the user role. If accessed by an administrator there are two icons, a pen that when clicked raises a editing dialog and a trash can that deletes the query; if accessed by an user, as seen on the figure, this column is not rendered. Create and edit dialogs are similar to those made for the Directory entity but of course the form fields match the attributes of \texttt{query} model.
+
+% component
+\texttt{QueryComponent}, like the others, interacts with the listing template by handling the actions that can be done on this page. Clicking on the list element is bound to \textit{onQueryShow} which raises the \texttt{QueryShowComponent} dialog; the add button and the edit action raises \texttt{QueryFormComponent} dialog with different data, creating a new query pass no information to the dialog and editing passes the clicked query element. \texttt{QueryFormComponent} is smart enough to take different actions depending on its input so that a new query gets persisted and an already existing query it patched.
+
+% dialogs & module - nao esquecer o databaseReader
+When a table element is clicked, the dialog seen in Figure~\ref{fig:queryprerun} is shown. It presents to the user the query's \texttt{Name}, \texttt{Description} and \texttt{Permission} alongside two button on the lower right, ``Run'' and ``Download''. The former invoke an \gls{API} method on \textbf{/runQuery/\{id\}} to execute it, retrieve the results and display them in a table similar to what is shown in Figure~\ref{fig:querypostrun}; the latter does the same but in the end prompts the user to save a \gls{csv} file with the results. 
+
+% model
+Because queries must be filtered in regards the current user's permissions, \texttt{QueryService} requests the \gls{API} on a custom controller located at \textbf{/queries} that does not comply to the \gls{HATEOAS} pattern, inducing the creation of two models, one that extends the common \texttt{Entity} class to map eventual \gls{HATEOAS} responses and the other that is on par with the response from \textbf{/queries}. It is interesting to note that \gls{UI} elements are build around the latter model because it enables one single screen to serve both user roles, the conversion from \texttt{HateoasQuery} to the non-hateoas version is straight forward given that \texttt{Query} is simpler with no nested attributes.
 
 \begin{figure}
   \centering
@@ -79,13 +154,14 @@ query
   \caption{Dialog for running a \texttt{Query} after it was executed}\label{fig:querypostrun}
 \end{figure}
 
-permission
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/permission/permission-listing}
-  \caption{Listing of all registered \texttt{Permission}}\label{fig:permissionlist}
-\end{figure}
+\subsubsection{Permission}
+% service OK
+\texttt{PermissionService} have only two particular methods, one for requesting the current user's permissions called \textit{userIndex} and a custom implementation of \textit{delete} which uses \gls{Yabi}'s custom implementation in \textbf{/delete}.
+
+% template
+% dialogs & module
+The screen that lists the available permissions is also similar to that seen on Figure~\ref{fig:userquerylist}, although its table has different columns, \texttt{Path}, \texttt{Description} and \texttt{Actions}, with this last one visible only to administrators. The action column has two icons, a plus sign that indicates the creation of a new child permission and a trash can for deletion. Clicking the row raises a dialog for editing its description. The key difference between this entity and the others when it comes to creating a new entry is that because permissions follow a hierarchy, the first step towards creating a new entity is to choose its parent permission and clicking on the plus sign on its row. Figure~\ref{fig:permissionnew} presents the dialog raised when doing so, Note that it shows the parent permission's canonical path alongside its description.
 
 \begin{figure}
   \centering
@@ -93,71 +169,53 @@ permission
   \caption{Dialog for creating a new \texttt{Permission}}\label{fig:permissionnew}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/permission/permission-edit}
-  \caption{Dialog for editing an existing \texttt{Permission}}\label{fig:permissionedit}
-\end{figure}
+% component
+The main component is bound to listing the available permissions. Similar to \texttt{QueryComponent}, this page serves both user roles the same way but contrary to it, \texttt{HateoasPermission} is used as the base model. This is because \texttt{Permission} class implements the \textit{toHateoas} method and even thought they share much of the same fields, the converted \texttt{HateoasPermission} is generated with a undefined \gls{URI} attribute. There are two sub-components, \texttt{PermissionFormNewComponent} and \texttt{PermissionFormEditComponent}. As the name suggests, they interact with the user and \gls{API} when creating and editing permissions. One interesting thing to note is that when persisting a new permission, the \textit{onSubmit} method appends the separator character to the path.
+% model
 
+\subsubsection{Directory}
+% service OK
+Lastly there is the \texttt{DirectoryService} whose implementation is nothing more than the proper extension of \texttt{PagingAndSortingRepositoryService}. In fact, it is so small that it was used as an the minimal usage example in Section~\ref{hateoas:service}.
 
-user
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-permission-listing}
-  \caption{Listing of all registered \texttt{Permission} for a given \texttt{User}}\label{fig:userpermisisonlist}
-\end{figure}
+% template
+The directory listing page is only accessible to administrative users, which made its implementation very compliant to  \gls{HATEOAS} pattern used by Spring Repository. It uses the same listing presentation shown in Figure~\ref{fig:userquerylist} with columns for \texttt{Name}, \texttt{Connection String}, \texttt{Username}, \texttt{Password} and \texttt{Actions}, showing the icon of a trash can that signifies deletion. Clicking the row itself raises the \texttt{DirecotryFormEditComponent} in a dialog, allowing the administrator to edit the clicked Directory.
+Figure~\ref{fig:dirnew} shows the dialog used to create a new Directory, it is composed of one textual input per model attribute and a ``Save'' button on the lower right corner. The previously \texttt{DirecotryFormEditComponent} shown on Figure~\ref{fig:diredit} share the same structure but with inputs filled with values from the Directory being edited.
 
 \begin{figure}
   \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-query-listing}
-  \caption{Listing of all registered \texttt{Query} for a given \texttt{User}}\label{fig:userquerylist}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/user/user-listing}
-  \caption{Listing of all registered \texttt{User}}\label{fig:userlist}
+  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-new}
+  \caption{Dialog for creating a new \texttt{Directory}}\label{fig:dirnew}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/user/admin-role}
-  \caption{Small pop-up showing the current user's role}\label{fig:userrole}
+  \includegraphics[width=.8\textwidth]{images/screenshots/directory/directory-edit}
+  \caption{Dialog for editing an existing \texttt{Directory}}\label{fig:diredit}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\textwidth]{images/screenshots/user/admin-permission-new}
-  \caption{Dialog for assigning a new \texttt{Permission} to a \texttt{User}}\label{fig:adminpermisisonnew}
-\end{figure}
+% component
+The component implementation is very straight forward with the listing page fetching elements using the \texttt{DirectoryService} and binding the buttons to trigger their respective behavior. The plus button that indicates the creation of a new directory is bound to method \textit{onDirectoryNew}, clicking the row to \textit{onDirectoryShow} and the trash can to \textit{onDirectoryDelete}. The first two delegate the interaction to another components that are displayed in a dialog. 
 
-\subsubsection{Services}
-Angular services are an abstraction over the remote \gls{API}. In this implementation, almost all resources are provided by Spring Boot's Repository interface, yielding a standard \gls{HATEOAS} reply no matter the entity. Given such repetition, it made sense to implement a common interface through which all Angular Services could inherit and extend the interaction with Spring's \texttt{PagingAndSortingRepository}.
+% model
+Being accessible only to administrative users means that the whole \gls{API} interaction can be done through Spring Repositories. This means that the only model being exchanged is that of \texttt{HateoasDirectory} that extends \texttt{Entity} and nothing more.
 
-At this point the peculiarities of each repository will be shown, implementation of the general purpose service is found in Section~\ref{hateoas:service}.
-
-\texttt{LoginService} is concerned with providing login functionality and system-wide predicates about the current user or session. The two main predicates are \textit{isAdmin} and \textit{isAuthenticated}, the first is used on templates to hide elements that should not be seen by non-administrative users and the second is run before every request sent to \gls{API} so that the application can redirect to the login page if by some reason the user access a page without first logging-in. It also provides \textit{login} and \textit{logout}, the former saves the username and password combination in the local storage to be used by \texttt{authenticationInterceptor} and requests the \gls{API} route \textbf{/user} for information about the current user; the latter deletes the current user's instance, clears the local storage information and redirects to the login page at \textbf{/login}.
-
-\subsubsection{Modules}
-\dots
 \subsection{Generic Form Control Builder}
 
-\subsection{Spring HATEOAS Classes}
-\dots
-\subsubsection{Entity Class}
-\dots
-\subsubsection{Acessor Class}
-\dots
-\subsubsection{Repository Class}
-\dots
-\subsubsection{Repository Service Class}\label{hateoas:service}
-\dots
+
 \subsection{Temporal Caching Repository}
-\dots
+Because \texttt{PermissionService} is by a few different classes and because permissions are not frequently inserted in the system, it was found that not many \gls{API} requests are necessary during a session. Therefore a temporal caching system was developed on top of the existing \texttt{PagingAndSortingRepositoryService} so that in a configured time span, the service will not actually request the \gls{API} but instead provide elements that are kept in memory. Once the time expires, the local cache is considered invalidated and a new \gls{API} is issued.
+
+Implementation-wise it intercepts the actual \texttt{PagingAndSortingRepositoryService.index} saving a local copy of the response in memory. When a request to \textit{index} happens within the time frame specified in \texttt{SharedModule.serviceCacheExpirationTime}, it returns a observable of its local cache. The cache itself is implemented as an array of elements whose service is providing.
+
 \subsection{Error Handler}
-\dots
-\subsection{Database Reader}
-\dots
+By default, every Angular app provides a \texttt{ErrorHandler} that simply writes to the browser's console. However users must be notified when an error happen so that they can either take action or contact the IT department if it persists. To do so, a \texttt{ErrorHandler} was extended into \texttt{SnackBarErrorHandler} which as the name suggests, creates a snack bar element with the error message, and was provided in the root module to that any uncaught error in the application is directed to it, effectively replacing the standard \texttt{ErrorHandler}. Figure~\ref{fig:loginerror} show the visual element that is created when an error occurs.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.7\textwidth]{images/screenshots/login-error}
+  \caption{Login screen with a authentication error caught by the \texttt{SnackBarErrorHandler}}\label{fig:loginerror}
+\end{figure}
+
 \subsection{authenticationInterceptor}
 Because the back-end handle requests in a stateless fashion, authentication information must be sent alongside every \gls{API} request.
 
@@ -170,9 +228,14 @@ Though as a Service, this class is made available through the app's global modul
 
 It's job is to abstract all the endpoints available in the interface either through constant strings that point to repositories or functions that assemble an address for an entity given it's id.
 
-As an example endpoint, the \texttt{PERMISSIONS} attribute refers to the \gls{API}'s \textbf{/permissions} endpoint that return all the permissions associated to the current user; \texttt{ADMIN_PERMISSIONS} refers to \textbf{/permissionTrees}, which is the interface managed by a Spring Repository; Lastly there is the \textbf{USER_PERMISSION} function that takes in an user id and a permission id and returns the address that represents the association between them so it can be deleted.
+Some example endpoints include the \texttt{PERMISSIONS} attribute that refers to the \gls{API}'s \textbf{/permissions} that return all the permissions associated to the current user; \texttt{ADMIN\textunderscore PERMISSIONS} referring to \textbf{/permissionTrees}, which is the interface managed by a Spring Repository and lastly there is the \textit{USER\textunderscore PERMISSION} function that takes in an user id and a permission id and returns the address that represents the association between them so it can be, for example, deleted.
 
 \subsection{Shared Module}
+The \texttt{SharedModule} is a class that is imports and exports all Angular Material directives. This was done to speed up development time, removing the necessity of importing each specific module when it is needed.
+
+Another use of this module is to provide application-wide values that can be more easily configured. There are three static values, \texttt{debounceTime} which is the time in milliseconds between keystrokes to consider that the user has finished typing their search term; \texttt{serviceCacheExpirationTime} the lifespan of the information kept in a \texttt{CachedPagingAndSortingRepositoryService} and lastly, \texttt{apiBase}, which is the root address for the \gls{API}.
+
+One may question about the performance impact of including such extensive list of modules but during development phase and after building in production mode, triggering \gls{AoT} compilation, the perceived speed of the application on a laptop was considered relatively good.
 
 
 \subsection{Security Concerns}
@@ -203,7 +266,7 @@ Line 17 is declaring that more that one instance of \texttt{SqlQuery} may refere
 \texttt{@JoinColumn} annotation is a general purpose configuration for relational fields, in line 18 and 22 it's used to configure the name in which the column will be called and whether it can have no specified value.
 
 \lstinputlisting[firstline=22,float,
-caption=Implementation of the Query model,
+caption=Implementation of DirectoryService,
 label=code:sqlquery
 ]{listings/SqlQuery/SqlQuery.java}
 

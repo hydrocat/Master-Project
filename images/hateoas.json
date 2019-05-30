@@ -1,0 +1,43 @@
+{
+  "_embedded": {
+    "sqlQueries": [
+      {
+        "command": "select * from grau;",
+        "name": "Degrees of REBIDES",
+        "description": "List scholl degrees declared in REBIDES",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/sqlQueries/99"
+          },
+          "sqlQuery": {
+            "href": "http://localhost:8080/sqlQueries/99"
+          },
+          "directory": {
+            "href": "http://localhost:8080/sqlQueries/99/directory"
+          },
+          "permission": {
+            "href": "http://localhost:8080/sqlQueries/99/permission"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/sqlQueries{?page,size,sort}",
+      "templated": true
+    },
+    "profile": {
+      "href": "http://localhost:8080/profile/sqlQueries"
+    },
+    "search": {
+      "href": "http://localhost:8080/sqlQueries/search"
+    }
+  },
+  "page": {
+    "size": 20,
+    "totalElements": 4,
+    "totalPages": 1,
+    "number": 0
+  }
+}
