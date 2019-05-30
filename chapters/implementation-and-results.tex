@@ -200,7 +200,11 @@ The component implementation is very straight forward with the listing page fetc
 Being accessible only to administrative users means that the whole \gls{API} interaction can be done through Spring Repositories. This means that the only model being exchanged is that of \texttt{HateoasDirectory} that extends \texttt{Entity} and nothing more.
 
 \subsection{Generic Form Control Builder}
+Every form used for editing and creating new entries follow the pattern of providing a text input for each attribute of the model. To reduce repeated code for generating a \texttt{FormGroup} with the given model's attributes the function \textit{genericFormControl} was implemented.
 
+What it does is take an instance of any object and a optional list of attributes to ignore and assign to an object every attribute name evaluated from calling \texttt{Object.keys} on the instance with a new \texttt{FormControl} with that attribute's value, skipping the attributes found the ignore-list. In the end, return a new \texttt{FormControl} with such object.
+
+This way, when creating a form for editing a model, this function will return all the control with values already filled, ready to be bound to a form in the template definition. Also, when creating a new entry, the resulting \texttt{FormControl} edited by the user will have matching fields with the model, allowing for fewer conversion between what is inputted and what is sent to the \gls{API}.
 
 \subsection{Temporal Caching Repository}
 Because \texttt{PermissionService} is by a few different classes and because permissions are not frequently inserted in the system, it was found that not many \gls{API} requests are necessary during a session. Therefore a temporal caching system was developed on top of the existing \texttt{PagingAndSortingRepositoryService} so that in a configured time span, the service will not actually request the \gls{API} but instead provide elements that are kept in memory. Once the time expires, the local cache is considered invalidated and a new \gls{API} is issued.
