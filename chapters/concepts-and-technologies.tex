@@ -1,37 +1,46 @@
 \chapter{Concepts and Technologies}\label{cha:concepts}
-Throughout the development of this project quite a few tools and technologies were employed. To address them all, this chapter was broken in three sections; Front-end in Section~\ref{cha:concepts:sec:frontend}, that is focused mainly in user-facing web technologies; Back-end in Section~\ref{cha:concepts:sec:backend}, which is concerned with the developed Web \gls{API} and lastly; Development in Section~\ref{development}, with the tools used to write, build and test this project.
-
-\todo{Onde eu defino a aplicacao stateless?}
+Throughout the development of this project quite a few tools and technologies were employed. This chapter will briefly discuss each technology and concept in a way that is relatable to their usage in this project. There are three sections, Section~\ref{cha:concepts:sec:frontend} focusing mainly in user-facing, front-end web technologies; Section~\ref{cha:concepts:sec:backend} with the back-end Web \gls{API} and lastly Section~\ref{development} describing the tools used to write and build this project.
 
 \section{Front-end}\label{cha:concepts:sec:frontend}
-This section is concerned with the description of technologies used to assemble the human-interactive part of this project.
+When referring to an Web application, the Front-end is usually what is perceived by the users of a system. It is a very important topic when it comes to user acceptance as it is concerned with presenting the information, indicating the current state of the system and what actions the user is able to take.
+
+The technologies that follow are for the most part, specific to this kind of task and are concerned with bridging the gap between the functions the system provides and the user by specifying how a system will be visually arranged and how the functionalities will be interacted with.
 
 
-\subsection{Typescript}
-`` A super-set of JavaScript that compiles to plain JavaScript ''~\cite{tswebsite}, Typescript is a language maintained by Microsoft and developed by \textit{Anders Hejlsberg} in 2012 with the goal of improving the quality and manageability of JavaScript code bases with features such as static typing and object-orientated qualities~\cite{tsrevealed}. Ultimately, Typescript must be compiled to JavaScript before being executed, for compatibility reasons, the default JavaScript target is version ES3 but newer back-ends are also available.
+\subsection{HTML \& CSS \& JavaScript}
+The \gls{HTML}, the ``World Wide Web's core markup language ''~\cite{html} is a declarative language through which the vast majority of online content is structured, shared and accessed. It is a specification of elements that can be used to structure the content of web pages, such as headings, images, links to other documents, buttons and forms~\cite{htmlcss}.
 
-\subsection{HTML}
-The \gls{HTML}, the `` World Wide Web's core markup language ''~\cite{html} is a declarative language through which the vast majority of online content is structured, shared and accessed. It is a specification of elements that can be used to structure the content of web pages, such as headings, images, link to other documents, buttons and many others~\cite{htmlcss}.
-
-\subsection{CSS}
 \gls{CSS} is another declarative language that pairs with HTML. Its purpose is to describe how the elements present in a web page are presented.
 Some of definitions handle colors, fonts, element arranging, visibility, interaction and many others aspects~\cite{htmlcss}.
 
+JavaScript is a interpreted general-purpose scripting language that was initially designed to run on Web pages but now it found its way in many other areas\cite{js}. Its specification does not define much of standard functions found in other languages such as input/output and file access, instead each host environment expose JavaScript-accessible objects that are tied to their specific functionalities. Since 1997 the specification is regulated by \gls{ECMA} and thus the language is formally known as ECMAScript\ref{ecma}.
+
+Together, these three technologies compose what is known as \gls{HTML}5. \gls{HTML} being the document structure in the sense of logically grouping elements, \gls{CSS} defining the appearance with colors, sizes and positions, JavaScript enabling interactions and dynamic content.
+
+\subsection{Typescript}
+``A super-set of JavaScript that compiles to plain JavaScript ''~\cite{tswebsite}, Typescript is a language maintained by Microsoft and developed by \textit{Anders Hejlsberg} that started development in 2012 with the goal of improving the quality and manageability of JavaScript code bases with features such as static typing and object-orientated qualities~\cite{tsrevealed}.
+
+Ultimately, Typescript must be compiled to JavaScript before being executed and for compatibility reasons, the default JavaScript target is version ES3 but newer back-ends are also available.
+
 \subsection{SASS}
-\gls{SASS} is a augmentation of CSS with features that are similar to a object-oriented languages, with loops, variables, functions and rule nesting ~\cite{sass}. SASS files need to be compiled into plain CSS before deployment, there are many of such compilers, some re-generate CSS files upon file  changes.
+\gls{SASS} is a augmentation of CSS and its main premise is to make large style definitions more manageable by implementing features that are similar to a object-oriented languages such as  with loops, variables, functions and rule nesting~\cite{sass}. 
+
+\gls{SASS} files are processed into plain \gls{CSS} so that it can be interpreted by the browser. In this project, the template described in Section~\ref{template} was developed using this preprocessor,therefore the modifications to its styles kept the te.
 
 \subsection{Angular}\label{concept:angular}
-Front-end web framework developed as a side project at Google that proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content~\cite{angularjs}, therefore a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{HTML} document are captured and made available to its components. Such binding goes both ways, so if the state of the underling code changes, the document is re-rendered to reflect the new state.
+Angular is a front-end web framework started its life as a side project at Google that has proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content~\cite{angularjs} and to remediate this, a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{DOM} are captured and made available to Angular Components, which in turn is able to react to them. This binding goes both ways, not only the \gls{DOM} can trigger Angular but also Angular can issue a page re-render to reflect the its new state.
 
 The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times, slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and up is a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables~\cite{angular}.
 
 An overview of key Angular elements follows:
 \begin{description}
-\item[Module] Internally referenced as a \texttt{NgModule}, these are the basic elements through which an Angular application is structured\cite{angularmodule}. They declare the elements that will be provided to its child Modules, Services and Components.
-\item[Component] Binds a Template to behavior and data. Components are the elements that directly interact with the information perceived by an user. They typically rely on Services to acquire information and on Modules to fulfill their dependencies. 
+\item[Module] Internally referenced as a \texttt{NgModule}. \\
+  These are the basic elements through which an Angular application is structured\cite{angularmodule}. They declare the elements that will be provided to its child Modules, Services and Components.
+\item[Component] Binds a Template to behavior and data.\\ Components are the elements that directly interact with the information perceived by an user. They typically rely on Services to acquire information and on Modules to fulfill their dependencies. 
 \item[Router] A special kind of service that is responsible for managing the navigation through an application, mapping \gls{URL}s to Components.
-\item[Service] Akin to a library, a Service have methods that can be used by multiple Components and other Services to provide some functionality. They are commonly implemented to act as the means of interaction to a remote \gls{API}.
-\item[Template] An augmented \gls{HTML} file that is bound to a Component. Effectively, they are medium through which information is displayed and interacted with. Among other things, Templates can have elements that are dependent of some expression, values that are provided by a Component and events that notify the underlying Component.
+\item[Service] Akin to a library.\\ A Service have methods that can be used by multiple Components and other Services to provide some functionality. They are commonly implemented to act as the means of interaction to a remote \gls{API}.
+\item[Template] An augmented \gls{HTML} file that is bound to a Component.\\
+  Effectively, they are medium through which information is displayed and interacted with. Among other things, Templates can have elements that are dependent of some expression, values that are provided by a Component and events that notify the underlying Component.
 \end{description}
 
 The relationship between such elements is that a Component may be dependent on Services, Components and Templates form what is called a View; Views and Routers are exposed to the application under a Module; which in turn forms a tree with a root Module.
@@ -40,18 +49,17 @@ Other important features include the dependency injection mechanism, template di
 \subsection{Angular Material}
 Material Design is a set of guidelines and principles made by Google for designing \gls{UI} that aims to bring natural and consistent interactions between users and computers. The guiding principle is based on paper and ink but it is not limited to what they can do in the physical world~\cite{materialdesign}.
 
-Angular Material~\cite{angularmaterial} is the implementation made by Google of components like buttons, text input and separators that follow the Material Design guidelines to be used by Angular applications, providing a consistent look across devices.
+Angular Material~\cite{angularmaterial} is the Google implementation of Angular Components such as buttons, text input and separators that follow the Material Design guidelines, providing a consistent look across devices and reducing the amount of effort required to design a consistent \gls{UI} with common behaviors.
 
-\subsection{Sb-Admin-Material}
+\subsection{Sb-Admin-Material}\label{template}
 % introduction
 To accelerate the development speed and have faster working prototypes, many web-based projects begin form a ready-made template. This saves time by keeping developers from re-writing common pieces of code commonly referred as ``boilerplate''.
 
-SB Angular Material is a re-write of the famous SB Admin template~\cite{angulartemplate}, a free and open source template developed by Start Bootstrap~\cite{sbadmin} in Angular using components developed in the previously discussed Angular Material project.
-
-As the name implies this template tries to assess the need for an administrator panel, and in doing so it provides a few ready-made components, to name a few, a login component as seen in figure \ref{fig:login}; the main screen with a top and a collapsible side navigation components, seen in figure \ref{fig:dash} and \ref{fig:visible}. This template already encompass some amount of responsive design by toggling the ability of said side navigational panel to be collapsed depending on the user's screen width.
+SB Angular Material is an Angular re-write of a famous Bootstrap template called SB~Admin~\cite{angulartemplate}.
+As the name implies this template tries to assess the need for an administrator panel, and in doing so it provides a set of ready-made components such as a login component as seen in Figure~\ref{fig:login}; the main screen with a top navigation and a collapsible side navigation components, seen in Figure~\ref{fig:dash} and~\ref{fig:visible}. This template already encompass some amount of responsive design by toggling the side navigational panel to be collapsed depending on the user's screen width.
 
 % connection
-In the following subsection this template's folder structure will be explained so that one can understand where what are the main parts in which it can be extended to fit any particular project.
+What follows is a brief explanation of this template's folder structure to highlight the main parts in which it can be extended to fit any particular project.
 
 \begin{figure}
   \centering
@@ -71,35 +79,35 @@ In the following subsection this template's folder structure will be explained s
 
 \subsubsection{Project Structure}
 % introduction
-SB Admin Angular was written with the intention of being modified and extended by other developers. Because the team did not express any guidelines towards how it should be further developed, it is important to give an overview of the current project structure so that the changes made to accommodate the topic of this project are better understood.
+SB Admin Angular was written with the intention of being modified and extended by other developers. Because the team did not express any guidelines towards how it should be altered to accommodate a new project, it is important to give an overview of its file structure so that the changes made to it during the development of the present project are better understood.
 
 \begin{itemize}
 \item \textbf{root} This item is not a folder but the root of the project. In here there are configurations for code linter, JavaScript dependency descriptor and the license statement.
 \item \textbf{dist} Once the project is built for deployment, this directory will hold all the assets and optimized code ready for production, including the main \texttt{index.html} file that bootstraps the whole project.
 \item \textbf{e2e} This holds the source code for End-to-End test cases, hence the name.
-\item \textbf{src} This is the heart of this template, a directory that holds all the structure, content and behavior needed per application. \leavevmode
+\item \textbf{src} This is the heart of this template, a directory that holds all the structure, content and behavior needed for each application. \leavevmode
   \begin{itemize}
-  \item \textbf{app} The Angular entry-point and application wide router module. \leavevmode
+  \item \textbf{app} The Angular entry-point. Contains the application-wide router module.
     \begin{itemize}
     \item \textbf{layout} All the components used to compose the navigational elements and menus and their subsequent pages plus some example pages. \leavevmode
       \begin{itemize}
       \item \textbf{black-page} A inaccessible component that does nothing, probably unfinished.
-      \item \textbf{blank-page} An example component that is white.
+      \item \textbf{blank-page} An example component that renders a white page.
       \item \textbf{charts} A component that display chart capabilities of the integrated JavaScript module chartjs\footnote{Available at https://www.chartjs.org/}.
-          \item \textbf{components} Omnipresent page elements such as the Topbar and the collapsible Sidebar.\leavevmode
+          \item \textbf{components} Omnipresent page elements such as the Topbar and the collapsible Sidebar.
         \begin{itemize}
-        \item \textbf{topnav} The blue navigation top bar as seen on Figure \ref{fig:dash}.
-        \item \textbf{sidebar} The Menu on the left side of the screen as seen on Figure \ref{fig:visible}.
+        \item \textbf{topnav} The blue navigation top bar as seen on Figure~\ref{fig:dash}.
+        \item \textbf{sidebar} The Menu on the left side of the screen as seen on Figure~\ref{fig:visible}.
         \end{itemize}
-      \item \textbf{dashboard} The page in which the user is redirected after logging in.
+      \item \textbf{dashboard} The page in which the user is redirected after logging in, shown in Figure~\ref{fig:dash}.
       \item \textbf{forms} Demonstration of the many different input methods such as Auto Complete text input, Date picker, Text Area and others.
       \item \textbf{grid} A demo of the available page subdivisions.
       \item \textbf{material-components} An example page displaying the main components of Angular Material such as buttons, Dialog and Notifications.
-      \item \textbf{nav} Unused component, deprecated by the side bar component.
+      \item \textbf{nav} Unused component, deprecated by the top bar component.
       \item \textbf{tables} A example component displaying Angular Material's table mechanisms.
       \end{itemize}
 
-    \item \textbf{login} This is the Login component as see on Figure \ref{fig:login}
+    \item \textbf{login} This is the Login component as see on Figure~\ref{fig:login}
     \item \textbf{shared} Code that can be used in a application wide manner so that higher abstractions and code reuse can be achieved.
     \end{itemize}
   \item \textbf{assets} Static content directory. Images, fonts, and i18n translations.
@@ -116,26 +124,38 @@ After this overview, it is interesting to note the following:
 \end{itemize}
 
 \section{Back-end}\label{cha:concepts:sec:backend}
-The tools and concepts described in this section refer to the server-side of this project. It manages the authenticated and authorized data access as well as business-specific functionalities.
+In a computer system, the back-end is concerned with providing functions that are required by an application, therefore they often interact with databases and perform data processing routines. The aggregate of these functions is also known as \gls{API}. In the context of Web applications, the back-end is a separate program that runs on a remote machine and provide its functions through a set of \gls{URL} addresses and \gls{HTTP} methods that together is referenced as a Web \gls{API}.
+
+This section describes the tools and concepts that were used to implement the functions that attend this application's requirements and the Web server that exposes them through an Web \gls{API}.
 
 \subsection{Stateless Web Application}
-\todo{Escrever sobre mim!}
+This is a architectural design that can applied when a system is composed from separate but communicating pieces. In this approach, messages exchanged between the logical entities contain all the necessary information for an action to be executed.
 
-\subsection{HTTP}
-\todo{Escrever sobre mim ! e nao esquecer de mencionar os \emph{verbos}, principalmente o delete pq eh usado na implementacao}
+Often times web applications make use of session cookies or some similar mechanism to help the server-side to locate the current state each specific user, in other words, the server has in its memory information that transcends requests. This is what is known as a state-full web application.
+
+On a stateless model, each request contains all the information the server needs to generate a reply. When compared to a state-full application, this model requires more bandwidth as contextual information is added to every request, however it can mitigated with resource caching solutions.
+
+\subsection{\gls{HTTP}}
+This is a stateless, general purpose, application-level protocol designed to be easily extendable. There are two roles that are involved during a \gls{HTTP} communication, that of a client and a that of a server. The former initiates the connection and sends a request and the latter replies to the request and terminates the connection.
+
+\gls{HTTP} requests are composed of a textual structure that follows a \gls{BNF} with elements that indicate to the server what must be done. From its many elements, the main ones used in this document are the methods and \gls{URI}.
+
+\gls{URI} is a way to uniquely name a resource found in a registered name space. One of its applications is in the widely known \gls{URL}, which is an \gls{URI} that refers to objects accessible in the web.
+
+\gls{HTTP} methods, also known as verbs, are the indicatives of the action that is to be done on a resource, \gls{HTTP} 1.0 \gls{RFC}~\cite{http} proposes eight standard options, namely, \textsc{options}, \textsc{get}, \textsc{head}, \textsc{post}, \textsc{put}, \textsc{delete}, \textsc{trace} and \textsc{connect}. Considered notorious for this document are \textsc{get}, \textsc{post} and \textsc{delete}.
+
+The \textsc{get} method purpose is to retrieve the information identified by the request's \gls{URI}. \textsc{post} is meant to send a new information to the server through the request itself. Lastly the \textsc{delete} request method expresses to the server that the resource is to be made inaccessible.
+
 \subsection{Java}
 % introduction
-Given how ubiquitous it is, there is not much to be said. Java is a Object-Oriented programming language firstly developed by James Gosling at Sun Microsystems, it is statically and explicitly typed and gets compiled to a machine-independent byte code that is then interpreted by the \gls{JVM}~\cite{java}.
+Java is a Object-Oriented programming language firstly developed by James Gosling at Sun Microsystems. It is statically and explicitly typed and gets compiled to a machine-independent byte code that is then interpreted by the \gls{JVM}~\cite{java}.
 
-Because of its high adoption, many concepts were developed to accommodate its deficiencies and improve the development cycle. In fact, because of the recurring solutions for recurring situations in software design, a group of skilled professionals got together to discuss and write a book entitled ``Design Patterns: Elements of Reusable Object-Oriented Software''~\cite{patterns}, bringing the concept of repeatable ways to some problem.
-
-% connection
-This leads to the next topic, View Model, which was used throughout the development of this project to filter the information that is sent to a non-administrator user, removing from the role of filtering sensitive information to the insecure front-end application.
+Because of its high adoption, many concepts were developed to accommodate its deficiencies and improve the development cycle. In fact, because of the recurring solutions for recurring situations in software design, a group of skilled professionals got together to discuss these patterns and wrote a book entitled ``Design Patterns: Elements of Reusable Object-Oriented Software''~\cite{patterns}, bringing common Object-Oriented solutions for recurring problems. Being a Object-Oriented language, Java programs often make use of such patterns. Allegedly bringing a faster development model with code that is sound.
 
 \subsubsection{View Model}
-The ViewModel is a piece of a bigger pattern called \gls{MVVM} created by John Gossman to address the scenario in which a model as described in the \gls{MVC} pattern can't be completely mapped to a View~\cite{viewmodel}, therefore it is sensible to specify another model that partially reflects the original model but is able to be completely bound to user interface elements.
+The ViewModel is a piece of a bigger pattern called \gls{MVVM} created by John Gossman. It addresses the scenario in which a model as described in the \gls{MVC} pattern can't be completely mapped to a View~\cite{viewmodel}, that is, it has attributes that are part of a higher abstraction. This makes it is sensible to specify another model that partially reflects the original model but is able to be completely bound to user interface elements.
 
-During the implementation of this project, the ViewModel pattern was used out of the \gls{MVVM} pattern, however the goal of decoupling code the same. More precisely, some models can not have all of its attributes serialized back to a View or they expose different attributes depending on the user who is requesting it; ViewModel classes were implemented in such cases.
+During the implementation of this project, the ViewModel pattern was used outside of the \gls{MVVM} pattern, however the goal of decoupling code remained the same. In some cases, ViewModel classes were implemented for classes that can not have all of its attributes serialized into a View or for those who must expose different attributes depending on the user who is requesting it; 
 
 \subsection{Spring}\label{concept:spring}
 % introduction
@@ -157,12 +177,9 @@ The key idea is that for the most part an application does not need to know whic
 When using Spring, one can express dependencies by declaring them in the class's constructor or by annotating an attribute using the Autowired annotation\cite{springdi}.
 
 \subsubsection{Data}
-\todo{essa seccao precisa discorrer sobre o que é um repositorio do spring, o que ele faz, porque é mais rapido usar ele e talvez um exemplo já que a implementacao eh simples}
-When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in pactice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
+When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in practice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
 
-Although it acts as the root interface through which other, more feature packed, models are developed, \texttt{Repository} is hardly used directly~\cite{springdatadoc}, instead \texttt{CrudRepository} and \texttt{PagingAngSortingRepository} are interfaces that provides useful features.
-
-As the name suggests \texttt{CrudRepository} offers \gls{CRUD} capabilities for a specified entity and \texttt{PagingAngSortingRepository} extends it by including paging and sorting support.
+Bridging the gap between the \texttt{Repository} interface and its implementation, two other interfaces are provided such that when extended, provides the programmer with methods for interacting with a persistence system in a high level of abstraction. The base one is called \texttt{CrudRepository} and it provides the basic functionalities for persisting objects and a \gls{REST} interface form them. Extending \texttt{CrudRepository} there is the \texttt{PagingAngSortingRepository} that adds pagination and sorting on top of it.
 
 The \texttt{CrudRepository} on its own provide the following default methods:
 \begin{description}

@@ -29,7 +29,7 @@ Following this paragraph is a description of each elicited entity alongside thei
 \item[Database] Where a Query is run.\\
   It is responsible to hold the information that enables the access to a given database, effectively meeting requirement~\ref{req:multidb}.
   In the most basic form, a connection requires the network address and authentication credentials.
-\item[Query] A script that is run in a Database and gather information into a single table.\\
+\item[Query] A script that is run in a Database and gather information into a single table.\label{model:query}\\
   A \gls{SQL} script must be issued during a session with a Database.
   To fulfill requirement~\ref{req:noknowledge}, some meta information such as a title and a description so that the target audience is able to find the Query that fulfill their needs.
 \item[Permission] The binding between Users and Queries.\\
@@ -46,13 +46,13 @@ The other use case diagram shown in Figure~\ref{fig:adminusecases} references th
 \begin{figure}
   \centering
   \includegraphics[width=.5\textwidth]{images/diagramas/userusecase}
-  \caption{User use-case}\label{fig:userusecase}
+  \caption{User use case}\label{fig:userusecase}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=.5\textwidth]{images/diagramas/adminusecase}
-  \caption{Administrator use-cases}\label{fig:adminusecases}
+  \caption{Administrator use cases}\label{fig:adminusecases}
 \end{figure}
 
 According the intents of the stakeholders, this system should follow a an architecture similar to that employed in their other projects, culminating to what is shown in Figure~\ref{fig:overview}, with an web front-end that is accessed by both actors to realize their use cases, a back-end service that provides business-specific functionalities and a database system to persist the system's own artifacts.

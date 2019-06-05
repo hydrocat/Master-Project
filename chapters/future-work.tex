@@ -1,26 +1,30 @@
 \chapter{Future Work}
+The development of this project yielded an application that suffices the core needs of what was proposed. Although considered good, it does not fully satisfy all the elicited requirements, leaving Requirements~\ref{req:no:param} and~\ref{req:no:valid} outside of this implementation.
 
+Therefore, this Chapter will be listing not only the missing requirements but also what to improve in a later version.
 
 \section{Code Re-structure}
-\subsection{Administrative Resources}
-Currently, resource filtering is implemented by having a small set of controllers that are eligible to handle non-administrative users however this led to some confusion because its response structure does not follow the \gls{HATEOAS} convention.
+During the this project's development, some architectural mistakes were made. Even though they are not fatal errors, the technical debt was certainly increased. The two main points are in regards to Resource filtering, that is, what is an user authorized to access and the design of the \texttt{PermissionTree} data structure. 
 
-Some re-structuring could be done at the repository level by configuring the authorization mechanism to filter \gls{HTTP} methods based on the current user's requesting role.
+\subsection{Resource Filtering}
+Currently, resource filtering is implemented by having a small set of controllers that are eligible to handle non-administrative users. However this led to some confusion because its response structure does not follow the \gls{HATEOAS} convention, making the front-end app implement two similar classes for each entity. One for \gls{HATEOAS} responses and the other for the special case.
 
-Ultimately, all resources should follow the \gls{HATEOAS} pattern so that the complexity of the front-end application is lower.
+Some re-structuring could be done at the repository level by configuring the authorization mechanism to filter \gls{HTTP} methods based on the current user's role and altering the front-end to always use Spring Repositories and always receiving \gls{HATEOAS} responses.
+
+Ultimately, all resources should follow the \gls{HATEOAS} pattern so that the complexity of the front-end application is low.
 
 \subsection{PermissionTree's cyclic reference}
-In the back-end, the \texttt{PermissionTree} class is implemented with a reference to its parent. In the end this attribute did not contribute to anything useful to the architecture and instead induced the creation of custom controllers and View-Models that brought inconsistencies in the angular application.
+In the back-end, the \texttt{PermissionTree} class is implemented with a reference to its parent. In the end this attribute did not contribute to anything useful to the architecture and instead induced the creation of custom controllers and ViewModels that brought inconsistencies in the angular application.
 
 \section{Bulk information manager}
 One of the requirements found in the proposal is the possibility to insert validated queries individually or in a group. The current system only supports inserting single, not validated  queries.
 
 \section{Testing and User Validation}
-Unit testing was done during the early stages of development but unfortunately they required too many resources. The multi-database support required all database instances to be running during the test execution. As the project development sped up, tests were ditched. Therefore the implementation of a proper test suit that validates this project's requirements is considered valuable.
+Unit testing was done during the early stages of development but unfortunately they required too many resources to execute. The multi-database support required all database instances to be running during the test execution. As the project development sped up, tests were ditched. Therefore the implementation of a proper test suit that validates this project's requirements is considered needed.
 
 The introduction of the system in the proposed context was neither executed nor evaluated, leading to no conclusion whether it actually decreases the amount of times the \gls{IT} department is interrupted. Taking actual measurements before and after deployment would answer this question.
 
-The developed \gls{UI}'s usability was not evaluated. Confusing interfaces lead to more interruptions to the \gls{IT} department, therefore usability tests should be done to assess its intuitiveness and ease-of-use.
+The developed \gls{UI}'s usability was not evaluated. If the interface is found to be confusing for many users, the \gls{IT} department would be frequently interrupted for usability reasons, therefore tests should be done to assess its intuitiveness and ease-of-use.
 
 \section{Parameterization}
 The proposal states that this tool should enable \gls{SQL} queries to be parameterized, which would allow the system to meet the specific needs of each user. Unfortunately this field was not developed at all and queries can only be run as they were inserted.
