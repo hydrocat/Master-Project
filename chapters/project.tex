@@ -1,12 +1,13 @@
-\chapter{Project}
+\chapter{Project}\label{chap:project}
 
-This section will discuss the entities and requirements evaluated from the proposal.
-\todo{e o design geral do project, overview das seccoes}
+This chapter is focused on explaining how the application was defined in its logical terms and requirements, therefore it is not concerned with how the application will visually be presented nor how they should be implemented in code but instead gives an overview of its functionalities. In sum, there were found eight requirements that can be modeled with four relating entities. 
 
-\section{Requirements}
+Section~\ref{p:req} describes the process used to elicit the requirements, the requirements themselves, the use cases that fit them and the entities that model them. Section~\ref{tities} presents a Entity-Relational model that exposes the relations and constraints between the entities and in Section~\ref{p:details} there are some considerations about the developed system design.
+
+\section{Requirements}\label{p:req}
 The requirement analysis done for this application relied mostly on what could be abstracted from the written proposal and from a few meetings with a subset of the stakeholders.
-In this case all evaluated stakeholders are members of \gls{IPB}, they are professors, administrative staffs and members of the \gls{IT} department. 
-The first two being the target audience for this application and the last one being responsible to maintain it by assessing any problems that may arise during usage and altering the application as new requirements appear.
+In this case all evaluated stakeholders are members of \gls{IPB}. They are professors, administrative staffs and members of the \gls{IT} department. 
+The first two being the target audience for this application and the last one being responsible to maintain it by assessing any problems that may arise during application usage and altering it as new requirements appear.
 
 After reading the written proposal alone, the following functional requirements were elicited:
 
@@ -35,7 +36,7 @@ Following this paragraph is a description of each elicited entity alongside thei
 \item[Permission] The binding between Users and Queries.\\
   In order to fulfill requirement~\ref{req:permission}, this entity is responsible to handle the relation between a User and all the Queries that they may access.
 \item[User] Represents the person currently logged-in.\\
-  It has two purposes, first is to differentiate users according to their roles, either ``Administrators'' or ``User'' so that certain actions are disabled, for example the Administrative task stated in requirement~\ref{req:addquery}.
+  It has two purposes, first is to differentiate users according to their roles, either ``Administrator'' or ``User'' so that certain actions are disabled, for example the Administrative task stated in requirement~\ref{req:addquery}.
   The second is to be used when filtering Queries so that requirement~\ref{req:permission} is met.
 \end{description}
 
@@ -75,7 +76,15 @@ More concretely, the entities relate to themselves as shown in Figure~\ref{fig:e
   \caption{Entity Relational Diagram}\label{fig:er}
 \end{figure}
 
-\subsection{Project Details}
+\subsection{Project Details}\label{p:details}
 Due to the how the entities and their relations were designed, it is important to note some peculiarities and restrictions that came with it.
 
-To begin with, Queries are associated to a single Permission and this led the listing of an User's Queries to be a unique list. An Administrator can manage all parts that are within this system's domain and thus, they cannot change the username as it is bound to the Directory Service. Every permission has a reference to its parent, the root Permission has a reference to itself. There are only two roles that any given user may be assigned to, either Administrator or User.
+To begin with, Queries are associated to a single Permission and this led the listing of an User's Queries to be a unique list. An Administrator can manage all parts that are within this system's domain and thus, they cannot change the username as it is bound to the Directory Service. Every permission has a reference to its parent and the root Permission has a reference to itself. There are only two roles that any given user may be assigned to, either Administrator or User.
+
+\section{Chapter Conclusion}
+
+This chapter expressed the scope of the proposed application, how it was logically modeled and the requirements it was expected to meet.
+
+In order to reduce the amount of interruptions received by the \gls{IT} department during student registration periods, this application seeks to give access to the information stored in \gls{IPB}'s databases in an organized manner. In sum, two actors were defined, the User whose main use cases consists of executing a Query and possibly downloading the results as a spreadsheet file and the Administrator, that associates one User with one or more Permissions.
+
+The next chapter will be presenting how the entities and functionalities evaluated here were implemented into a functional application.

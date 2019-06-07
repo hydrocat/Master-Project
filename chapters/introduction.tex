@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introduction}\label{chapter:intro}
 As companies and institutions develop, they tend to implement and depend on digital systems~\cite{ibm}. Generally speaking, these solutions involve the deployment of a persistence mechanism such as a relational database or a directory service, \gls{RDBMS} being the most common~\cite{apachedp}. Once  made available, they are frequently updated with new information that, if not properly processed and made understandable, does not generate any meaningful insights.
 
 It is not a hard task to give access to the raw information contained within a \gls{RDBMS} but because of how it is usually split in logical relations to avoid unnecessary data repetition~\cite[Part~$\mathrm{V}$]{vaquinha}, technical knowledge is required to harness its potential into a tangible understanding that can help in the decision-making process. 
@@ -14,7 +14,7 @@ Over time the technician has built a list of about 40 common requests and their 
 
 \section{Objective}\label{objective}
 
-To develop a web platform that exposes \gls{SQL} scripts to \gls{IPB}'s employees in a convenient way that does not require expert knowledge of the underlying system architecture and eases the technician workload during the institution's critical moments.
+The objective of this project is to develop \gls{Yabi} a web platform that exposes \gls{SQL} scripts to \gls{IPB}'s employees in a convenient way that does not require expert knowledge of the underlying system architecture and eases the \gls{IT} department workload during the institution's critical moments.
 
 Such platform will be maintained by an administrator that is responsible for registering the desired \gls{SQL} scripts and based on their role in the institution, professors and other employees are presented to a list of queries coupled with meaningful title and description in which they can run, see the resulting table and download an spreadsheet file.
 
@@ -46,5 +46,8 @@ Throughout this document, some words and terms were made to look different from 
 
 \section{Document Structure}
 
+This document is divided in six chapters. Chapter~\ref{cha:concepts} introduces the tools and concepts employed in this application, grouping them by whether they were used in the front-end, back-end or during development.
 
+With an analysis of this project's proposal and the context it supposed to be used, Chapter~\ref{chap:project} elicits requirements, use cases and entities that are found to compose the system. Chapter~\ref{cha:implementation} then goes through the implementation of those entities and use cases into front-end and back-end applications alongside the tools used to mimic the production environment locally.
 
+Chapter~\ref{conclusion} concludes this document with an overview of what was done and comments its current state and lastly, Chapter~\ref{chap:future} presents a few ways in which this project could be further developed.

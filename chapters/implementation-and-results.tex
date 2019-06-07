@@ -1,7 +1,7 @@
 \chapter{Implementation and Results}\label{cha:implementation}
 In this chapter it is explained the implementation details of \gls{Yabi} as a whole, encompassing the front-end Angular application in Section~\ref{cha:implementation:sec:front-end}, the Java back-end Web \gls{API} in Section~\ref{cha:implementation:sec:back-end} and lastly in Section~\ref{cha:implementation:sec:development}, how some of the development tools were used to mimic the production environment and assess the back-end.
 
-The resulting application is composed of two minor applications that are executed in different contexts, one meant to run in the browser the other in a remote server.
+The resulting application is composed of two minor applications that are executed in different contexts, one meant to run in the browser the other in a remote server. The first being a friendly Web interface for the functions implemented in the last.
 
 \section{Front-end}\label{cha:implementation:sec:front-end}
 This section describes the implementation of a website that exposes the functionalities of the developed system. It is meant to be accessed by all stakeholders and thus, it adapts to the current logged-in user based on their role. It was written using Angular Framework and closely models the back-end Web \gls{API}, mapping its entities and responses into re-usable classes.
@@ -409,9 +409,9 @@ The core part of this feature is \gls{JDBC} 4.0's \texttt{DriverManager} class a
 Because of this, implementing this feature was as simple as declaring dependencies for database drivers in the \texttt{pom.xml} configuration file. Notably, Oracle\footnote{https://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html} requires the creation of an Oracle account and the configuration of a custom maven repository in order to download their drivers.
 
 \section{Development Environment}\label{cha:implementation:sec:development}
-This section will focus on the tools that were configured to accommodate the development and testing of this application.
-\todo{introduction}
-\subsection{Directory Service}
+This section is focused on the work that was done indirectly to \gls{Yabi}, but was still crucial to its development. Section\ref{ds} expresses how \gls{IPB}'s directory service was imitated with a local service. Section~\ref{dbinit} presents some configurations that can be done on \gls{Yabi}'s property file that aids during the production deployment and lastly, Section~\ref{ptt} presents some \gls{API} tests that assess some of \gls{Yabi}'s restrictions.
+
+\subsection{Directory Service}\label{ds}
 When developing an application, it is good practice to avoid reaching out and interacting to remote services and instead provide a local instance that is able to mimic the real-world environment.
 
 In this case because a directory service is used as a part of it's authentication mechanism, a local \gls{LDAP} server was created in Apache Directory Studio that mimics \gls{IPB}'s directory service close enough so that the configuration provided by their \gls{IT} team is able to be used locally with minimal changes, in fact, the only difference is the service's address.
@@ -431,28 +431,28 @@ Figure~\ref{fig:adsconfig} show how the directory is structured in the server-si
   \caption{Directory structure and the properties of user \texttt{professor}}\label{fig:adsconfig}
 \end{figure}
 
-\subsection{Database Initializer}
+\subsection{Database Initializer}\label{dbinit}
 When starting \gls{Yabi} for the first time, it needs to generate its database, create the root permission and an administrator account.
 To do so, the class \texttt{DbInitializer} was written. It implements the \texttt{CommandLineRunner} interface so that Spring executes it just after initializing.
 
 There are two properties that interact with \texttt{DbInitializer}, \texttt{yabi.db.init} and \texttt{yabi.db.init.admin.username}. The former regulates when yabi should create a new database, the root permission and the administrator account, the latter declares the administrator's username to be used. If the initialization is desired, \texttt{yabi.db.init} should be set to \texttt{create}, otherwise, it can be set to anything else. It is necessary that the administrator username is able to be bound in the directory service otherwise the authentication will fail.
 
-\subsection{Postman Tests}
+\subsection{Postman Tests}\label{ptt}
 When developing the \gls{API}, some test cases were created in Postman to assess the prevention of data duplication. All four entities were tested.
 In essence, every test consists of two requests, one that creates a new entity and expects a \gls{HTTP} status 201 response and the other that tries to re-create the same entity and expects a \gls{HTTP} status 409.
 
 It is important to note that these tests are validating the following restrictions imposed in each entity:
 \begin{itemize}
-\item There must be only one \texttt{PermissionTree} per \etxttt{nodePath}.
+\item There must be only one \texttt{PermissionTree} per \texttt{nodePath}.
 \item One \texttt{Directory} per \texttt{connectionString}, so that each database is referenced once.
 \item One \texttt{Directory} per \texttt{name}, so that each name maps to only one database.
 \item One \texttt{SqlQuery} under a \texttt{PermissionTree} with a given \texttt{name}, avoiding ambiguous \texttt{SqlQuery} entries.
 \item No more than one \texttt{YabiUser} with a given \texttt{name}.
 \end{itemize}
 
-\subsection{Chapter Conclusion}
-This section discussed the implementation details all the parts that compose the \gls{Yabi} application and its development.
-\todo{conclusao da implementação}
+\section{Chapter Conclusion}
+This chapter discussed the implementation of all the parts that compose an application entitled \gls{Yabi}. It has a Web front-end written in Angular that is meant to be accessed by both users and administrators and a Web \gls{API} written in Java with Spring Framework.
 
+The current implementation enables administrators to create database entries for Databases, Permissions and Queries and associate them. Users are validated using the institution's Directory Service and are brought into the system by being directly inserted in the database.
 
-
+The following chapter will conclude what was done in this work and how it relates to the context in which it is meant to be introduced.
