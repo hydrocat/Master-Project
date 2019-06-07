@@ -36,6 +36,7 @@ Angular is a front-end web framework started its life as a side project at Googl
 The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times, slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and up is a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables~\cite{angular}.
 
 An overview of key Angular elements follows:
+
 \begin{description}
 \item[Module] Internally referenced as a \texttt{NgModule}. \\
   These are the basic elements through which an Angular application is structured\cite{angularmodule}. They declare the elements that will be provided to its child Modules, Services and Components.
@@ -69,11 +70,13 @@ What follows is a brief explanation of this template's folder structure to highl
   \includegraphics[width=.8\textwidth]{images/sbadmin/login}
   \caption{Login Screen}\label{fig:login}
 \end{figure}
+
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{images/sbadmin/collapsed}
   \caption{Dashboard with collapsed side menu}\label{fig:dash}
 \end{figure}
+
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{images/sbadmin/visible}
@@ -89,15 +92,19 @@ SB Admin Angular was written with the intention of being modified and extended b
 \item \textbf{dist} Once the project is built for deployment, this directory will hold all the assets and optimized code ready for production, including the main \texttt{index.html} file that bootstraps the whole project.
 \item \textbf{e2e} This holds the source code for End-to-End test cases, hence the name.
 \item \textbf{src} This is the heart of this template, a directory that holds all the structure, content and behavior needed for each application. \leavevmode
+
   \begin{itemize}
   \item \textbf{app} The Angular entry-point. Contains the application-wide router module.
+
     \begin{itemize}
     \item \textbf{layout} All the components used to compose the navigational elements and menus and their subsequent pages plus some example pages. \leavevmode
+
       \begin{itemize}
       \item \textbf{black-page} A inaccessible component that does nothing, probably unfinished.
       \item \textbf{blank-page} An example component that renders a white page.
       \item \textbf{charts} A component that display chart capabilities of the integrated JavaScript module chartjs\footnote{Available at https://www.chartjs.org/}.
           \item \textbf{components} Omnipresent page elements such as the Topbar and the collapsible Sidebar.
+
         \begin{itemize}
         \item \textbf{topnav} The blue navigation top bar as seen on Figure~\ref{fig:dash}.
         \item \textbf{sidebar} The Menu on the left side of the screen as seen on Figure~\ref{fig:visible}.
@@ -121,6 +128,7 @@ SB Admin Angular was written with the intention of being modified and extended b
 
 % connection
 After this overview, it is interesting to note the following:
+
 \begin{itemize}
 \item The Layout folder hosts, for the most part, Components and Modules that are listed in the sidebar.\item There are some unused components that were probably left over from design changes and were not deleted, which is the case of black-page and the nav component.
 \item There are many examples that proved as a handy reference during development, namely the forms and material-components.
@@ -165,6 +173,7 @@ During the implementation of this project, the ViewModel pattern was used outsid
 Developed by Pivotal Software in 2002, the Spring Framework provides most of the ``plumbing'' necessary for fast development and deployment of enterprise Java applications~\cite{springdocs}, some of the main features include: Dependency Injection which is an \gls{IoC} mechanism; A set of tools for information access such as \gls{ORM} configurations called Spring Data and an application-wide security mechanisms and configurations called Spring Security.
 
 One of the strongest design philosophies of the Spring Framework is the following:
+
 \begin{displayquote}
 ``Provide choice at every level. Spring lets you defer design decisions as late as possible. For example, you can switch persistence providers through configuration without changing your code. The same is true for many other infrastructure concerns and integration with third-party \gls{API}s.''~\textcite{springdocs}
 \end{displayquote}
@@ -187,6 +196,7 @@ When developing a enterprise-level application, often times there is a need for 
 Bridging the gap between the \texttt{Repository} interface and its implementation, two other interfaces are provided such that when extended, provides the programmer with methods for interacting with a persistence system in a high level of abstraction. The base one is called \texttt{CrudRepository} and it provides the basic functionalities for persisting objects and a Web \gls{REST} interface form them. Extending \texttt{CrudRepository} there is the \texttt{PagingAngSortingRepository} that adds pagination and sorting on top of it.
 
 The \texttt{CrudRepository} on its own provide the following default methods:
+
 \begin{description}
 \item[\textit{save(Entity)}] Persists a entity in the data store and returns the saved instance with updated generated values.
 \item[\textit{findOne(ID)}] Retrieve one entity from the data store. If not found, returns null.
@@ -204,6 +214,7 @@ label=code:yabiuserrepo
 ]{listings/YabiUser/YabiUserRepository.java}
 
 These functionalities are made available through the following modules that come bundled with Spring Data:
+
 \begin{itemize}
 \item Spring Data \gls{JDBC}.
 \item Spring Data \gls{JPA}.
@@ -213,6 +224,7 @@ These functionalities are made available through the following modules that come
 
 \subsubsection{\gls{HATEOAS}}
 It all begins with \gls{REST}, that according to its creator:
+
 \begin{displayquote}
   ``REST is a coordinated set of architectural constraints that attempts to minimize latency and network communication, while at the same time maximizing the independence and scalability of component implementations. This is achieved  by  placing  constraints  on  connector  semantics,  where  other  styles have focused on component semantics. REST enables the caching and reuse of interactions, dynamic substitutability of components, and processing of actions by intermediaries, in order to meet the needs of an Internet-scale distributed hypermedia system.''~\cite{fielding}
 \end{displayquote}
@@ -270,6 +282,7 @@ The project goal is to unify the project structure so that there is less time sp
 This plugin offers an annotation-based code-scaffolding tool for Java definitions. Given the right annotations, common methods like getters, setters and no attribute constructor are automatically generated in build or compile-time~\cite{lombok}. This tool consists of a two-part system that includes the integration with the compiler/build-system and another one that interacts with the developer's \gls{IDE} so that the completion system is able to recognize the implicitly generated methods.
 
 Some of the notable annotations include:
+
 \begin{itemize}
 \item \texttt{@Data}, useful for \gls{POJO} classes, this annotation generates getters, setters, a string converter and equality methods.
 \item \texttt{@NoArgsConstructor} and \texttt{@AllArgsConstructor}, as the name implies, one generates a constructor that takes no arguments and the other, a constructor that generates all arguments.
@@ -288,6 +301,7 @@ Akin to a \gls{VM}, containers provides a way to have a different computing envi
 In the other hand, Docker is more than just the sandboxing of processes. It handles image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, a online registry of extendable containers and command line interface that downloads, builds and manages containers~\cite{dockerfag}.
 
 Core Docker definitions are brought up~\cite{dockeroverview}:
+
 \begin{description}
 \item[Dockerfile] A file that declares the steps taken to build an Image.
 \item[Image] A blueprint of a container generated once a \texttt{Dockerfile} is built.
@@ -309,11 +323,13 @@ Managing this volume of files and relations can sometimes lead to confusion. Ang
 From the downfall of Netscape browser and the release of its source code, the Mozilla project started with the mission to ensure the Internet to be a global public place, open and accessible to all~\cite{firemission}. Its main product is the open source web browser, Firefox.
 
 Firefox comes bundled with plenty of tools that facilitate web development, considered as the most valuable are the following:
+
 \begin{description}
 \item [Source Mapping] Is the ability to map some generated code back to its source. Some web frameworks like Angular~\ref{concept:angular} generate applications that are not developed in JavaScript itself but compiled to JavaScript in order to be executed~\cite{srcmapping}. In the beginning this led to great confusion because the browser's built-in debugger would display not the original source but the generated code.
 \item [Debugger] Support for breakpoints, conditional breakpoints, expression stepping and variable lookup. Which is highly useful when coupled with the previous element~\cite{dbgmodernweb}.
 \item [Network Monitor] Often times it is needed to inspect the outgoing requests and their responses. The integrated monitor is able to expose all elements of the communication exchange and measure the different attributes of a network operations~\cite{networkmon}.
 \item [Storage Inspector] Provides access to the information storage that is managed by the browser for each page~\cite{storageinspector}, namely:
+
   \begin{itemize}
   \item Cache Storage
   \item Cookies
