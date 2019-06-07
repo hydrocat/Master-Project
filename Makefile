@@ -5,7 +5,7 @@ YABISRC=/home/hydrocat/git/yabi-backend/src/main/java/ipb/yabi
 YABIROOT=/home/hydrocat/git/yabi-backend/
 YABIFRONT=/home/hydrocat/git/yabi-frontend/src/app
 
-relatorio.pdf: clean-relatorio links
+relatorio.pdf: clean-relatorio 
 	rm -f $(RM_EXTENSIONS)
 	pdflatex $(PDF_FLAGS) relatorio
 	biber relatorio
@@ -14,21 +14,7 @@ relatorio.pdf: clean-relatorio links
 	pdflatex $(PDF_FLAGS) relatorio
 	rm -f $(RM_EXTENSIONS)
 
-links: listings backendlink frontendlink
-
-listings:
-	ln -s $(YABISRC) listings
-backendlink:
-	ln -s $(YABIROOT) backendlink
-frontendlink:
-	ln -s $(YABIFRONT) frontendlink
-
 clean-relatorio:
 	rm -f relatorio.pdf
-
-clean-links:
-	rm -f listings
-	rm -f backendlink
-	rm -f frontendlink
 
 clean: clean-links clean-relatorio
