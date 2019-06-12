@@ -17,4 +17,5 @@ relatorio.pdf: clean-relatorio
 clean-relatorio:
 	rm -f relatorio.pdf
 
-clean: clean-links clean-relatorio
+clean:
+	rm -f $(RM_EXTENSIONS)

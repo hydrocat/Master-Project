@@ -6,7 +6,7 @@ The resulting application is composed of two minor applications that are execute
 \section{Front-end}\label{cha:implementation:sec:front-end}
 This section describes the implementation of a website that exposes the functionalities of the developed system. It is meant to be accessed by all stakeholders and thus, it adapts to the current logged-in user based on their role. It was written using Angular Framework and closely models the back-end Web \gls{API}, mapping its entities and responses into re-usable classes.
 
-Beginning with Section~\ref{f:isr} that describes the one of the most interesting part of this chapter that is the interaction with Spring Framework's Repositories in a generalized manner that is used in all entities. Section~\ref{component:structure} discourses in a generalized manner how the evaluated entities were translated into Angular Components that attend this system's requirements, leaving each particular implementation to Section~\ref{components}. The remaining sections discuss the implementation of more specific details that begins with Section~\ref{gfcb} describing a custom helper function for generating forms, Section~\ref{tcr} showing how temporal caching was implemented, Section~\ref{error:handler} explaining how errors were shown to the users, Section~\ref{f:auth} describing how the authentication with the back-end was implemented, Section~\ref{f:endpoint} explaining how the \gls{API} endpoints were centralized, Section~\ref{shared} showing how application-wise constants were implemented and Section~\ref{concerns} analyzing the application in regards to possible security flaws.
+Beginning with Section~\ref{f:isr} that describes the one of the most interesting part of this chapter that is the interaction with Spring Framework's Repositories in a generalized manner that is used in all entities. Section~\ref{component:structure} explains in a generalized manner how the evaluated entities were translated into Angular Components that attend this system's requirements, leaving each particular implementation to Section~\ref{components}. The remaining sections discuss the implementation of more specific details that begins with Section~\ref{gfcb} describing a custom helper function for generating forms, Section~\ref{tcr} showing how temporal caching was implemented, Section~\ref{error:handler} explaining how errors were shown to the users, Section~\ref{f:auth} describing how the authentication with the back-end was implemented, Section~\ref{f:endpoint} explaining how the \gls{API} endpoints were centralized, Section~\ref{shared} showing how application-wise constants were implemented and Section~\ref{concerns} analyzing the application in regards to possible security flaws.
 
 \subsection{Interfacing with Spring Repository}\label{f:isr}
 Because the back-end is mostly implemented using Spring Repositories, which is an abstraction over the persistence of information, many \gls{API} requests are followed by replies that have a general but not consistent \gls{JSON} structure, making it time-consuming to use Typescript's typing capabilities for each and every entity and their Spring Repository structure.
@@ -21,7 +21,7 @@ For most applications, the most interesting part are the elements that make up t
 
 The common elements between all the implemented repositories are the pager section seen on line 37, the relative links to the listing itself seen on line 25 and the previously stated \texttt{\textunderscore embedded} key that references the element array. Every one of the listed elements contain the self \gls{URL} seen between lines 8 and 11 that references itself.
 
-Although it is a very declarative to human beings, this \gls{JSON} format is not very machine-friendly due to the ever changing key that references the array of elements. As seen on line 3, \texttt{SqlQueryRepository} uses \texttt{sqlQueries} and other repositories follow suit with \texttt{DirectoryRepository} using \texttt{directories} and \texttt{PermissionTreeRepository} using \texttt{permissionTrees}. This approach is not easily modeled in Typescript because the key being accessed is not known before running the code. 
+Although it is very declarative to human beings, this \gls{JSON} format is not very machine-friendly due to the ever changing key that references the array of elements. As seen on line 3, \texttt{SqlQueryRepository} use the key \texttt{sqlQueries} and other repositories follow suit with \texttt{DirectoryRepository} using the \texttt{directories} key and \texttt{PermissionTreeRepository} using the \texttt{permissionTrees} key. This approach is not easily modeled in Typescript because the key being accessed is not known before running the code. 
 
 With the previous observations it was possible to abstract every repository response into three classes, a \texttt{Repository}, an \texttt{Accessor} and an \texttt{Entity}, enabling the implementation of a generalized repository that is able to interact with Spring's \texttt{PagingAndSortingRepository} in a convenient and typed manner.
 Logically a \texttt{Repository} provides access to an array of \texttt{Entity} through the key whose name is define through an \texttt{Accessor}. Figure~\ref{fig:springresponse} provides an overview of how these entities relate.
@@ -40,14 +40,14 @@ label=code:json
 ]{images/hateoas.json}
 
 \subsubsection{Entity Class}
-This class is typed to accommodate the structure found in the array of elements contained within a repository response, leaving each specification to extend it and add their own fields. It also provide default implementations for \texttt{id} getter and setter and \texttt{uri} getter, that are useful when converting from hateoas classes to non-hateoas classes.
+This class is typed to accommodate the structure found in the array of elements contained within a repository response, leaving each specification to extend it and add their own fields. It also provides default implementations for \texttt{id} getter and setter and \texttt{uri} getter, that are useful when converting from hateoas classes to non-hateoas classes.
 
 \subsubsection{Accessor Class}
 To deal with the fact that the array of persisted elements is found under a key whose name depends on the entity in which the repository provides, the \texttt{Accessor} interface was written.
 
 In its definition, there is only one field, \texttt{accessorName}, that contains a string which can be used to reference the array of persisted elements. Even though this approach functionally works, it compiles and runs, it does not provide the \gls{IDE} with enough information to aid the programmer into navigating the response structure because the value of accessing an object with a key that is unknown in compile-time is also unknown.
 
-To circumvent this limitation all classes that implement the \texttt{Accessor} interface should also contain a option key whose name is the same one defined in the value of \texttt{accessorName} and its type is an array of entities provided by the repository. With this, the \gls{IDE} is able to auto-complete and type-check the whole response, from repository to individual entity fields.
+To circumvent this limitation all classes that implement the \texttt{Accessor} interface should also contain an option key whose name is the same one defined in the value of \texttt{accessorName} and its type is an array of entities provided by the repository. With this, the \gls{IDE} is able to auto-complete and type-check the whole response, from repository to individual entity fields.
 
 \subsubsection{Repository Class}
 This repository attempts to map Spring Repository response as a whole. In other words, they are the top-most level of the response, mapping the first level of key-values to Typescript types. There are two classes that make up this abstraction, the \texttt{Repository} class that map the \texttt{\textunderscore embedded} and \texttt{\textunderscore links} keys and the \texttt{PagingAndSortingRepository} extension that adds a \texttt{page} key to the mapping.
@@ -57,7 +57,7 @@ When the previous classes were written to map the \gls{API} responses, their sim
 
 Implementation-wise this class is composed of the three generic elements previously evaluated, \texttt{Entity}, \texttt{Accessor} and \texttt{PagingAndSortingRepository} its constructor needs a function that return new instances of \texttt{Entity}, an instance of \texttt{Accessor}, the \texttt{HttpClient} service and a string with the address of the remote Spring Repository.
 
-While developing this service, a unexpected behavior was met. When specifying the type of a \texttt{HTTP} response, it did not create a new instance of the received data, which made the methods associated to the \texttt{Entity} class and its extensions to not function. This was mitigated by adding the required parameter in the constructor called \texttt{entityConstructor} whose value is a function that takes no arguments and returns an instance of the repository's entity, then every response follows the pattern of creating a new of such instance and copying all properties from the textual response to it using the \texttt{Object.assign} function.
+While developing this service, an unexpected behavior was met. When specifying the type of a \texttt{HTTP} response, it did not create a new instance of the received data, which made the methods associated to the \texttt{Entity} class and its extensions to not function. This was mitigated by adding the required parameter in the constructor called \texttt{entityConstructor} whose value is a function that takes no arguments and returns an instance of the repository's entity, then every response follows the pattern of creating a new of such instance and copying all properties from the textual response to it using the \texttt{Object.assign} function.
 
 With all this in place, implementing a service that has no behaviors other than \gls{CRUD} operations is no more than specifying the \texttt{PagingAndSortingRepositoryService} class. Listing~\ref{code:directoryservice} show the implementation of \texttt{DirectoryService}. Note that all it does is extending \texttt{PagingAndSortingRepositoryService}, providing its \texttt{Directory}-specific classes instead of the generic triad and overloading the constructor on lines 21 to 23 so that it can further specify the parent's behavior.
 
@@ -80,21 +80,21 @@ In general, each of \gls{Yabi}'s entity have got a folder that contains:
   \end{itemize}
 \item A Service file that extends \texttt{PagingAndSortingRepositoryService}, specifying it for the given entity.
 \item The Template file that renders a listing with the available entities.
-\item A Component file that interacts with the Template and create dialogs.
+\item A Component file that interacts with the Template and creates dialogs.
 \item The Style file with rules to correctly render the ``add'' button.
 \item A folder with a dialog Component for creating more entries.
 \item A folder with a dialog Component for editing an entry.
 \item The Module file declaring its dialog Components to also be loaded with \texttt{entryComponents}.
 \end{itemize}
 
-There are some variations to this rule. \texttt{User} Component only has only one dialog that is used to show more information about the current user. \texttt{Query} Component was one of the first components to be developed and it has three dialogs, one for showing more information and the results of running it, a ``form'' dialog that maps a \texttt{Query} to input elements that is used for editing and creating.
+There are some variations to this rule. \texttt{User} Component has only one dialog that is used to show more information about the current user. \texttt{Query} Component was one of the first components to be developed and it has three dialogs, one for showing more information and the results of running it, a ``form'' dialog that maps a \texttt{Query} to input elements that is used for editing and creating.
 
 \subsection{Components}\label{components}
-Every entity defined in the project section have got a corresponding Angular Component that follows the structure previously defined with a certain degree of freedom, in this section the particularities of each component in regards to each element will be shown, starting with their Service followed by Template, Component and ending in their Module, if applicable.
+Every entity defined in the project section have got a corresponding Angular Component that follows the structure previously defined with a certain degree of freedom. In this section the particularities of each component in regards to each element will be shown, starting with their Service followed by Template, Component and ending in their Module, if applicable.
 
 \subsubsection{Login}
 % service
-\texttt{LoginService} is different than the other services because it does not extend \texttt{PagingAndSortingRepositoryService} and instead is concerned with providing login functionality and system-wide predicates about the current user or session. The two main predicates are \textit{isAdmin} and \textit{isAuthenticated}, the first is used on templates to hide elements that should not be seen by non-administrative users and the second is run before every request sent to \gls{API} so that the application can redirect to the login page if by some reason the user access a page without first logging-in. It also provides \textit{login} and \textit{logout} function, the former saves the username and password combination in the local storage to be used by \texttt{authenticationInterceptor} and requests the \gls{API} route \textbf{/user} for information about the current user; the latter deletes the current user's instance, clears the local storage information and redirects to the login page at \textbf{/login}.
+\texttt{LoginService} is different than the other services because it does not extend the class \texttt{PagingAndSortingRepositoryService} and instead is concerned with providing login functionality and system-wide predicates about the current user or session. The two main predicates are \textit{isAdmin} and \textit{isAuthenticated}. The first is used on templates to hide elements that should not be seen by non-administrative users and the second is run before every request sent to \gls{API} so that the application can redirect to the login page if by some reason the user access a page without first logging-in. It also provides \textit{login} and \textit{logout} function, the former saves the username and password combination in the local storage to be used by \texttt{authenticationInterceptor} and requests the \gls{API} route \textbf{/user} for information about the current user; the latter deletes the current user's instance, clears the local storage information and redirects to the login page at \textbf{/login}.
 
 % template
 This component came as part of the \texttt{Sb-Admin-Material} and can be seen on Figure~\ref{fig:loginerror}. Mainly, it provides a standard text input for user identification, protected text input for passwords and a Login button that is associated with the component's \textit{onLogin} method. The other \gls{HTML} elements are not bound to any function.
@@ -104,7 +104,7 @@ Its Component is very short. It provides a \textit{onLogin} method that in turn 
 
 \subsubsection{User}
 % service
-\texttt{UserService} extends \texttt{PagingAndSortingRepositoryService}, specifying it for the \texttt{User} model and provide functions for managing the association between user and permission, listing an user's permissions with the \textit{permissions} method, creating the relation with \textit{assignPermission} and removing it with \textit{unAssignPermission}. It is worth noting that the process of creating this association involves a \textsc{post} request to the user's permissions address in which the body is composed of line-break separated \gls{URL} links and the header indicates a content type of \texttt{text/uri-list}.
+\texttt{UserService} extends \texttt{PagingAndSortingRepositoryService}, specifying it for the \texttt{User} model and provides functions for managing the association between user and permission, listing an user's permissions with the \textit{permissions} method, creating the relation with \textit{assignPermission} and removing it with \textit{unAssignPermission}. It is worth noting that the process of creating this association involves a \textsc{post} request to the user's permissions address in which the body is composed of line-break separated \gls{URL} links and the header indicates a content type of \texttt{text/uri-list}.
 
 % template
 When non-administrative users logs in the application, they are redirected to the \textbf{/queries} page so they can quickly execute one of their use cases. Figure~\ref{fig:userquerylist} show the page with queries available to the current user. In the top right corner the username is shown to be \texttt{professor} and when clicking the first circle to its right a small pop-up appears with their role. One last thing to note is that non-administrative users such as the one from the figure, do not have access to all screens and buttons. In comparison to Figure~\ref{fig:adminpermisisonnew}, administrators have buttons on the side menu that redirect to \texttt{Directory} and \texttt{User} components, and also a pink round button with an plus sign on the bottom right that enable the insertion of new entries.
@@ -165,7 +165,7 @@ Because queries must be filtered in regards the current user's permissions, \tex
 
 % template
 % dialogs & module
-The screen that lists the available permissions is also similar to that seen on Figure~\ref{fig:userquerylist}, although its table has different columns, \texttt{Path}, \texttt{Description} and \texttt{Actions}, with this last one visible only to administrators. The action column has two icons, a plus sign that indicates the creation of a new child permission and a trash can for deletion. Clicking the row raises a dialog for editing its description. The key difference between this entity and the others when it comes to creating a new entry is that because permissions follow a hierarchy, the first step towards creating a new entity is to choose its parent permission and clicking on the plus sign on its row. Figure~\ref{fig:permissionnew} presents the dialog raised when doing so, Note that it shows the parent permission's canonical path alongside its description.
+The screen that lists the available permissions is also similar to that seen on Figure~\ref{fig:userquerylist}, although its table has different columns, \texttt{Path}, \texttt{Description} and \texttt{Actions}, with this last one visible only to administrators. The action column has two icons, a plus sign that indicates the creation of a new child permission and a trash can for deletion. Clicking the row raises a dialog for editing its description. The key difference between this entity and the others when it comes to creating a new entry is that because permissions follow a hierarchy, the first step towards creating a new entity is to choose its parent permission and clicking on the plus sign on its row. Figure~\ref{fig:permissionnew} presents the dialog raised when doing so. Note that it shows the parent permission's canonical path alongside its description.
 
 \begin{figure}
   \centering
@@ -174,16 +174,16 @@ The screen that lists the available permissions is also similar to that seen on 
 \end{figure}
 
 % component
-The main component is bound to listing the available permissions. Similar to \texttt{QueryComponent}, this page serves both user roles the same way but contrary to it, \texttt{HateoasPermission} is used as the base model. This is because \texttt{Permission} class implements the \textit{toHateoas} method and even thought they share much of the same fields, the converted \texttt{HateoasPermission} is generated with a undefined \gls{URI} attribute. There are two sub-components, \texttt{PermissionFormNewComponent} and \texttt{PermissionFormEditComponent}. As the name suggests, they interact with the user and \gls{API} when creating and editing permissions. One interesting thing to note is that when persisting a new permission, the \textit{onSubmit} method appends the separator character to the path.
+The main component is bound to listing the available permissions. Similar to \texttt{QueryComponent}, this page serves both user roles the same way but contrary to it, \texttt{HateoasPermission} is used as the base model. This is because \texttt{Permission} class implements the \textit{toHateoas} method and even thought they share much of the same fields, the converted \texttt{HateoasPermission} is generated with an undefined \gls{URI} attribute. There are two sub-components accessible form the main screen, \texttt{PermissionFormNewComponent} and \texttt{PermissionFormEditComponent}. As the name suggests, they interact with the user and \gls{API} when creating and editing permissions. One interesting thing to note is that when persisting a new permission, the \textit{onSubmit} method appends the separator character to the path.
 % model
 
 \subsubsection{Directory}
 % service OK
-Lastly there is the \texttt{DirectoryService} whose implementation is nothing more than the proper extension of \texttt{PagingAndSortingRepositoryService}. In fact, it is so small that it was used as an the minimal usage example in Section~\ref{hateoas:service}.
+Lastly there is the \texttt{DirectoryService} whose implementation is nothing more than the proper extension of \texttt{PagingAndSortingRepositoryService}. In fact, it is so small that it was used as the minimal usage example in Section~\ref{hateoas:service}.
 
 % template
 The directory listing page is only accessible to administrative users, which made its implementation very compliant to  \gls{HATEOAS} pattern used by Spring Repository. It uses the same listing presentation shown in Figure~\ref{fig:userquerylist} with columns for \texttt{Name}, \texttt{Connection String}, \texttt{Username}, \texttt{Password} and \texttt{Actions}, showing the icon of a trash can that signifies deletion. Clicking the row itself raises the \texttt{DirecotryFormEditComponent} in a dialog, allowing the administrator to edit the clicked Directory.
-Figure~\ref{fig:dirnew} shows the dialog used to create a new Directory, it is composed of one textual input per model attribute and a ``Save'' button on the lower right corner. The previously \texttt{DirecotryFormEditComponent} shown on Figure~\ref{fig:diredit} share the same structure but with inputs filled with values from the Directory being edited.
+Figure~\ref{fig:dirnew} shows the dialog used to create a new Directory, composed of one textual input per model attribute and a ``Save'' button on the lower right corner. The previously \texttt{DirecotryFormEditComponent} shown on Figure~\ref{fig:diredit} share the same structure but with inputs filled with values from the Directory being edited.
 
 \begin{figure}
   \centering
@@ -198,7 +198,7 @@ Figure~\ref{fig:dirnew} shows the dialog used to create a new Directory, it is c
 \end{figure}
 
 % component
-The component implementation is very straight forward with the listing page fetching elements using the \texttt{DirectoryService} and binding the buttons to trigger their respective behavior. The plus button that indicates the creation of a new directory is bound to method \textit{onDirectoryNew}, clicking the row to \textit{onDirectoryShow} and the trash can to \textit{onDirectoryDelete}. The first two delegate the interaction to another components that are displayed in a dialog. 
+The component implementation is very straightforward with the listing page fetching elements using the \texttt{DirectoryService} and binding the buttons to trigger their respective behavior. The plus button that indicates the creation of a new directory is bound to method \textit{onDirectoryNew}, clicking the row to \textit{onDirectoryShow} and the trash can to \textit{onDirectoryDelete}. The first two delegate the interaction to other components that are displayed in a dialog. 
 
 % model
 Being accessible only to administrative users means that the whole \gls{API} interaction can be done through Spring Repositories. This means that the only model being exchanged is that of \texttt{HateoasDirectory} that extends \texttt{Entity} and nothing more.
@@ -206,17 +206,17 @@ Being accessible only to administrative users means that the whole \gls{API} int
 \subsection{Generic Form Control Builder}\label{gfcb}
 Every form used for editing and creating new entries follow the pattern of providing a text input for each attribute of the model. To reduce repeated code for generating a \texttt{FormGroup} with the given model's attributes the function \textit{genericFormControl} was implemented.
 
-What it does is take an instance of any object and a optional list of attributes to ignore and assign to an object every attribute name evaluated from calling \texttt{Object.keys} on the instance with a new \texttt{FormControl} with that attribute's value, skipping the attributes found the ignore-list. In the end, it returns a new \texttt{FormGroup} with such object.
+What it does is take an instance of any object and an optional list of attributes to ignore and assign to an object every attribute name evaluated from calling \texttt{Object.keys} on the instance with a new \texttt{FormControl} with that attribute's value, skipping the attributes found the ignore-list. In the end, it returns a new \texttt{FormGroup} with such object.
 
 This way, when creating a form for editing a model, this function will return all the control with values already filled, ready to be bound to a form in the template definition. Also, when creating a new entry, the resulting \texttt{FormControl} edited by the user will have matching fields with the model, allowing for fewer conversion between what is inputted and what is sent to the \gls{API}.
 
 \subsection{Temporal Caching Repository}\label{tcr}
-Because \texttt{PermissionService} is by a few different classes and because permissions are not frequently inserted in the system, it was found that not many \gls{API} requests are necessary during a session. Therefore a temporal caching system was developed on top of the existing \texttt{PagingAndSortingRepositoryService} so that in a configured time span, the service will not actually request the \gls{API} but instead provide elements that are kept in memory. Once the time expires, the local cache is considered invalidated and a new \gls{API} is issued.
+Because \texttt{PermissionService} is used by a few different classes and because permissions are not frequently inserted in the system, it was found that not many \gls{API} requests are necessary during a session. Therefore a temporal caching system was developed on top of the existing \texttt{PagingAndSortingRepositoryService} so that in a configured time span, the service will not actually request the \gls{API} but instead provide elements that are kept in memory. Once the time expires, the local cache is considered invalidated and a new \gls{API} is issued.
 
-Implementation-wise it intercepts the actual \textit{index} method saving a local copy of the response in memory. When a request to \textit{index} happens within the time frame specified in \texttt{SharedModule.serviceCacheExpirationTime}, it returns a observable of its local cache. The cache itself is implemented as an array of elements in which the service is providing.
+Implementation-wise it intercepts the actual \textit{index} method saving a local copy of the response in memory. When a request to \textit{index} happens within the time frame specified in \texttt{SharedModule.serviceCacheExpirationTime}, it returns an observable of its local cache. The cache itself is implemented as an array of elements in which the service is providing.
 
 \subsection{Error Handler}\label{error:handler}
-By default, every Angular app provides a \texttt{ErrorHandler} that simply writes to the browser's console. However users must be notified when an error happen so that they can either take action or contact the IT department if it persists. To do so, \texttt{ErrorHandler} was extended into \texttt{SnackBarErrorHandler}, which as the name suggests creates a snack bar element with the error message, and was provided in the root module so that any uncaught error in the application is handle by it, effectively replacing the standard \texttt{ErrorHandler}. Figure~\ref{fig:loginerror} show the visual element that is created when an error occurs.
+By default, every Angular app provides a \texttt{ErrorHandler} that simply writes to the browser's console. However users must be notified when an error happens so that they can either take action or contact the IT department if it persists. To do so, \texttt{ErrorHandler} was extended into \texttt{SnackBarErrorHandler}, which as the name suggests creates a snack bar element with the error message, and was provided in the root module so that any uncaught error in the application is handle by it, effectively replacing the standard \texttt{ErrorHandler}. Figure~\ref{fig:loginerror} show the visual element that is created when an error occurs.
 
 \begin{figure}
   \centering
@@ -237,7 +237,7 @@ Though as a Service, this class is declared in the app's root module and therefo
 Some example endpoints include the \texttt{PERMISSIONS} attribute that refers to the \gls{API}'s \textbf{/permissions} that return all the permissions associated to the current user; \texttt{ADMIN\textunderscore PERMISSIONS} referring to \textbf{/permissionTrees}, which is the interface managed by a Spring Repository and lastly there is the \textit{USER\textunderscore PERMISSION} function that takes in an user id and a permission id and returns the address that represents the association between them so it can be, for example, deleted.
 
 \subsection{Shared Module}\label{shared}
-The \texttt{SharedModule} is a class that is imports and exports all Angular Material directives. This was done to speed up development time, removing the necessity of importing each specific module when it is needed. The performance impact of including all of Angular Material was not found to be noticeable during development when compared to building it with \gls{AoT}.
+The \texttt{SharedModule} is a class that imports and exports all Angular Material directives. This was done to speed up development time, removing the necessity of importing each specific module when it is needed. The performance impact of including all of Angular Material was not found to be noticeable during development when compared to building it with \gls{AoT}.
 
 Another use of this module is providing application-wide constants. There are three static attributes, \texttt{debounceTime} which is the time in milliseconds between keystrokes to consider that the user has finished typing their search term; \texttt{serviceCacheExpirationTime} which is the lifespan of the information kept in a \texttt{CachedPagingAndSortingRepositoryService} and lastly, \texttt{apiBase}, which is the base \gls{API} address.
 
@@ -254,22 +254,22 @@ This section describes the server-side implementation of \gls{Yabi}. Developed i
 Section~\ref{s:entity} is a discourse more specifically on how the entities found during the design of this application were translated into Java code and the modifications that had to be done in order for this to happen. Being a fairly complete framework, Spring has most development use cases covered, however they must be configured in order to attend the specific needs of this application and thus Section~\ref{s:config} explain the main configurations that were necessary for the desired behaviors. Section~\ref{s:ccevm} explains the need and implementation of custom endpoints and ViewModels that were used. In Section~\ref{impl:repos}, the interaction with the local database and the \gls{HATEOAS} \gls{API} are explained. The solution for Requirement~\ref{req:multidb}, to access the institution database, is discussed in Section~\ref{s:mdbs}.
 
 \subsection{Entities}\label{s:entity}
-Following the Entity-Relational diagram in Figure~\ref{fig:er} and their relations, classes were created and properly annotated with so that \gls{JPA} is able to properly generate a relational model. Hence the \texttt{Entity} annotation is present in all classes.
+Following the Entity-Relational diagram in Figure~\ref{fig:er}, classes were created and properly annotated with so that \gls{JPA} is able to properly generate a relational model. Hence the \texttt{Entity} annotation is present in all classes.
 
-Listing~\ref{code:sqlquery} presents the implementation of the Query model defined in Section~\ref{model:query}, it servers as an overview into other model implementations as it shares much of the common features but also adds some of its own.
+Listing~\ref{code:sqlquery} presents the implementation of the Query model defined in Section~\ref{model:query}. It servers as an overview into other model implementations as it shares much of the common features but also adds some of its own.
 
-Lines 1, 2 and 5 are provided by the Lombok package as discussed in Section~\ref{tech:lombok}, instructing the creation of constructor and other common methods during compilation. All models make use of \texttt{@Data} and \texttt{@NoArgsConstructor} annotations and all but \texttt{PermissionTree} uses \texttt{@AllArgsConstructor}.
+Lines 1, 2 and 5 are provided by the Lombok package as discussed in Section~\ref{tech:lombok}, instructing the creation of constructor and other common methods during compilation. All models make use of \texttt{@Data} and \texttt{@NoArgsConstructor} annotations and all but \texttt{PermissionTree} use \texttt{@AllArgsConstructor}.
 
 In regards to \gls{ORM}, \texttt{@Entity} annotation in line 3 is the entry-point through which \gls{JPA} evaluates what classes are meant to be taken into account when building the relational model.
-In general, attributes need don't need to be declared as they are correctly inferred but in some cases it is desired to configure the generated database, \texttt{@Column} annotation on line 11 changes the default behavior so that the length of the corresponding \texttt{varchar} field in the table is able to hold larger amounts of characters; The other models, \texttt{YabiUser} \texttt{PermissionTree} and \texttt{Directory} make extensive use of \texttt{@Column} to specify columns that shouldn't have repeated values.
+In general, attributes don't need to be declared as they are correctly inferred but in some cases it is desired to configure the generated database, \texttt{@Column} annotation on line 11 changes the default behavior so that the length of the corresponding \texttt{varchar} field in the table is able to hold larger amounts of characters; The other models, \texttt{YabiUser} \texttt{PermissionTree} and \texttt{Directory} make extensive use of \texttt{@Column} to specify columns that shouldn't have repeated values.
 
 Relation between entities are made though \texttt{@OneToOne}, \texttt{@ManyToOne} and \texttt{@ManyToMany} annotations.
-The first two represents single value association between entities, however, they represent different semantics and where the foreign key will be created.
+The first two represent single value association between entities, however, they represent different semantics and where the foreign key will be created.
 \texttt{@ManyToOne} indicates that the foreign key will stay in the table in which this model is mapped to, \texttt{@OneToOne} makes no distinction, leaving for the \gls{ORM} back-end implementation to decide.
 Line 17 is declaring that more than one instance of \texttt{SqlQuery} may reference a single \texttt{Directory} and that \texttt{SqlQuery} will hold the foreign key to \texttt{Directory}.
-\texttt{@ManyToMany} represents a collection of associations, here used to associate \texttt{YabiUser} to \texttt{PermissionTree} so that many users can have many, overlapping, permissions. One possible parameter to \texttt{@ManyToMany} is the \texttt{FetchType}, instructing the \gls{ORM} engine to retrieve the associated entity only when it is accessed or together with its parent is retrieved.
+\texttt{@ManyToMany} represents a collection of associations, here used to associate \texttt{YabiUser} to \texttt{PermissionTree} so that many users can have many, overlapping, permissions. One possible parameter to \texttt{@ManyToMany} is the \texttt{FetchType}, instructing the \gls{ORM} engine to retrieve the associated entity when it is accessed or when its parent is retrieved.
 
-\texttt{@JoinColumn} annotation is a general purpose configuration for relational fields, in line 18 and 22 it's used to configure the name in which the column will be called and whether it can have no specified value.
+\texttt{@JoinColumn} annotation is a general purpose configuration for relational fields, in lines 18 and 22 it's used to configure the name in which the column will be called and whether it can have no specified value.
 
 \lstinputlisting[firstline=22,float,
 caption=Implementation of SqlQuery class,
@@ -279,20 +279,20 @@ label=code:sqlquery
 The remaining entities follow a similar pattern in it's implementation.
 
 \subsection{Spring Configuration}\label{s:config}
-In order for Spring Framework to stay out of the way as much as it can and allow developers to focus on the implementation of business functionalities, it makes many assumptions about how its components interact, however, at some point the application being developed grow needs that conflict with Spring defaults. When this eventually happens, which was the case with \gls{Yabi}, developers can override some of Spring's default behavior by re-implementing specific interfaces.
+In order for Spring Framework to stay out of the way as much as it can and allow developers to focus on the implementation of business functionalities, it makes many assumptions about how its components interact, however, at some point the application being developed grow new requirements that conflict with Spring defaults. When this eventually happens, which was the case with \gls{Yabi}, developers can override some of Spring's default behavior by re-implementing specific interfaces.
 
 This section presents Spring configurations that took place so that \gls{Yabi} is able to work as expected.
 
 \subsubsection{Security}
 \gls{Yabi}'s security model uses a directory server to authenticate and a relational database to load user roles and execute authorization checks. Because this is a stateless application, every request follows the steps shown in Figure~\ref{fig:authseq} before being executed by the controllers.
 
-Authentication is done through an anonymous bind to a \gls{LDAP} server, implemented with Spring's \gls{LDAP} authentication that configures the server address and the base \gls{dn}. Section~\ref{impl:ldap} goes through said configuration.
+Authentication is done through an anonymous bind to a \gls{LDAP} server, implemented with Spring's \gls{LDAP} authentication that configures the server address and the base \gls{dn}.
 
-In regards to authorization, there are two possible roles in which a use must be assigned to, either \texttt{ADMIN} or \texttt{USER}. With this, non-administrative resources are simply not dependent on the user's role therefore accessible to all users, meanwhile, administrative resources are explicitly marked to be accessible by users whose role is \texttt{ADMIN}.
+In regards to authorization, there are two possible roles in which a user must be assigned to, either \texttt{ADMIN} or \texttt{USER}. With this, non-administrative resources are simply not dependent on the user's role therefore accessible to all users, meanwhile, administrative resources are explicitly marked to be accessible by users whose role is \texttt{ADMIN}.
 
-Figure~\ref{fig:authseq}, presents in a general view the steps taken to authenticate and load an user's details. It is infeasible to model the whole of Spring Web and Spring Security as it is quite a extensive feature and it is out of the scope of this report, therefore it was abstracted into fewer elements, namely \texttt{WebSecurity} entity representing the objects that gets built by the configuration shown in Listing~\ref{code:authblock}, the \textit{authenticate} message is abstracting Spring's authentication provider voting system, \texttt{LDAP AuthenticationManager} entity representing \gls{LDAP}'s \texttt{AuthenticationProvider} and \textit{anonymous bind}, as the name implies is the authentication that takes place in the directory server.
+Figure~\ref{fig:authseq}, presents in a general view the steps taken to authenticate and load user details. It is infeasible to model the whole of Spring Web and Spring Security as it is quite an extensive feature and it is out of the scope of this report, therefore it was abstracted into fewer elements, namely \texttt{WebSecurity} entity representing the objects that get built by the configuration shown in Listing~\ref{code:authblock}, the \textit{authenticate} message is abstracting Spring's authentication provider voting system, \texttt{LDAP AuthenticationManager} entity representing \gls{LDAP}'s \texttt{AuthenticationProvider} and \textit{anonymous bind}, as the name implies is the authentication that takes place in the directory server.
 
-The main point of Figure~\ref{fig:authseq} is to show that once the bind takes place in the \texttt{LDAP AuthenticationManager}, the library requests an object that implements the \texttt{UserDetailsContextMapper} to populate it's newly created \texttt{Authentication} object with business-specific information in the form of a \texttt{UserDetails}. In this case \texttt{YabiUserDetailsManager} is chosen by Spring's dependency injection mechanism and it provides an instance of \texttt{YabiUser}, that is retrieved from the database.
+The main point of Figure~\ref{fig:authseq} is to show that once the bind takes place in the \texttt{LDAP AuthenticationManager}, the library requests an object that implements the interface \texttt{UserDetailsContextMapper} to populate it's newly created \texttt{Authentication} object with business-specific information in the form of \texttt{UserDetails}. In this case \texttt{YabiUserDetailsManager} is chosen by Spring's dependency injection mechanism and it provides an instance of \texttt{YabiUser}, that is retrieved from the database.
 
 \begin{figure}
   \centering
@@ -320,9 +320,9 @@ label=code:authblock
 
 Because \gls{Yabi} is a web \gls{API} and a front-end application, it is necessary that both parties can interact but due to security reasons, most browsers implementations block \gls{AJAX} calls if the remote server does not explicitly state the allowed domains in it's response header.
 
-In Spring, allowing domains to access it's resources is done by implementing the \texttt{WebMvcConfigurer}, overriding the method \textit{addCorsMapping(CorsRegistry)} and calling \textit{allowedOrigins} on it's parameter. The method \textit{allowedOrigins} takes a list of stings that contain valid \gls{URL} addresses.
+In Spring, allowing domains to access it's resources is done by implementing the \texttt{WebMvcConfigurer}, overriding the method \textit{addCorsMapping(CorsRegistry)} and calling \textit{allowedOrigins} on it's parameter. The method \textit{allowedOrigins} takes a list of strings that contain valid \gls{URL} addresses.
 
-\gls{Yabi} configures this using the \texttt{application.properties} file under the key \texttt{yabi.web.allowedOrigins}, allowing for a centralized configuration.
+\gls{Yabi} configures this using the value of property \texttt{yabi.web.allowedOrigins}, allowing for a centralized configuration.
 
 \subsubsection{\gls{LDAP}}\label{impl:ldap}
 
@@ -340,17 +340,17 @@ Line 5 is considered important because it is mapping a custom details context ma
 Lines 6 to 9 configure the connection to the remote directory service, including it's address and what to bind with.
 
 \subsubsection{User Details Context Mapper}\label{impl:detailsmapper}
-Often times a directory service is used as an authentication mechanism. Applications then issue an anonymous bind request to the server passing their user's credentials and after, load its business-specific information according to the username. To do so, Spring Security utilizes \texttt{UserDetailsContextMapper} interface to retrieve a \texttt{UserDetails} instance that gets injected into the commonly accessible \texttt{Authentication} interface.
+Often times a directory service is used as an authentication mechanism. Applications then issue an anonymous bind request to the server passing their user's credentials and after, load its business-specific information according to the username. To do so, Spring Security utilizes \texttt{UserDetailsContextMapper} interface to retrieve an \texttt{UserDetails} instance that gets injected into the commonly accessible \texttt{Authentication} interface.
 
 For this application, a new implementation of the \texttt{UserDetailsContextMapper} interface is provided, \texttt{YabiUserDetailsContextMapper} returns an instance of \texttt{YabiUser}, which implements said \texttt{UserDetails} interface adding \gls{Yabi}-specific attributes, enabling other parts of the system to query the current user's related information such as their role, \texttt{PermissionTree} and name.
 
 \subsection{Custom Controllers \& View Models}\label{s:ccevm}
 \texttt{@RestController} is a Spring Web annotation that enables a given class or method to handle \gls{HTTP} requests. In essence it is a combination of two other annotations, the \texttt{@Controller}, which is what trigger the framework into considering the class as a possible resolver of  \gls{HTTP} requests and \texttt{@ReponseBody}, that wraps the method call into a response body. In general cases the returned Object is mapped to a \gls{JSON} string.
 
-However the \texttt{PermissionTree} class contains a reference to it's parent, and the root references itself, there was a need to circumvent a infinite loop during it's \gls{JSON} serialization. To do so, rather simple and 
+However the \texttt{PermissionTree} class contains a reference to it's parent, and the root references itself, there was a need to circumvent an infinite loop during it's \gls{JSON} serialization. To do so, rather simple and 
 serializable classes whose role were to convey information to the front-end were written, namely, \texttt{SqlQueryViewModel}, \texttt{PermissionTreeViewModel} and \texttt{YabiUserViewModel}.
 
-To accommodate the special handling of \texttt{PermissionTree} model and provide some custom functionalities, the following custom controllers were implemented: \texttt{SqlQueryController}, \texttt{PermissionTreeController}, \texttt{YabiUserController} and \texttt{DatabaseReaderController}. When it comes to providing entities in function of the current user's permissions, the general implementation was done by adding a custom method to repositories that enables them to retrieve elements based on their entity's permission \texttt{nodePath}. Listing~\ref{code:queries} show the implementation of endpoint \textbf{/queries} that retrieves \texttt{SqlQuery} elements that are associated to the current user, note on Line 8 the retrieval of all elements whose permission \texttt{nodePath} starts with the user's permission \texttt{nodePath} and on Line 9 the instantiation of a non-recursive, serializable \texttt{ViewModel}.
+To accommodate the special handling of \texttt{PermissionTree} model and provide custom functionalities, controllers were implemented for SqlQuery, PermissionTree and YabiUser entities.  An additional controller, \texttt{DatabaseReaderController} was implemented to attend one of the functional requirements. When it comes to providing entities in function of the current user's permissions, the general implementation was done by adding a custom method to repositories that enables them to retrieve elements based on their entity's permission \texttt{nodePath}. Listing~\ref{code:queries} show the implementation of endpoint \textbf{/queries} that retrieves \texttt{SqlQuery} elements that are associated to the current user. Note on Line 8 the retrieval of all elements whose permission \texttt{nodePath} starts with the user's permission \texttt{nodePath} and on Line 9 the instantiation of a non-recursive, serializable \texttt{ViewModel}.
 
 \lstinputlisting[firstline=27,lastline=39, float,
 caption=\textbf{/queries} endpoint implementation,
@@ -363,15 +363,15 @@ The retrieval of information contained in a remote database is exposed through t
 The method \textit{runQuery} in turn retrieves the associated \texttt{Directory} from the repository and with its credentials, it makes a \gls{JDBC} connection and executes the query command. Lastly the resulting \texttt{ResultSet} is completely read and interpreted into a matrix of strings which is then returned to the controller and finally is used to answer the \texttt{API} request.
 
 \subsubsection{PermissionTreeController}
-Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it reference its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would delete every parent permission untill the root node.
-Therefore \texttt{PermissionTreeController} implements a custom a delete that cascades through its children. It is bound to a \textsc{delete} \textbf{/permission/\{id\}}, \texttt{id} being the identifier of the permission to be deleted.
+Because of it's tree-like nature, once a \texttt{PremissionTree} is deleted, all of it's child nodes need also to be removed. However, because it references its parent but not its children, leaving the \gls{RDBMS} to execute a cascading delete would delete every parent permission untill the root node.
+Therefore \texttt{PermissionTreeController} implements a custom delete that cascades through its children. It is bound to a \textsc{delete} \textbf{/permission/\{id\}}, \texttt{id} being the identifier of the permission to be deleted.
 
-It is implemented by first retrieving the permission whose id was specifies in the \gls{HTTP} request, retrieve all of its children with the custom repository method \textit{findAllByNodePathStartingWith} and sequentially deleting all permissions found and then deleting the permission itself.
+It is implemented by first retrieving the permission whose id was specified in the \gls{HTTP} request, retrieve all of its children with the custom repository method \textit{findAllByNodePathStartingWith} and sequentially deleting all permissions found and then deleting the permission itself.
 
 One restriction is that the root node can never be deleted, otherwise there wouldn't be any parent to insert new permissions. Therefore, before executing the before-mentioned steps, the permission to be deleted is matched with the root node, if it does, the operation is aborted with an error.
 
 \subsubsection{YabiUserController}
-To provide the front-end with information about the current user, \texttt{YabiUserController} replies to \textsc{get} requests on the path \textbf{/user} with information contained inside the \texttt{Authentication} that was generated during the user's authentication procedure and thus avoid reaching out to the database a second time.
+To provide the front-end with information about the current user, \texttt{YabiUserController} replies to \textsc{get} requests on the path \textbf{/user} with information provided inside the current \texttt{Authentication} that was generated during the user's authentication procedure and thus avoid reaching out to the database a second time.
 
 \subsubsection{SqlQueryController}
 \texttt{SqlQuery} is one of those entities that are related to the current logged-in user. In other words, administrators may see all registered \texttt{SqlQuery} and users see only those which they can run, therefore this customized behavior was implemented through a \texttt{SqlQueryController} that abstracts the Spring Repository interface.
@@ -384,7 +384,7 @@ The \texttt{Directory} entity whose implementation did not require any changes i
 The remaining entities had their repositories augmented with functionalities presented below.
 
 \subsubsection{YabiUserRepository}
-After binding in the directory service, \texttt{UserDetailsContextMapper.mapUserFromContext} is used to fill an instance of \texttt{Authentication} class with business data. In \gls{Yabi}'s custom implementation, this data comes from a relational database that reflect \texttt{YabiUser} objects.
+After binding to the directory service, \texttt{UserDetailsContextMapper.mapUserFromContext} is used to fill an instance of \texttt{Authentication} class with business data. In \gls{Yabi}'s custom implementation, this data comes from a relational database that reflect \texttt{YabiUser} objects.
 
 Because the method \textit{mapUserFromContext} uses the username as a key to retrieve information, \texttt{YabiUserRepository} had to be augmented with a new method to do just that. Therefore the following declaration was added:\\
 \texttt{YabiUser findByName(String username);}
@@ -396,27 +396,27 @@ In this case, the method signature used was as follows:\\
 \texttt{List<PermissionTree> findAllByNodePathStartingWith(String~nodePath);}
 
 \subsubsection{SqlQueryRepository}
-When an user request a list of queries that they can execute, the system must retrieve from the relational database all queries in which the permission is a child of the user's permission. Again, this repository had to be augmented.
+When an user request a list of queries that he can execute, the system must retrieve from the relational database all queries in which the permission is a child of the user's permission. Again, this repository had to be augmented.
 
 This was accomplished by using the following method interface:\\
 \texttt{List<SqlQuery> findByPermissionNodePathStartingWith( String~nodePath );}
 
 \subsection{Multi-Database Support}\label{s:mdbs}
-Paraphrasing Requirement~\ref{req:multidb}, the application must be able to retrieve information from the institution's database. However, because it has many in-house applications, they might use different \gls{RDBMS} and \gls{Yabi} should then be able to connect to then.
+Paraphrasing Requirement~\ref{req:multidb}, the application must be able to retrieve information from the institution's database; however, due to its  many in-house applications, more that one \gls{RDBMS} might be employed. Therefore \gls{Yabi} cannot be constrained to a single database vendor for its information retrieval.
 
 The core part of this feature is \gls{JDBC} 4.0's \texttt{DriverManager} class and it's \textit{getConnection} method that upon being called, attempts to make a connection using drivers that were loaded on initialization-time, therefore, as long as the driver is loaded and the connection string is properly formed, \textit{getConnection} will select the correct database driver.
 
 Because of this, implementing this feature was as simple as declaring dependencies for database drivers in the \texttt{pom.xml} configuration file. Notably, Oracle\footnote{https://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html} requires the creation of an Oracle account and the configuration of a custom maven repository in order to download their drivers.
 
 \section{Development Environment}\label{cha:implementation:sec:development}
-This section is focused on the work that was done indirectly to \gls{Yabi}, but was still crucial to its development. Section\ref{ds} expresses how \gls{IPB}'s directory service was imitated with a local service. Section~\ref{dbinit} presents some configurations that can be done on \gls{Yabi}'s property file that aids during the production deployment and lastly, Section~\ref{ptt} presents some \gls{API} tests that assess some of \gls{Yabi}'s restrictions.
+This section is focused on the work that was done indirectly to \gls{Yabi}, but was still crucial to its development. Section~\ref{ds} expresses how \gls{IPB}'s directory service was imitated with a local service. Section~\ref{ldb} briefly describes how local databases were deployed for use during development, Section~\ref{dbinit} presents some configurations that can be done on \gls{Yabi}'s property file that aids during the production deployment and lastly, Section~\ref{ptt} presents some \gls{API} tests that assess some of \gls{Yabi}'s restrictions.
 
 \subsection{Directory Service}\label{ds}
 When developing an application, it is good practice to avoid reaching out and interacting to remote services and instead provide a local instance that is able to mimic the real-world environment.
 
 In this case because a directory service is used as a part of it's authentication mechanism, a local \gls{LDAP} server was created in Apache Directory Studio that mimics \gls{IPB}'s directory service close enough so that the configuration provided by their \gls{IT} team is able to be used locally with minimal changes, in fact, the only difference is the service's address.
 
-Listing~\ref{code:ldapconfig} exposes the configurations \gls{Yabi} uses to access the server, note that the directory address is declared in line 1 and line 3 declare the entry whose elements are anonymously bound.
+Listing~\ref{code:ldapconfig} exposes the configurations \gls{Yabi} uses to access the server. Note that the directory address is declared in line 1 and line 3 declare the entry whose elements are anonymously bound.
 
 \lstinputlisting[firstline=13,lastline=15, float,
 caption=Local server \gls{LDAP} configuration,
@@ -431,11 +431,17 @@ Figure~\ref{fig:adsconfig} show how the directory is structured in the server-si
   \caption{Directory structure and the properties of user \texttt{professor}}\label{fig:adsconfig}
 \end{figure}
 
+\subsection{Local Database}\label{ldb}
+MariaDB was deployed locally with two main purposes: To serve a testing database in which \gls{Yabi} could connect and run queries similarly to how it would do in production and at the same time, provide a database in which \gls{Yabi} could store its own information.
+
+For this, the official MariaDB Docker image was used\footnote{https://hub.docker.com/\textunderscore/mariadb} in conjunction with an empty database for \gls{Yabi} and a testing database that was sourced from Portugal's \gls{REBIDES}.
+
+
 \subsection{Database Initializer}\label{dbinit}
 When starting \gls{Yabi} for the first time, it needs to generate its database, create the root permission and an administrator account.
 To do so, the class \texttt{DbInitializer} was written. It implements the \texttt{CommandLineRunner} interface so that Spring executes it just after initializing.
 
-There are two properties that interact with \texttt{DbInitializer}, \texttt{yabi.db.init} and \texttt{yabi.db.init.admin.username}. The former regulates when yabi should create a new database, the root permission and the administrator account, the latter declares the administrator's username to be used. If the initialization is desired, \texttt{yabi.db.init} should be set to \texttt{create}, otherwise, it can be set to anything else. It is necessary that the administrator username is able to be bound in the directory service otherwise the authentication will fail.
+There are two properties that interact with \texttt{DbInitializer}, \texttt{yabi.db.init} and the \texttt{yabi.db.init.admin.username}. The former regulates when yabi should create a new database, the root permission and the administrator account, the latter declares the administrator's username to be used. If the initialization is desired, \texttt{yabi.db.init} should be set to \texttt{create}, otherwise, it can be set to anything else. It is necessary that the administrator username is able to be bound in the directory service otherwise the authentication will fail.
 
 \subsection{Postman Tests}\label{ptt}
 When developing the \gls{API}, some test cases were created in Postman to assess the prevention of data duplication. All four entities were tested.

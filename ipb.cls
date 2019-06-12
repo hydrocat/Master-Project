@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ipb}[2017/07/09 base class]
 
-\LoadClass[12pt,twoside]{report}
+\LoadClass[a4paper,12pt,twoside]{report}
 
 %% Required packages.
 % Line spacing
@@ -121,7 +121,7 @@
     \@author \ifdefined\@authnum \quad\@authnum \fi\\
 }}
       \vfill
-    Disserta\c{c}\~{a}o apresentada \`a Escola Superior de Tecnologia e de Gest\~{a}o de Bragan\c{c}a para obten\c{c}\~{a}o do Grau de Mestre em \@course.\\
+    Disserta\c{c}\~{a}o apresentada \`a Escola Superior de Tecnologia e Gest\~{a}o de Bragan\c{c}a para obten\c{c}\~{a}o do Grau de Mestre em \@course.\\
     
     \vspace{4em}
     Trabalho orientado por:\\
@@ -157,7 +157,7 @@
     \@author \ifdefined\@authnum \quad\@authnum \fi\\
 }}
     \vfill
-    Disserta\c{c}\~{a}o apresentada \`a Escola Superior de Tecnologia e de Gest\~{a}o de Bragan\c{c}a para obten\c{c}\~{a}o do Grau de Mestre em \@course.\\
+    Disserta\c{c}\~{a}o apresentada \`a Escola Superior de Tecnologia e Gest\~{a}o de Bragan\c{c}a para obten\c{c}\~{a}o do Grau de Mestre em \@course.\\
     
 	    \vspace{4em}
 	    Trabalho orientado por:\\

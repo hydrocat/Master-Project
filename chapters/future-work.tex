@@ -4,7 +4,7 @@ The development of this project yielded an application that suffices the core ne
 Therefore, this Chapter will be listing not only the missing requirements but also what to improve in a later version.
 
 \section{Code Re-structure}
-During the this project's development, some architectural mistakes were made. Even though they are not fatal errors, the technical debt was certainly increased. The two main points are in regards to Resource filtering, that is, what is an user authorized to access and the design of the \texttt{PermissionTree} data structure. 
+During the project development, some architectural mistakes were made. Even though they are not fatal errors, the technical debt was certainly increased. The two main points are in regards to Resource filtering, that is, what is an user authorized to access and the design of the \texttt{PermissionTree} data structure. 
 
 \subsection{Resource Filtering}
 Currently, resource filtering is implemented by having a small set of controllers that are eligible to handle non-administrative users. However this led to some confusion because its response structure does not follow the \gls{HATEOAS} convention, making the front-end app implement two similar classes for each entity. One for \gls{HATEOAS} responses and the other for the special case.

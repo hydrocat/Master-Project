@@ -1,5 +1,5 @@
 \chapter{Concepts and Technologies}\label{cha:concepts}
-Throughout the development of this project quite a few tools and technologies were employed. Therefore this chapter is going to introduce each one of them in a way that is relatable to their usage in this project.
+Throughout the development of this project quite a few tools and technologies were employed. Therefore this chapter is going to introduce each one of them in a way that relates to their usage in this project.
 
 Section~\ref{cha:concepts:sec:frontend} is focused in defining the technologies that were used to write a Web application that is able to make use of remote \gls{API}s and dynamically adjust its layout according to the information that is being shown.
 Section~\ref{cha:concepts:sec:backend} introduces the technologies that are related to back-end services and remote \gls{API}s that expose the real functionalities of a system. Lastly Section~\ref{development} describes the tools used to write, debug and build this project.
@@ -14,7 +14,7 @@ The technologies that follow are for the most part, specific to this kind of tas
 The \gls{HTML}, the ``World Wide Web's core markup language ''~\cite{html} is a declarative language through which the vast majority of online content is structured, shared and accessed. It is a specification of elements that can be used to structure the content of web pages, such as headings, images, links to other documents, buttons and forms~\cite{htmlcss}.
 
 \gls{CSS} is another declarative language that pairs with HTML. Its purpose is to describe how the elements present in a web page are presented.
-Some of definitions handle colors, fonts, element arranging, visibility, interaction and many others aspects~\cite{htmlcss}.
+Some definitions handle colors, fonts, element arranging, visibility, interaction and many others aspects~\cite{htmlcss}.
 
 JavaScript is a interpreted general-purpose scripting language that was initially designed to run on Web pages but now it found its way in many other areas\cite{js}. Its specification does not define much of standard functions found in other languages such as input/output and file access, instead each host environment expose JavaScript-accessible objects that are tied to their specific functionalities. Since 1997 the specification is regulated by \gls{ECMA} and thus the language is formally known as ECMAScript~\cite{ecma}.
 
@@ -23,17 +23,17 @@ Together, these three technologies compose what is known as \gls{HTML}5. \gls{HT
 \subsection{Typescript}
 ``A super-set of JavaScript that compiles to plain JavaScript ''~\cite{tswebsite}, Typescript is a language maintained by Microsoft and developed by \textit{Anders Hejlsberg} that started development in 2012 with the goal of improving the quality and manageability of JavaScript code bases with features such as static typing and object-orientated qualities~\cite{tsrevealed}.
 
-Ultimately, Typescript must be compiled to JavaScript before being executed and for compatibility reasons, the default JavaScript target is version ES3 but newer back-ends are also available.
+Ultimately, Typescript must be compiled to JavaScript before being executed and for compatibility reasons, the default JavaScript target is version \gls{ES} version 3 but newer back-ends are also available.
 
 \subsection{SASS}
-\gls{SASS} is a augmentation of CSS and its main premise is to make large style definitions more manageable by implementing features that are similar to a object-oriented languages such as  with loops, variables, functions and rule nesting~\cite{sass}. 
+\gls{SASS} is a augmentation of CSS and its main premise is to make large style definitions more manageable by implementing features that are similar to an object-oriented language such as  with loops, variables, functions and rule nesting~\cite{sass}. 
 
-\gls{SASS} files are processed into plain \gls{CSS} so that it can be interpreted by the browser. In this project, the template described in Section~\ref{template} was developed using this preprocessor,therefore the modifications to its styles kept the te.
+\gls{SASS} files are processed into plain \gls{CSS} so that it can be interpreted by the browser. In this project, the template described in Section~\ref{template} was developed using this preprocessor.
 
 \subsection{Angular}\label{concept:angular}
-Angular is a front-end web framework started its life as a side project at Google that has proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content~\cite{angularjs} and to remediate this, a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{DOM} are captured and made available to Angular Components, which in turn is able to react to them. This binding goes both ways, not only the \gls{DOM} can trigger Angular but also Angular can issue a page re-render to reflect the its new state.
+Angular is a front-end web framework that started its life as a side project at Google that has proved itself as a valuable tool for modern application development. The core idea is that \gls{HTML} faults when it comes to declare dynamic content~\cite{angularjs} and, to remediate this, a new middle-ware is introduced between the rendered page and the underling code so that all the elements and events in the \gls{DOM} are captured and made available to Angular Components, which in turn is able to react to them. This binding goes both ways, not only the \gls{DOM} can trigger Angular but also Angular can issue a page re-render to reflect its new state.
 
-The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times, slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and up is a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables~\cite{angular}.
+The first version of Angular is now called AngularJs and can be included in a \gls{HTML} document just like any other JavaScript library. This version proved it's value but was considered confusing and some times slow. Since then it entered \gls{LTS} stage and no features are added. Angular version 2 and newer are a Typescript re-write that includes some new features that aid in the architecture and development of scalable and reusable code, namely, the introduction of Components, Router, Ahead-of-Time compilation and Observables~\cite{angular}.
 
 An overview of key Angular elements follows:
 
@@ -42,12 +42,12 @@ An overview of key Angular elements follows:
   These are the basic elements through which an Angular application is structured\cite{angularmodule}. They declare the elements that will be provided to its child Modules, Services and Components.
 \item[Component] Binds a Template to behavior and data.\\ Components are the elements that directly interact with the information perceived by an user. They typically rely on Services to acquire information and on Modules to fulfill their dependencies. 
 \item[Router] A special kind of service that is responsible for managing the navigation through an application, mapping \gls{URL}s to Components.
-\item[Service] Akin to a library.\\ A Service have methods that can be used by multiple Components and other Services to provide some functionality. They are commonly implemented to act as the means of interaction to a remote \gls{API}.
+\item[Service] Akin to a library.\\ A Service has methods that can be used by multiple Components and other Services to provide some functionality. They are commonly implemented to act as the means of interaction to a remote \gls{API}.
 \item[Template] An augmented \gls{HTML} file that is bound to a Component.\\
-  Effectively, they are medium through which information is displayed and interacted with. Among other things, Templates can have elements that are dependent of some expression, values that are provided by a Component and events that notify the underlying Component.
+  Effectively, they are the medium through which information is displayed and interacted with. Among other things, Templates can have elements that are dependent of some expression, values that are provided by a Component and events that notify the underlying Component.
 \end{description}
 
-The relationship between such elements is that a Component may be dependent on Services, Components and Templates form what is called a View; Views and Routers are exposed to the application under a Module; which in turn forms a tree with a root Module.
+The relationship between such elements is that a Component may be dependent on Services. Components and Templates together form what is called a View. Views and Routers are exposed to the application under a Module. All Modules are located under a single root Module.
 Other important features include the dependency injection mechanism, template directives and directional data binding. Through these features Angular aims to be a highly modular framework capable of fast development.
 
 \subsection{Angular Material}
@@ -57,7 +57,7 @@ Angular Material~\cite{angularmaterial} is the Google implementation of Angular 
 
 \subsection{Sb-Admin-Material}\label{template}
 % introduction
-To accelerate the development speed and have faster working prototypes, many web-based projects begin form a ready-made template. This saves time by keeping developers from re-writing common pieces of code commonly referred as ``boilerplate''.
+To accelerate the development speed and have faster working prototypes, many web-based projects begin from a ready-made template. This saves time by keeping developers from re-writing common pieces of code commonly referred as ``boilerplate''.
 
 SB Angular Material is an Angular re-write of a famous Bootstrap template called SB~Admin~\cite{angulartemplate}.
 As the name implies this template tries to assess the need for an administrator panel, and in doing so it provides a set of ready-made components such as a login component as seen in Figure~\ref{fig:login}; the main screen with a top navigation and a collapsible side navigation components, seen in Figure~\ref{fig:dash} and~\ref{fig:visible}. This template already encompass some amount of responsive design by toggling the side navigational panel to be collapsed depending on the user's screen width.
@@ -121,7 +121,7 @@ SB Admin Angular was written with the intention of being modified and extended b
     \item \textbf{shared} Code that can be used in a application wide manner so that higher abstractions and code reuse can be achieved.
     \end{itemize}
   \item \textbf{assets} Static content directory. Images, fonts, and i18n translations.
-  \item \textbf{environments} Depending on how the project is run, either in development or in production mode, a the respective configuration file that holds environment constants is used, allowing developers to use the same reference name throughout the code base no matter the environment.
+  \item \textbf{environments} Depending on how the project is run, either in development or in production mode, the respective configuration file that holds environment constants is used, allowing developers to use the same reference name throughout the code base no matter the environment.
   \item \textbf{styles} \gls{SASS} files that define the look and feel.
   \end{itemize}
 \end{itemize}
@@ -135,14 +135,14 @@ After this overview, it is interesting to note the following:
 \end{itemize}
 
 \section{Back-end}\label{cha:concepts:sec:backend}
-In a computer system, the back-end is concerned with providing functions that are required by an application, therefore they often interact with databases and perform data processing routines. The aggregate of these functions is also known as \gls{API}. In the context of Web applications, the back-end is a separate program that runs on a remote machine and provide its functions through a set of \gls{URL} addresses and \gls{HTTP} methods that together is referenced as a Web \gls{API}.
+In a computer system, the back-end is concerned with providing functions that are required by an application, therefore they often interact with databases and perform data processing routines. The aggregate of these functions is also known as \gls{API}. In the context of Web applications, the back-end is a separate program that runs on a remote machine and provide its functions through a set of \gls{URL} addresses and \gls{HTTP} methods that together are referenced as a Web \gls{API}.
 
 This section describes the tools and concepts that were used to implement the functions that attend this application's requirements and the Web server that exposes them through an Web \gls{API}.
 
 \subsection{Stateless Web Application}
-This is a architectural design that can applied when a system is composed from separate but communicating pieces. In this approach, messages exchanged between the logical entities contain all the necessary information for an action to be executed.
+This is an architectural design that can applied when a system is composed from separate but communicating pieces. In this approach, messages exchanged between the logical entities contain all the necessary information for an action to be executed.
 
-Often times web applications make use of session cookies or some similar mechanism to help the server-side to locate the current state each specific user, in other words, the server has in its memory information that transcends requests. This is what is known as a state-full web application.
+Often times web applications make use of session cookies or some similar mechanism to help the server-side to locate the current state for each specific user, in other words, the server has in its memory information that transcends requests. This is what is known as a state-full web application.
 
 On a stateless model, each request contains all the information the server needs to generate a reply. When compared to a state-full application, this model requires more bandwidth as contextual information is added to every request, however it can mitigated with resource caching solutions.
 
@@ -153,24 +153,24 @@ This is a stateless, general purpose, application-level protocol designed to be 
 
 \gls{URI} is a way to uniquely name a resource found in a registered name space. One of its applications is in the widely known \gls{URL}, which is an \gls{URI} that refers to objects accessible in the web.
 
-\gls{HTTP} methods, also known as verbs, are the indicatives of the action that is to be done on a resource, \gls{HTTP} 1.0 \gls{RFC}~\cite{http} proposes eight standard options, namely, \textsc{options}, \textsc{get}, \textsc{head}, \textsc{post}, \textsc{put}, \textsc{delete}, \textsc{trace} and \textsc{connect}. Considered notorious for this document are \textsc{get}, \textsc{post} and \textsc{delete}.
+\gls{HTTP} methods, also known as verbs, are the indicatives of the action that is to be done on a resource. \gls{HTTP} 1.0 \gls{RFC}~\cite{http} proposes eight standard options, namely, \textsc{options}, \textsc{get}, \textsc{head}, \textsc{post}, \textsc{put}, \textsc{delete}, \textsc{trace} and \textsc{connect}. Considered notorious for this document are \textsc{get}, \textsc{post} and \textsc{delete}.
 
 The \textsc{get} method purpose is to retrieve the information identified by the request's \gls{URI}. \textsc{post} is meant to send a new information to the server through the request itself. Lastly the \textsc{delete} request method expresses to the server that the resource is to be made inaccessible.
 
 \subsection{Java}
 % introduction
-Java is a Object-Oriented programming language firstly developed by James Gosling at Sun Microsystems. It is statically and explicitly typed and gets compiled to a machine-independent byte code that is then interpreted by the \gls{JVM}~\cite{java}.
+Java is an Object-Oriented programming language firstly developed by James Gosling at Sun Microsystems. It is statically and explicitly typed and gets compiled to a machine-independent byte code that is then interpreted by the \gls{JVM}~\cite{java}.
 
-Because of its high adoption, many concepts were developed to accommodate its deficiencies and improve the development cycle. In fact, because of the recurring solutions for recurring situations in software design, a group of skilled professionals got together to discuss these patterns and wrote a book entitled ``Design Patterns: Elements of Reusable Object-Oriented Software''~\cite{patterns}, bringing common Object-Oriented solutions for recurring problems. Being a Object-Oriented language, Java programs often make use of such patterns. Allegedly bringing a faster development model with code that is sound.
+Because of its high adoption, many concepts were developed to accommodate its deficiencies and improve the development cycle. In fact, because of the recurring solutions for recurring situations in software design, a group of skilled professionals got together to discuss these patterns and wrote a book entitled ``Design Patterns: Elements of Reusable Object-Oriented Software''~\cite{patterns}, bringing common Object-Oriented solutions for recurring problems. Being an Object-Oriented language, Java programs often make use of such patterns, allegedly bringing a faster development model with code that is stable.
 
 \subsubsection{View Model}
-The ViewModel is a piece of a bigger pattern called \gls{MVVM} created by John Gossman. It addresses the scenario in which a model as described in the \gls{MVC} pattern can't be completely mapped to a View~\cite{viewmodel}, that is, it has attributes that are part of a higher abstraction. This makes it is sensible to specify another model that partially reflects the original model but is able to be completely bound to user interface elements.
+The ViewModel is a piece of a bigger pattern called \gls{MVVM} created by John Gossman. It addresses the scenario in which a model as described in the \gls{MVC} pattern can't be completely mapped to a View~\cite{viewmodel}, that is, it has attributes that are part of a higher abstraction. This makes it sensible to specify another model that partially reflects the original model but is able to be completely bound to user interface elements.
 
-During the implementation of this project, the ViewModel pattern was used outside of the \gls{MVVM} pattern, however the goal of decoupling code remained the same. In some cases, ViewModel classes were implemented for classes that can not have all of its attributes serialized into a View or for those who must expose different attributes depending on the user who is requesting it; 
+During the implementation of this project, the ViewModel pattern was used outside of the \gls{MVVM} pattern, however the goal of decoupling code remained the same. In some cases, ViewModel classes were implemented for classes that can not have all of its attributes serialized into a View or for those who must expose different attributes depending on the user who is requesting it.
 
 \subsection{Spring}\label{concept:spring}
 % introduction
-Developed by Pivotal Software in 2002, the Spring Framework provides most of the ``plumbing'' necessary for fast development and deployment of enterprise Java applications~\cite{springdocs}, some of the main features include: Dependency Injection which is an \gls{IoC} mechanism; A set of tools for information access such as \gls{ORM} configurations called Spring Data and an application-wide security mechanisms and configurations called Spring Security.
+Developed by Pivotal Software in 2002, the Spring Framework provides most of the ``plumbing'' necessary for fast development and deployment of enterprise Java applications~\cite{springdocs}. Some of the main features include: Dependency Injection which is an \gls{IoC} mechanism; A set of tools for information access such as \gls{ORM} configurations called Spring Data and application-wide security mechanisms and configurations called Spring Security.
 
 One of the strongest design philosophies of the Spring Framework is the following:
 
@@ -179,10 +179,10 @@ One of the strongest design philosophies of the Spring Framework is the followin
 \end{displayquote}
 This leads to a feature-centered development model that is able to quickly deliver prototypes and changes on-demand.
 
-The following elements in this section describe some of its functionalities that were considered important during development as they dramatically interfere with how the code is structured and feature are implemented.
+The following elements in this section describe some of its functionalities that were considered important during development as they dramatically interfere with how the code is structured and features are implemented.
 
 \subsubsection{Dependency Injection}\label{spring:ds}
-Conceptually, Dependency Injection is a implementation of the \gls{IoC} principle, abdicating any given class class from managing its own dependencies and leaving them to a overseer object that knows how to create and inject dependencies to each class\cite{inversion}.
+Conceptually, Dependency Injection is an implementation of the \gls{IoC} principle, abdicating any given class from managing its own dependencies and leaving them to an overseer object that knows how to create and inject dependencies to each class\cite{inversion}.
 
 In practical terms, when writing a new class the programmer declare its dependencies through some mechanism in which the framework is able to reason about. Later in the run-time when a such dependent class is about to be instantiated, its dependencies are made available and injected into the new instance.
 
@@ -191,7 +191,7 @@ The key idea is that for the most part an application does not need to know whic
 When using Spring, one can express dependencies by declaring them in the class's constructor or by annotating an attribute using the Autowired annotation\cite{springdi}.
 
 \subsubsection{Data}
-When developing a enterprise-level application, often times there is a need for some sort of persistence storage, in practice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
+When developing an enterprise-level application, often times there is a need for some sort of persistence storage, in practice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
 
 Bridging the gap between the \texttt{Repository} interface and its implementation, two other interfaces are provided such that when extended, provides the programmer with methods for interacting with a persistence system in a high level of abstraction. The base one is called \texttt{CrudRepository} and it provides the basic functionalities for persisting objects and a Web \gls{REST} interface form them. Extending \texttt{CrudRepository} there is the \texttt{PagingAngSortingRepository} that adds pagination and sorting on top of it.
 
@@ -229,20 +229,20 @@ It all begins with \gls{REST}, that according to its creator:
   ``REST is a coordinated set of architectural constraints that attempts to minimize latency and network communication, while at the same time maximizing the independence and scalability of component implementations. This is achieved  by  placing  constraints  on  connector  semantics,  where  other  styles have focused on component semantics. REST enables the caching and reuse of interactions, dynamic substitutability of components, and processing of actions by intermediaries, in order to meet the needs of an Internet-scale distributed hypermedia system.''~\cite{fielding}
 \end{displayquote}
 
-In other words, this ``new'' architecture expresses requests and responses as the application state itself. Transmitting it in a standard client and server approach. There are a few ways in which the state can be communicated and structured, one of which is the subject of this section. 
+In other words, this ``new'' architecture expresses requests and responses as the application state itself, transmitting it in a standard client and server approach. There are a few ways in which the state can be communicated and structured, one of which is the subject of this section. 
 
 \gls{HATEOAS} is a response structure that enables a client to discover and navigate related information for that resource\cite{fielding}. Mainly it is able to specify what are the related information, where it is located and how to interact with it. This is accomplished by including some meta-data in the response in which the client can parse, present to the user and issue proper requests.
 
-In the context of Spring Framework, \texttt{CrudRepository} and \texttt{PagingAndSortingRepository} are interfaces that when implemented by Spring, generate \gls{API} endpoints that follows both \gls{REST} and \gls{HATEOAS} conventions for \gls{CRUD} operations. Figure~\ref{code:json} show a listing generated by \texttt{SqlQueryRepository}, a repository that extends the \texttt{PagingAndSortingRepository}. Note how it references the associated elements and available actions with a \gls{URL} and a representation of the current pager state under the key \texttt{page}.
+In the context of Spring Framework, \texttt{CrudRepository} and \texttt{PagingAndSortingRepository} are interfaces that when implemented by Spring, generate \gls{API} endpoints that follow both \gls{REST} and \gls{HATEOAS} conventions for \gls{CRUD} operations. Figure~\ref{code:json} show a listing generated by \texttt{SqlQueryRepository}, a repository that extends the \texttt{PagingAndSortingRepository}. Note how it references the associated elements and available actions with a \gls{URL} and a representation of the current pager state under the key \texttt{page}.
 
 \subsubsection{Security}
 This spring project aims to provide both authentication and authorization mechanisms throughout the application's components by exposing implementable interfaces that enable developers to override only the necessary parts for each specific need.
 
 It is important to clarify the distinction between Authentication and Authorization because they have their respective software counterparts that play important roles in Spring Framework.
 
-Authentication, in by definition means ``To prove real or genuine''~\cite{merriamwebster}. In Spring this translates to a custom extension of the \texttt{WebSecurityConfigurerAdapter} abstract class that defines how to verify that a given user exists and allows access the resources. There are a few ways to achieve this with two of the most common being: \gls{JDBC} authentication, though which credentials are queried and matched from a \gls{RDBMS} and \gls{LDAP} authentication, that binds to some remote directory for the given user and password pair. Note that it does not define \textit{what} may be accessed by such user, only if the user has access to the system as a whole.
+Authentication, by definition means ``To prove real or genuine''~\cite{merriamwebster}. In Spring this translates to a custom extension of the \texttt{WebSecurityConfigurerAdapter} abstract class that defines how to verify that a given user exists and allows access the resources. There are a few ways to achieve this with two of the most common being: \gls{JDBC} authentication, through which credentials are queried and matched from a \gls{RDBMS} and \gls{LDAP} authentication, that binds to some remote directory for the given user and password pair. Note that it does not define \textit{what} may be accessed by such user, only if the user has access to the system as a whole.
 
-Authorization, ``the act of endorsing, or permitting by some recognized authority''~\cite{merriamwebster}. Similarly to Authentication can also be specified via a custom extension of \texttt{WebSecurityConfigurerAdapter}, co-existing with the previously mentioned Authentication mechanism. Authorization mechanisms are usually related to some attribute of the current authenticated user, in Spring, the \texttt{GrantedAuthority} interface is the central piece that unifies what the user has access to. Authorization points can be defined at the global level by the \texttt{WebSecurityConfigurerAdapter}, at the controller level or at the method level though proper annotations.
+Authorization, ``the act of endorsing, or permitting by some recognized authority''~\cite{merriamwebster}. Similarly to Authentication can also be specified via a custom extension of the interface \texttt{WebSecurityConfigurerAdapter}, co-existing with the previously mentioned Authentication mechanism. Authorization mechanisms are usually related to some attribute of the current authenticated user. In Spring, the \texttt{GrantedAuthority} interface is the central piece that unifies what the user has access to. Authorization points can be defined at the global level by the \texttt{WebSecurityConfigurerAdapter}, at the controller level or at the method level through proper annotations.
 
 \subsubsection{Boot}
 Although Spring Framework is a marvelous piece of software for its malleability and wide range of available features, for a while it was considered a \textit{Configuration Hell} because of its \gls{XML} configuration that would require a lot of expertise into writing~\cite{xmlhell1}~\cite{xmlhell2}~\cite{xmlhell3}~\cite{xmlhell4}~\cite{xmlhell5}. In face of this, the Spring Team came up with Spring Boot, a dependency that can be inserted into a project and provides sane, pre-configured Spring packages to accelerate development and keep code organized.
@@ -250,12 +250,12 @@ Although Spring Framework is a marvelous piece of software for its malleability 
 \subsection{MariaDB}
 Due to legal concerns Michael Monty Widenius founded Monty Program AB, whose main product, MariaDB, started as a fork of his previous work, the MySQL \gls{RDBMS}~\cite{MAVRO:2014}. Such relational databases allow the user to define data structures and perform operations such as inserts, retrievals, updates and removals through a language known as \gls{SQL}
 
-MariaDB is an open source project licensed under the \gls{GPL} and its current stable version is 5.2. Its \gls{SQL} dialect is and configuration files are either identical or very similar to those of MySQL. One of the main goals of MariaDB is to keep enhancing its performance~\cite{BARTHOLOMEW:2012}
+MariaDB is an open source project licensed under the \gls{GPL} and its current stable version is 5.2. Its \gls{SQL} dialect and configuration files are either identical or very similar to those of MySQL. One of the main goals of MariaDB is to keep enhancing its performance~\cite{BARTHOLOMEW:2012}
 
 MariaDB server is said to properly execute in many operating systems, namely Microsoft Windows, Solaris, Linux, MacOS and Free BSD. There are many packages that handle connections to MariaDB, graphically like DBeaver or phpMyAdmin, textually like mycli and not further than that, programming language connectors such as Java's \gls{JDBC}~\cite{MARIADB:2019}.
 
 \subsection{Apache Directory Studio}\label{ads}
-\gls{LDAP} in its core is a protocol defined by \gls{IETF}'s \gls{RFC} number 4511~\cite{ldaprfc} that defines access to X.500 compliant directory services. A Directory is an agglomerations of cooperative systems that serve structured information about the real world~\cite{x500}. Different from a traditional \gls{RDBMS}, directory services are expected to be automatically accessed by other interconnected systems, therefore they are better optimized for frequent queries and fewer updates.
+\gls{LDAP} in its core is a protocol defined by \gls{IETF}'s \gls{RFC} number 4511~\cite{ldaprfc} that defines access to X.500 compliant directory services. A Directory is an agglomeration of cooperative systems that serve structured information about the real world~\cite{x500}. Different from a traditional \gls{RDBMS}, directory services are expected to be automatically accessed by other interconnected systems, therefore they are better optimized for frequent queries and fewer updates.
 
 Alex Karasulu, founder of the Apache Directory Project, was right when he stated that the need for interconnected systems grew alongside the expansion of the Internet but unlike his expectation, Directory services were replaced with \gls{RDBMS} systems that don't exactly address the same goals and further complicate interconnected systems\cite{apachedp}.
 
@@ -267,16 +267,16 @@ This section cover the tools used during the development phase of this project. 
 In general, there was a need to comfortably edit Java and Angular projects, with code completion and refactoring support; a project manager that automatically downloads dependencies; a container tool to quickly deploy an environment with databases and directory services without the need of editing non-functional configurations and lastly, a browser to access the system as the end-user would.
 
 \subsection{Apache NetBeans}\label{netbeans}
-One of the Duke's Choice Award winner~\cite{dukechoice}, NetBeans is a general-purpose, cross-platform \gls{IDE} mainly focused for Java development with maximum productivity. In 2016 NetBeans was added to the Apache Incubator so that it could be further developed by the community~\cite{incubation}. As of 2019 it became one of Apache's Top Level project~\cite{graduation} and is expected to attract a even bigger community.
+One of the Duke's Choice Award winner~\cite{dukechoice}, NetBeans is a general-purpose, cross-platform \gls{IDE} mainly focused for Java development with maximum productivity. In 2016 NetBeans was added to the Apache Incubator so that it could be further developed by the community~\cite{incubation}. As of 2019 it became one of Apache's Top Level project~\cite{graduation} and is expected to attract an even bigger community.
 
 Because Java was the main focus of NetBeans during its first few years, support for the language is very broad in features. Developers can easily operate code with context-sensitive refactoring; mark line, method, expression and class breakpoints; step through paused code; automatic JavaDoc generation; semantic code completion and more~\cite{nbassistance}.
 
 Through its module system, support for other languages and resources were introduced, namely source code management with Git, Mercurial and Subversion, database management with support for viewing data and running \gls{SQL} queries, unit testing, PHP, HTML, JavaScript and CSS~\cite{nettutorials}.
 
 \subsection{Maven}
-Maven is a Build System mainly used for Java applications, that is: Through a the \texttt{pom.xml} file, developers declare their project's attributes and dependencies file and if needed, tweak the building process; from there on, Maven is capable of downloading dependencies from a remote repository, compiling them if necessary and generate an executable \gls{JAR} file or loadable library~\cite{maven}.
+Maven is a Build System mainly used for Java applications, that is: Through the \texttt{pom.xml} file, developers declare their project's attributes and dependencies file and if needed, tweak the building process; from there on, Maven is capable of downloading dependencies from a remote repository, compiling them if necessary and generate an executable \gls{JAR} file or loadable library~\cite{maven}.
 
-The project goal is to unify the project structure so that there is less time spent by the developer to understand how the a given application code is arranged and to centralize common project actions such as the previously mentioned dependency resolution, run unit and integration tests and generate packages that are able to be distributed~\cite{mavenintro}.
+The project goal is to unify the project structure so that there is less time spent by the developer to understand how a given application code is arranged and to centralize common project actions such as the previously mentioned dependency resolution, run unit and integration tests and generate packages that are able to be distributed~\cite{mavenintro}.
 
 \subsection{Lombok}\label{tech:lombok}
 This plugin offers an annotation-based code-scaffolding tool for Java definitions. Given the right annotations, common methods like getters, setters and no attribute constructor are automatically generated in build or compile-time~\cite{lombok}. This tool consists of a two-part system that includes the integration with the compiler/build-system and another one that interacts with the developer's \gls{IDE} so that the completion system is able to recognize the implicitly generated methods.
@@ -293,26 +293,21 @@ At first glance this might not be a necessary tool given that most \gls{IDE}s of
 \subsection{Visual Studio Code}
 One of Microsoft's take on open-source, this code editor gained traction among developers as one of the most used code editors~\cite{vscodesurvey}. Like any other modern code editor, it offers syntax highlight; auto-completion, through Microsoft's \textit{IntelliSense} integration and lastly a plugin system that enables users to add custom behavior and further develop the editor's support for programming languages~\cite{vscode}.
 
-One of the acclaimed features that arose with Visual Studio Code was the open source specification of \gls{LSP}~\cite{lsplaunch}. This specification aims to define a communication protocol that is used between a code editor, referred as a \gls{LSP} client and a editor-independent program referred as a \gls{LSP} server, that takes care of features such as code completion, highlight, error detection, contextual variable renaming and jumping to definition~\cite{lspspec}. This decoupling reduces the amount of code needed to develop a highly capable editor because language-dependent support is now transferred to said \gls{LSP} server.
+One of the acclaimed features that arose with Visual Studio Code was the open source specification of \gls{LSP}~\cite{lsplaunch}. This specification aims to define a communication protocol that is used between a code editor, referred as a \gls{LSP} client and a editor-independent program referred as a \gls{LSP} server, that takes care of features such as code completion, highlight, error detection, contextual variable renaming and jumping to definition~\cite{lspspec}. This decoupling reduces the amount of code needed to develop a highly capable editor because language-dependent support is now transferred to a \gls{LSP} server.
 
 \subsection{Docker}
 Akin to a \gls{VM}, containers provides a way to have a different computing environment than the active running in the hardware. The key difference is that instead of emulating the whole computing stack, from processor to applicaion, a container system shares the core host resources with its guests and thus is generally less resource-hungry. One downside of a container is that the guest operating system must share the same kernel with the host.
 
-In the other hand, Docker is more than just the sandboxing of processes. It handles image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, a online registry of extendable containers and command line interface that downloads, builds and manages containers~\cite{dockerfag}.
+In the other hand, Docker is more than just the sandboxing of processes. It handles image building through a \texttt{Dockerfile} specification, containers that can be shared among different machines, an online registry of extendable containers and command line interface that downloads, builds and manages containers~\cite{dockerfag}.
 
 Core Docker definitions are brought up~\cite{dockeroverview}:
 
 \begin{description}
 \item[Dockerfile] A file that declares the steps taken to build an Image.
 \item[Image] A blueprint of a container generated once a \texttt{Dockerfile} is built.
-\item[Container] If an image is an compiled binary, a container is the running process. 
+\item[Container] If an image is a compiled binary, a container is the running process. 
 \item[Volume] Is a shared folder between the host \gls{OS} and a running container.
 \end{description}
-
-\subsection{Docker-compose}
-The flexibility offered by the Docker ecosystem is of great use for moderate applications. Define a \texttt{Dockerfile}, build it into an image and create a running container. However, not all solutions require a single image, in fact, most of them are composed of independently working pieces that are tailored together. However, bundling all pieces in a single image is not considered good practice~\cite{dockerfag}.
-
-Distributed with Docker, this tool provides a way to define a multi-container applications, their virtual connections and manage all containers as one single entity. Such separation of concerns enable the tool to take smarter choices when starting a solution that includes a modified image, preserving volume data between solution runs and on the development side, it makes a local instance of a solution to be quickly deployed for testing purposes~\cite{compose}. 
 
 \subsection{Angular CLI}\label{angularcli}
 Angular applications have a basic directory for its components. Often times a directory contains most of the code for a specific piece of an application, such as a Component definition, a Service, a Template, a Style definition, a Class definition and lastly, these related pieces are then declared in a Module definition.
@@ -322,12 +317,12 @@ Managing this volume of files and relations can sometimes lead to confusion. Ang
 \subsection{Firefox}
 From the downfall of Netscape browser and the release of its source code, the Mozilla project started with the mission to ensure the Internet to be a global public place, open and accessible to all~\cite{firemission}. Its main product is the open source web browser, Firefox.
 
-Firefox comes bundled with plenty of tools that facilitate web development, considered as the most valuable are the following:
+Firefox comes bundled with plenty of tools that facilitate web development. What follows is a description of the tools most frequently used during the development of this application.
 
 \begin{description}
 \item [Source Mapping] Is the ability to map some generated code back to its source. Some web frameworks like Angular~\ref{concept:angular} generate applications that are not developed in JavaScript itself but compiled to JavaScript in order to be executed~\cite{srcmapping}. In the beginning this led to great confusion because the browser's built-in debugger would display not the original source but the generated code.
-\item [Debugger] Support for breakpoints, conditional breakpoints, expression stepping and variable lookup. Which is highly useful when coupled with the previous element~\cite{dbgmodernweb}.
-\item [Network Monitor] Often times it is needed to inspect the outgoing requests and their responses. The integrated monitor is able to expose all elements of the communication exchange and measure the different attributes of a network operations~\cite{networkmon}.
+\item [Debugger] Support for breakpoints, conditional breakpoints, expression stepping and variable lookup, which is highly useful when coupled with the previous element~\cite{dbgmodernweb}.
+\item [Network Monitor] Often times it is needed to inspect the outgoing requests and their responses. The integrated monitor is able to expose all elements of the communication exchange and measure the different attributes of network operations~\cite{networkmon}.
 \item [Storage Inspector] Provides access to the information storage that is managed by the browser for each page~\cite{storageinspector}, namely:
 
   \begin{itemize}
@@ -342,17 +337,17 @@ Firefox comes bundled with plenty of tools that facilitate web development, cons
 \end{description}
 
 \subsection{Webpack}
-With the growing complexity of web applications, websites got slower and development, trickier. Webpack was developed to generate a optimized, ready to run, package that can be deployed in production~\cite{webpack}. Such packages are not meant for code only, they may contain images, \gls{CSS} rules and anything else. It offers an \gls{API} that can transform the contents of a package before it is bundled, for example, Typescript sources and its compiled counterpart or extracting inline \gls{CSS} from a \gls{HTML} document into a separate file.
+With the growing complexity of web applications, websites got slower and development, trickier. Webpack was developed to generate an optimized, ready to run, package that can be deployed in production~\cite{webpack}. Such packages are not meant for code only, they may contain images, \gls{CSS} rules and anything else. It offers an \gls{API} that can transform the contents of a package before it is bundled, for example, Typescript sources and its compiled counterpart or extracting inline \gls{CSS} from a \gls{HTML} document into a separate file.
 
-In the context of Firefox's debugger and an angular 2+ applications, when serving the application using Angular \gls{CLI}, discussed in Section ~\ref{angularcli}, it automatically bundles Typescript source code so that it can be instrumented and debugged inside the browser by accessing the Webpack element under the debugging tab.
+In the context of Firefox's debugger and angular 2+ applications, when serving the application using Angular \gls{CLI}, discussed in Section ~\ref{angularcli}, it automatically bundles Typescript source code so that it can be instrumented and debugged inside the browser by accessing the Webpack element under the debugging tab.
 
 \subsection{Postman}
-As programs grew larger and were split into smaller pieces, it is now a common practice to have a \gls{API} that concentrate on the business logic and a \gls{GUI}s that consume them; Such separation of concerns got even more pronounced when Web systems popularized, web browsers acting as \gls{GUI} and interacting with remote \gls{HTTP} servers as their source of information.
+As programs grew larger and were split into smaller pieces, it is now a common practice to have a \gls{API} that concentrate on the business logic and a \gls{GUI}s that consume them. Such separation of concerns got even more pronounced when Web systems popularized, web browsers acting as \gls{GUI} and interacting with remote \gls{HTTP} servers as their source of information.
 
 As with any software, \gls{API}s need to be tested and validated in order to provide a good quality product. In this context Postman was developed to be a Web \gls{API} suite, offering a nice user interface through which developers can not only send, receive and analyze \gls{HTTP} requests but also generate and manage documentation so that front-end and back-end teams have a single source of truth, manage test cases for remote \gls{HTTP} \gls{API}s, mock \gls{API}s that are still under development~\cite{postman}.
 
 \section{Chapter Conclusion}
 
-Divided into three larger groups, front-end, back-end and development, this chapter described every tool and technology that was used to implement this application. Front-end being concerned with the development of a website in which users can access information from, the back-end with a Web \gls{API} that does the actual work and later development with what was used to implement this application.
+Divided into three larger groups, front-end, back-end and development, this chapter described every tool and technology that was used to implement this application. Front-end being concerned with the development of a website in which users can access information, the back-end with an Web \gls{API} that does the actual work and finally development, with tools that were used to implement this application.
 
-The next chapter will be analyzing the proposal and context in order to provide in a high level, the entities and requirements that are considered necessary for this system.
+The next chapter analyzes the proposal and context in order to provide in a high level the entities and requirements that are considered necessary for this system.

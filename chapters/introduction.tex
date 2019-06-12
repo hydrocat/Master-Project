@@ -6,9 +6,9 @@ It is not a hard task to give access to the raw information contained within a \
 A good system would enable anyone, expert in computational systems or not, to correlate and extract any information held in their institution. However such system would have to deal with many corner cases and thus an approximation that is able to handle the most frequent cases is useful even if it requires some amount of manual maintenance.
 
 \section{Context}\label{context}
-With more than 8,500 students and professors, \gls{IPB} is composed of 5 schools that span diverse fields of study including but not limited to Education, Administration, Chemistry, Health, Tourism, Biology and Engineering.
+With more than 8,500 students and professors, \gls{IPB} is composed of 5 schools that span diverse fields of study including but not limited to Education, Administration, Communication, Health, Tourism, Agrarian and Engineering.
 
-Towards the beginning and the end of the semester, during student registration time, professors often need some insights on their educational affairs. To do so, they reach out to \gls{IT} department inquiring about an specific need, the technician then stop his current task, write a \gls{SQL} script, run it on the institution's \gls{RDBMS} and email back the results as an spreadsheet file.
+Towards the beginning and the end of the semester, during student registration time, professors often need some insights on their educational affairs. To do so, they reach out to \gls{IT} department inquiring about a specific need, the technician then stop his current task, write a \gls{SQL} script, run it on the institution's \gls{RDBMS} and email back the results as a spreadsheet file.
 
 Over time the technician has built a list of about 40 common requests and their respective scripts so that this process takes less of his time, enabling him to continue developing \gls{IPB}'s in-house software. However, interruptions still happen often enough that an automated system is still needed.
 
@@ -16,16 +16,16 @@ Over time the technician has built a list of about 40 common requests and their 
 
 The objective of this project is to develop \gls{Yabi} a web platform that exposes \gls{SQL} scripts to \gls{IPB}'s employees in a convenient way that does not require expert knowledge of the underlying system architecture and eases the \gls{IT} department workload during the institution's critical moments.
 
-Such platform will be maintained by an administrator that is responsible for registering the desired \gls{SQL} scripts and based on their role in the institution, professors and other employees are presented to a list of queries coupled with meaningful title and description in which they can run, see the resulting table and download an spreadsheet file.
+Such platform will be maintained by an administrator that is responsible for registering the desired \gls{SQL} scripts and based on their role in the institution, professors and other employees are presented to a list of queries coupled with meaningful title and description in which they can run, see the resulting table and download a spreadsheet file.
 
 Following is a translation of the original proposal found in Appendix~\ref{apendice1}:
 
 \begin{displayquote}
   Proposal nº 2\\
   To architect and construct from scratch a ``business intelligence'' system with emphasis on education management.
-  Now a days we know how valuable and important information is for those who manage institutions and the impact that data analysis tools have in the decision-making process.
+  Nowadays we know how valuable and important information is for those who manage institutions and the impact that data analysis tools have in the decision-making process.
   At the time writing, \gls{IPB} is already provided of a centralized database through which a large number of \gls{SQL} of many diverse purposes queries are run.
-  The intention is that, based on certain criteria, provide access to information without having to manually write queries that are often more than 30 lines long.
+  The intention is to provide, based on certain criteria, access to information without having to manually write queries that are often more than 30 lines long.
 
   The proposed system would be fed with ``clusters'' of queries and provide a way to easily insert and validate individual or group of queries depending on the currently logged-in user's profile.
 
