@@ -72,7 +72,6 @@
 **** DONE user 
 **** DONE permissions
 *** DONE spring repositories
-*** 
 *** DONE multi-database support
 ** TODO development environment
 *** DONE directory service

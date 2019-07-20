@@ -153,7 +153,7 @@ This is a stateless, general purpose, application-level protocol designed to be 
 
 \gls{URI} is a way to uniquely name a resource found in a registered name space. One of its applications is in the widely known \gls{URL}, which is an \gls{URI} that refers to objects accessible in the web.
 
-\gls{HTTP} methods, also known as verbs, are the indicatives of the action that is to be done on a resource. \gls{HTTP} 1.0 \gls{RFC}~\cite{http} proposes eight standard options, namely, \textsc{options}, \textsc{get}, \textsc{head}, \textsc{post}, \textsc{put}, \textsc{delete}, \textsc{trace} and \textsc{connect}. Considered notorious for this document are \textsc{get}, \textsc{post} and \textsc{delete}.
+\gls{HTTP} methods, also known as verbs, are the indicatives of the action that is to be done on a resource. \gls{HTTP} 1.1 \gls{RFC}~\cite{http} proposes eight standard options, namely, \textsc{options}, \textsc{get}, \textsc{head}, \textsc{post}, \textsc{put}, \textsc{delete}, \textsc{trace} and \textsc{connect}. Considered notorious for this document are \textsc{get}, \textsc{post} and \textsc{delete}.
 
 The \textsc{get} method purpose is to retrieve the information identified by the request's \gls{URI}. \textsc{post} is meant to send a new information to the server through the request itself. Lastly the \textsc{delete} request method expresses to the server that the resource is to be made inaccessible.
 
@@ -193,7 +193,7 @@ When using Spring, one can express dependencies by declaring them in the class's
 \subsubsection{Data}
 When developing an enterprise-level application, often times there is a need for some sort of persistence storage, in practice this usually translates to a \gls{RDBMS}. To reduce the amount of code needed to manage such interactions, Spring Data module was developed. Its main interface is called \texttt{Repository} and it decouples entities that are being persisted from the underlying storage system~\cite{springdata}.
 
-Bridging the gap between the \texttt{Repository} interface and its implementation, two other interfaces are provided such that when extended, provides the programmer with methods for interacting with a persistence system in a high level of abstraction. The base one is called \texttt{CrudRepository} and it provides the basic functionalities for persisting objects and a Web \gls{REST} interface form them. Extending \texttt{CrudRepository} there is the \texttt{PagingAngSortingRepository} that adds pagination and sorting on top of it.
+Bridging the gap between the \texttt{Repository} interface and its implementation, two other interfaces are provided such that when extended, provides the programmer with methods for interacting with a persistence system in a high level of abstraction. The base one is called \texttt{CrudRepository} and it provides the basic functionalities for persisting objects and a Web \gls{REST} interface form them. Extending \texttt{CrudRepository} there is the \texttt{PagingAndSortingRepository} that adds pagination and sorting on top of it.
 
 The \texttt{CrudRepository} on its own provide the following default methods:
 
